@@ -1,0 +1,7 @@
+Manifest-Version: 3.0
+Bundle-ManifestVersion: 3
+Bundle-Name: vcp-commons
+Bundle-SymbolicName: vcp-commons
+Bundle-Version: 3.0.0
+Bundle-Vendor: iXsystems
+Export-Package: com.ixsystems.vcp.entities

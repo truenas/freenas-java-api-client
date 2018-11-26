@@ -1,0 +1,43 @@
+[
+  {
+    "atime": "on",
+    "avail": 3850321920,
+    "comments": "Test",
+    "compression": "lz4",
+    "dedup": "off",
+    "inherit_props": [],
+    "mountpoint": "/mnt/tank",
+    "name": "tank",
+    "pool": "tank",
+    "quota": 0,
+    "readonly": "off",
+    "recordsize": 131072,
+    "refer": 90112,
+    "refquota": 0,
+    "refreservation": 0,
+    "reservation": 0,
+    "used": 2358296576
+  },
+  {
+    "atime": "on",
+    "avail": 3850715136,
+    "comments": null,
+    "compression": "lz4",
+    "dedup": "off",
+    "inherit_props": [
+      "compression",
+      "aclinherit"
+    ],
+    "mountpoint": "/mnt/tank/myds",
+    "name": "tank/myds",
+    "pool": "tank",
+    "quota": 0,
+    "readonly": "off",
+    "recordsize": 131072,
+    "refer": 90112,
+    "refquota": 0,
+    "refreservation": 0,
+    "reservation": 0,
+    "used": 90112
+  }
+]
