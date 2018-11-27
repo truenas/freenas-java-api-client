@@ -199,7 +199,7 @@ public class DatasetRestConnector implements DatasetConnector {
                     .basicAuth(auth.getUsername(), auth.getPassword())
                     .header("accept", "application/json")
                     .asObject(Volume[].class);
-            System.out.print(jsonResponse.getBody());
+            //System.out.print(jsonResponse.getBody());
 
             if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
                 Volume[] body = jsonResponse.getBody();

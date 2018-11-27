@@ -142,7 +142,7 @@ public class SharingNFSRestConnector implements SharingNFSConnector {
                     .basicAuth(auth.getUsername(), auth.getPassword())
                     .header("accept", "application/json")
                     .asObject(NFSShare[].class);
-            System.out.print(jsonResponse.getBody());
+            //System.out.print(jsonResponse.getBody());
 
             if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
                 NFSShare[] body = jsonResponse.getBody();
