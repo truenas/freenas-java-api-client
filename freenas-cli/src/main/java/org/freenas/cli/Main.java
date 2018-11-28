@@ -231,6 +231,11 @@ public class Main {
 
         AlertSystem alertSystem = new AlertSystemImp(getEndPointConnector(),getAuth());
         List<AlertMessage> alerts = alertSystem.list();
+        if (alerts.size()==0) {
+            System.out.println("No alerts available at moment.");
+            return ;
+        }
+
         System.out.printf("############################\n");
         for (AlertMessage m : alerts){
 
@@ -390,7 +395,10 @@ public class Main {
         if (result){
             System.out.println("The following datasets:");
             for (Volume v: datasets){
-                System.out.println(">> Dataset id: "+v.getId());
+                if (v.getId()!=null)
+                    System.out.println(">> Dataset id: "+v.getId());
+                if (v.getName()!=null)
+                    System.out.println(">> Dataset name: "+v.getName());
                 System.out.println(">> Dataset " + v.getName() + " in "+ v.getMountPoint() + " with "+Long.parseLong(v.getAvailable()) / 1024 / 1024 / 1024 + "GB available.");
                 System.out.println(">> ===========");
             }

@@ -58,8 +58,9 @@ import java.util.Map;
 
 public class DatasetRestConnector implements DatasetConnector {
 
-    private String ENDPOINT_DATASET_LIST = "/api/v1.0/storage/volume/";
+    private String ENDPOINT_VOLUME_LIST = "/api/v1.0/storage/volume/";
     private String ENDPOINT_DATASET_CREATE = "/api/v1.0/storage/dataset/";
+    private String ENDPOINT_DATASET_LIST = "/api/v1.0/storage/dataset/";
     private String ENDPOINT_DATASET_UPDATE = "/api/v1.0/storage/volume/";
     private String ENDPOINT_DATASET_DELETE = "/api/v1.0/storage/dataset/";
     private String ENDPOINT_DATASET_SHARING_CIFS = "/api/v1.0/sharing/cifs";
