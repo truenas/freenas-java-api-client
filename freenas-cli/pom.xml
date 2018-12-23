@@ -12,7 +12,7 @@
     <groupId>org.freenas.client</groupId>
     <artifactId>freenas-cli</artifactId>
     <properties>
-        <freenas.client.version>1.0</freenas.client.version>
+        <freenas.client.version>1.1-SNAPSHOT</freenas.client.version>
     </properties>
 <build>
 
