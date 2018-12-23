@@ -43,7 +43,6 @@ public class YmlConfs {
     private static final org.apache.log4j.Logger LOGGER = Logger.getLogger(YmlConfs.class);
     Map<String, Object> properties = null;
 
-
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
     }
@@ -77,6 +76,11 @@ public class YmlConfs {
     public String getUrl(){
         Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
         return prop.get("url");
+    }
+
+    public Boolean getWebSockets(){
+        Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
+        return Boolean.parseBoolean(prop.get("websockets"));
     }
 
     public Map<String, Object> getProperties() {
