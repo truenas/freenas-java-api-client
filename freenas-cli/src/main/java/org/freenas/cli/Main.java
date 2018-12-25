@@ -46,8 +46,12 @@ import org.freenas.client.network.GlobalConfigurationConnector;
 import org.freenas.client.network.rest.impl.GlobalConfigurationRestConnector;
 import org.freenas.client.storage.rest.impl.DatasetRestConnector;
 import org.freenas.client.storage.rest.impl.SharingNFSRestConnector;
+import org.freenas.client.websockets.WSClient;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -59,6 +63,9 @@ public class Main {
     private String url;
     private String username;
     private String password;
+    private Boolean websockets;
+    private String websocketsUri;
+
     private String volumeName;
 
     // Constructor;
@@ -100,6 +107,10 @@ public class Main {
         Option alerts = new Option( "alerts", "alerts list" );
         config.setArgs(1);
 
+        Option iterative = new Option( "iterative", "iterative mode" );
+        config.setArgs(0);
+
+
         Option vnameOpt = new Option( "vname", "volume name" );
         vnameOpt.setArgs(1);
         // add t option
@@ -111,7 +122,7 @@ public class Main {
         options.addOption(config);
         options.addOption(share);
         options.addOption(alerts);
-
+        options.addOption(iterative);
 
         options.addOption(urlOpt);
 
@@ -134,6 +145,9 @@ public class Main {
             app.username = yml.getUsername();
             app.password = yml.getPassword();
             app.url = yml.getUrl();
+            app.websockets = yml.getWebSockets();
+            app.websocketsUri = yml.getWebSocketsUri();
+
         } catch (FileNotFoundException e) {
             LOGGER.info("No freenas yml configuration available.");
         }
@@ -175,6 +189,16 @@ public class Main {
         }
 
 
+        if(cmd.hasOption("iterative")) {
+
+            // Need to handle here the shares type
+            app.handleIterativeMode(cmd);
+
+        }
+
+
+
+
         if(cmd.hasOption("help")) {
 
             HelpFormatter formatter = new HelpFormatter();
@@ -182,6 +206,45 @@ public class Main {
         }
         //System.out.println(app);
     }
+
+    private void handleIterativeMode(CommandLine cmd) {
+
+        if (!this.websockets) {
+            System.out.println("FreNAS - Not possible enter in iterative mode without enable WebSockets Options. Please check your conf/freenas.yml");
+        }
+
+        // Connect to WebSockets
+        WSClient wsClient = new WSClient(websocketsUri, username, password);
+        wsClient.start();
+
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        String input = "";
+        try {
+            while (!input.equalsIgnoreCase("stop")) {
+                showMenu();
+                input = in.readLine();
+                if(input.equals("1")) {
+                    //do something
+                }
+                else if(input.equals("2")) {
+                    //do something else
+                }
+                else if(input.equals("3")) {
+                    // do something else
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("FreeNAS - Iterative mode, error " + e.getMessage());
+        }
+
+
+    }
+
+    public static void showMenu() {
+        System.out.println("Enter 1, 2, 3, or \"stop\" to exit");
+    }
+
 
 
     /**
@@ -491,5 +554,21 @@ public class Main {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public Boolean getWebsockets() {
+        return websockets;
+    }
+
+    public void setWebsockets(Boolean websockets) {
+        this.websockets = websockets;
+    }
+
+    public String getWebsocketsUri() {
+        return websocketsUri;
+    }
+
+    public void setWebsocketsUri(String websocketsUri) {
+        this.websocketsUri = websocketsUri;
     }
 }
