@@ -40,6 +40,12 @@ public class WSAuthenticationMessages {
         return msg;
     }
 
+    public static String decodeId(String message){
+        JSONObject jsonObject = new JSONObject(message);
+        String id = jsonObject.getString("id");
+        return id;
+    }
+
     public static String getAuth(String id, String username, String password){
         Map<String, Object> args = new HashMap<String, Object>();
 

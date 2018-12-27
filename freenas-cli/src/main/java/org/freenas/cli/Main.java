@@ -30,6 +30,8 @@
  */
 package org.freenas.cli;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ixsystems.vcp.entities.AlertMessage;
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
@@ -46,13 +48,18 @@ import org.freenas.client.network.GlobalConfigurationConnector;
 import org.freenas.client.network.rest.impl.GlobalConfigurationRestConnector;
 import org.freenas.client.storage.rest.impl.DatasetRestConnector;
 import org.freenas.client.storage.rest.impl.SharingNFSRestConnector;
+import org.freenas.client.websockets.ReceivedMessage;
 import org.freenas.client.websockets.WSClient;
+import org.freenas.client.websockets.WSSharingMessages;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.Callable;
 
 /**
  * This is the main for freenas cli
@@ -150,6 +157,10 @@ public class Main {
 
         } catch (FileNotFoundException e) {
             LOGGER.info("No freenas yml configuration available.");
+            e.printStackTrace();
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
 
         if(cmd.hasOption("user")) { // User
@@ -197,8 +208,6 @@ public class Main {
         }
 
 
-
-
         if(cmd.hasOption("help")) {
 
             HelpFormatter formatter = new HelpFormatter();
@@ -210,12 +219,16 @@ public class Main {
     private void handleIterativeMode(CommandLine cmd) {
 
         if (!this.websockets) {
-            System.out.println("FreNAS - Not possible enter in iterative mode without enable WebSockets Options. Please check your conf/freenas.yml");
+            System.out.println("FreNAS - Not possible enter in iterative mode without enable WebSockets Options. " +
+                    "Please check your conf/freenas.yml");
         }
 
         // Connect to WebSockets
         WSClient wsClient = new WSClient(websocketsUri, username, password);
         wsClient.start();
+        wsClient.retrieveSessionId();
+
+
 
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -224,14 +237,49 @@ public class Main {
             while (!input.equalsIgnoreCase("stop")) {
                 showMenu();
                 input = in.readLine();
-                if(input.equals("1")) {
+                if(input.equals("nfs share")) {
+
+                    String idMsg = UUID.randomUUID().toString();
+
                     //do something
+                    ReceivedMessage callable = new ReceivedMessage() {
+                        @Override
+                        public Object call(String message) {
+                            // Decode Message ;
+
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+                            JSONObject jsonObject = new JSONObject(message);
+                            JSONArray arr = jsonObject.getJSONArray("result");
+                            System.out.println("[FreeNAS] - Available NFS Shares:");
+                            for (int i = 0 ; i<arr.length(); i++){
+                                try {
+                                    NFSShare nfsShare = objectMapper.readValue(arr.getJSONObject(i).toString(), NFSShare.class);
+                                    System.out.println("ID="+nfsShare.getId() +", " + nfsShare.getPaths());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+
+                            // Handle it!
+
+                            return message;
+                        }
+
+
+                    };
+                    wsClient.registerCallable(idMsg, callable);
+                    wsClient.listNfsShare(idMsg);
                 }
-                else if(input.equals("2")) {
+                else if(input.equals("stop")) {
                     //do something else
+                    System.exit(0);
                 }
-                else if(input.equals("3")) {
-                    // do something else
+                else if(input.equals("help")) {
+                    showMenu();
                 }
             }
         } catch (Exception e) {
@@ -242,7 +290,9 @@ public class Main {
     }
 
     public static void showMenu() {
-        System.out.println("Enter 1, 2, 3, or \"stop\" to exit");
+        System.out.println("nfs share: List the NFS Share");
+        System.out.println("help");
+        System.out.println("Enter the command or \"stop\" to exit");
     }
 
 

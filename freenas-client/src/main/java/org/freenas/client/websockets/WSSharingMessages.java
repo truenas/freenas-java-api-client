@@ -34,4 +34,9 @@ public class WSSharingMessages {
         JSONObject obj = new JSONObject(args);
         return obj.toString();
     }
+    public static String decodeResult(String message){
+        JSONObject jsonObject = new JSONObject(message);
+        String msg = jsonObject.getString("result");
+        return msg;
+    }
 }

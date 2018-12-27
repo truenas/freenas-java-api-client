@@ -79,8 +79,8 @@ public class YmlConfs {
     }
 
     public Boolean getWebSockets(){
-        Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
-        return Boolean.parseBoolean(prop.get("websockets"));
+        Map<String, Boolean> prop = (Map<String, Boolean>) this.properties.get("freenas");
+        return prop.get("websockets");
     }
     public String getWebSocketsUri(){
         Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");

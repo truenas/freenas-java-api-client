@@ -30,52 +30,83 @@
  */
 package com.ixsystems.vcp.entities.share;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NFSShare {
 
+    //{"id": 1, "comment": "", "hosts": [], "alldirs": true, "ro": false, "quiet": false, "maproot_user": "root",
+    // "maproot_group": "wheel", "mapall_user": null, "mapall_group": null, "security": [],
+    // "paths": ["/mnt/primary"], "networks": []}
+
+
+    @JsonAlias("alldirs")
     @JsonProperty("nfs_alldirs")
     private Boolean allDirs ;
 
     @JsonProperty("id")
     private String id ;
 
+
+    @JsonAlias("comment")
     @JsonProperty("nfs_comment")
     private String comment ;
+
 
     @JsonProperty("nfs_hosts")
     private String hosts ;
 
+    @JsonProperty("hosts")
+    private List<String> getHostList(){
+        List<String> hosts = new ArrayList<String>();
+        if (this.hosts!=null) {
+            String[] tmp = this.hosts.split(",");
+            for (int i = 0; i < tmp.length; i++)
+                hosts.add(tmp[i]);
+        }
+        return hosts;
+    }
 
 
+    @JsonAlias("mapall_user")
     @JsonProperty("nfs_mapall_user")
     private String mapAllUser;
 
-
+    @JsonAlias("mapall_group")
     @JsonProperty("nfs_mapall_group")
     private String mapAllGroup;
 
+    @JsonAlias("maproot_user")
     @JsonProperty("nfs_maproot_user")
     private String mapRootUser;
 
-
+    @JsonAlias({"maproot_group", "nfs_maproot_group"})
     @JsonProperty("nfs_maproot_group")
     private String mapRootGroup;
 
+    @JsonAlias("network")
     @JsonProperty("nfs_network")
     private String network;
 
-    @JsonProperty("nfs_paths")
+    @JsonAlias({"paths", "nfs_paths"})
+    @JsonProperty("paths")
     private List<String> paths;
 
+    @JsonAlias("quiet")
     @JsonProperty("nfs_quiet")
     private Boolean quiet;
 
+    @JsonAlias("ro")
     @JsonProperty("nfs_ro")
     private Boolean readOnly;
 
+    @JsonIgnore
+    @JsonAlias("security")
     @JsonProperty("nfs_security")
     private List<String> security;
 
@@ -226,10 +257,13 @@ public class NFSShare {
     public String toString() {
         return "NFSShare{" +
                 "allDirs=" + allDirs +
+                ", id='" + id + '\'' +
                 ", comment='" + comment + '\'' +
                 ", hosts='" + hosts + '\'' +
+                ", mapAllUser='" + mapAllUser + '\'' +
                 ", mapAllGroup='" + mapAllGroup + '\'' +
                 ", mapRootUser='" + mapRootUser + '\'' +
+                ", mapRootGroup='" + mapRootGroup + '\'' +
                 ", network='" + network + '\'' +
                 ", paths=" + paths +
                 ", quiet=" + quiet +
