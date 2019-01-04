@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 #./freenas-cli.sh -volume add css01 -vname dev01
 #./freenas-cli.sh -share add nfs /mnt/dev01/css01 "css01" sys
 
