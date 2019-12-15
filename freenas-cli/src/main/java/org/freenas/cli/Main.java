@@ -40,17 +40,16 @@ import com.ixsystems.vcp.entities.share.NFSShare;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.freenas.client.alertsystem.AlertSystem;
-import org.freenas.client.alertsystem.rest.imp.AlertSystemImp;
-import org.freenas.client.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.network.GlobalConfigurationConnector;
-import org.freenas.client.network.rest.impl.GlobalConfigurationRestConnector;
-import org.freenas.client.storage.rest.impl.DatasetRestConnector;
-import org.freenas.client.storage.rest.impl.SharingNFSRestConnector;
+import org.freenas.client.v1.alertsystem.AlertSystem;
+import org.freenas.client.v1.alertsystem.rest.imp.AlertSystemImp;
+import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v1.network.GlobalConfigurationConnector;
+import org.freenas.client.v1.network.rest.impl.GlobalConfigurationRestConnector;
+import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v1.storage.rest.impl.SharingNFSRestConnector;
 import org.freenas.client.websockets.ReceivedMessage;
 import org.freenas.client.websockets.WSClient;
-import org.freenas.client.websockets.WSSharingMessages;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -59,7 +58,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.Callable;
 
 /**
  * This is the main for freenas cli

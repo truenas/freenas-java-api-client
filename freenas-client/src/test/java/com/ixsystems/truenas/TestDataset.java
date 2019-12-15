@@ -32,18 +32,20 @@ package com.ixsystems.truenas;
 
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
-import org.freenas.client.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.storage.rest.impl.DatasetRestConnector;
-import org.freenas.client.storage.rest.impl.VolumeRestConnector;
+import com.ixsystems.vcp.entities.exceptions.DatasetAlreadyExists;
+import org.freenas.client.utils.SSLManager;
+import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
 import org.junit.Test;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -53,24 +55,25 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 public class TestDataset {
 
     public DatasetRestConnector getConnector(){
-        AuthenticationConnector auth = AuxiliarAuth.getAuth();
-        EndpointConnector ep = new EndpointConnector("http://10.20.21.194", "http");
-        DatasetRestConnector gs = new DatasetRestConnector(ep, auth);
 
+        DatasetRestConnector gs = AuxiliarAuth.getConnector();
         return gs;
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate() throws KeyManagementException, NoSuchAlgorithmException, DatasetAlreadyExists {
+        SSLManager.checkSSL();
         DatasetRestConnector gs = getConnector();
         Map<String, String> args = new HashMap<String, String>();
 
         args.put("name", "datasetNameTest"+ UUID.randomUUID().toString());
 
-        String volumeName = "zz";
+        String volumeName = "ds";
 
 
         Dataset ds  = gs.create(volumeName, args);
@@ -83,14 +86,18 @@ public class TestDataset {
     @Test
     public void testMassCreate() {
         DatasetRestConnector gs = getConnector();
-        String volumeName = "zd";
+        String volumeName = "ds";
 
         Map<String, String> args = new HashMap<String, String>();
 
 
         for (int i = 0; i<10; i++) {
             args.put("name", "datasetNameTest"+i);
-            Dataset ds  = gs.create(volumeName, args);
+            try {
+                Dataset ds = gs.create(volumeName, args);
+            }catch (DatasetAlreadyExists e){
+                System.out.println("Dataset already exists.." + volumeName + args);
+            }
             //assertNotNull("Dataset is not returned", ds);
         }
 
@@ -103,9 +110,13 @@ public class TestDataset {
         DatasetRestConnector gs = getConnector();
 
         List<Volume> volumeList = gs.list(0L);
+        Map<String, String> vol = new HashMap<String, String>();
         for (Volume v : volumeList){
             System.out.println("Volume " + v);
+            vol.put(v.getName(), v.getUsed().toLowerCase());
         }
+        System.out.println(vol);
+        System.out.println(vol.size());
 
     }
 

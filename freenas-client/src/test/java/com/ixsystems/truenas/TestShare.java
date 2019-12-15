@@ -31,7 +31,7 @@
 package com.ixsystems.truenas;
 
 import com.ixsystems.vcp.entities.Volume;
-import org.freenas.client.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class TestShare {
     }
 
     private String getAvailableStore(){
-        return "zz";
+        return "ds";
     }
 
     @Test

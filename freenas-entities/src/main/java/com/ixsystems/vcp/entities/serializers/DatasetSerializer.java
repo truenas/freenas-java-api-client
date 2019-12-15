@@ -36,15 +36,17 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
+import com.ixsystems.vcp.entities.exceptions.DatasetAlreadyExists;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatasetSerializer extends StdSerializer<Dataset> implements EntitySerializer<Dataset>  {
+public class DatasetSerializer extends StdSerializer<Dataset> {
     private static final Logger LOGGER = Logger.getLogger(DatasetSerializer.class);
 
     public DatasetSerializer(Class<Dataset> t) {
@@ -67,8 +69,17 @@ public class DatasetSerializer extends StdSerializer<Dataset> implements EntityS
 
     }
 
-    public Dataset decode(JSONObject obj, Dataset instance) {
-        instance.setAtime(obj.getString("atime"));
+    public Dataset decode(JSONObject obj, Dataset instance) throws DatasetAlreadyExists {
+        // Eventually, the dataset already exists.
+        if (obj.has("__all__")){
+            if (obj.getString("__all__").contains("already exists"))
+            {
+                throw new DatasetAlreadyExists(obj.getString("__all__"));
+            }
+        }
+
+        if (obj.has("atime"))
+            instance.setAtime(obj.getString("atime"));
         instance.setAvailable(obj.getLong("avail"));
         try {
             instance.setComments(obj.getString("comments"));

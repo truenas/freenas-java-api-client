@@ -20,6 +20,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<jackson.version>2.9.9</jackson.version>
+		<unirest.version>3.3.00</unirest.version>
 
 	</properties>
 
@@ -29,7 +30,11 @@
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>${unirest.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>

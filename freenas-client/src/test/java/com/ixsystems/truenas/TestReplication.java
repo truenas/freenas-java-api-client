@@ -31,9 +31,9 @@
 package com.ixsystems.truenas;
 
 import com.ixsystems.vcp.entities.Volume;
-import org.freenas.client.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.storage.rest.impl.VolumeRestConnector;
+import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v1.storage.rest.impl.VolumeRestConnector;
 import org.junit.Test;
 
 import java.util.List;
@@ -43,7 +43,7 @@ public class TestReplication {
     @Test
     public void tryFetch() {
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
-        EndpointConnector ep = new EndpointConnector("http://10.20.20.176/", "http");
+        EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
         VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
         List<Volume> volumeList = gs.list();
         for (Volume volume : volumeList){

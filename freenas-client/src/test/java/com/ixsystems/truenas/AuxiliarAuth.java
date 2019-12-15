@@ -30,15 +30,17 @@
  */
 package com.ixsystems.truenas;
 
-import org.freenas.client.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
 
 public class AuxiliarAuth {
 
     private static String USER = "root";
-    private static String PASSWD = "pwd";
-    public static String HOST = "http://10.20.21.194";
+    private static String PASSWD = "password-for-testing";
+    public static String HOST = "https://freenas02/";
+    public static String PROTOCOL = "https";
+    //public static String HOST = "http://freenas01/";
 
     public static AuthenticationConnector getAuth(){
         AuthenticationConnector auth = new AuthenticationConnector(USER, PASSWD);
@@ -48,9 +50,16 @@ public class AuxiliarAuth {
 
     public static DatasetRestConnector getConnector(){
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
-        EndpointConnector ep = new EndpointConnector("http://10.20.21.194", "http");
+        EndpointConnector ep = new EndpointConnector(HOST, PROTOCOL);
         DatasetRestConnector gs = new DatasetRestConnector(ep, auth);
 
         return gs;
     }
+
+    public static EndpointConnector getCon(){
+        AuthenticationConnector auth = AuxiliarAuth.getAuth();
+        EndpointConnector ep = new EndpointConnector(HOST, PROTOCOL);
+        return ep;
+    }
+
 }

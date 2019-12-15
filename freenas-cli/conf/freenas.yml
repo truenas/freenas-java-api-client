@@ -1,6 +1,6 @@
 freenas:
   username: root
-  password: passwordForMyRoot
-  url:  http://localhost
-  websocketsUri: ws://localhost/websocket
+  password: password-for-change-is-here
+  url:  https://freenas01
+  websocketsUri: wss://freenas01/websocket
   websockets: true

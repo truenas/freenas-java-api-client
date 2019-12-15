@@ -39,8 +39,14 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         TestGlobalConfigurationConnector.class,
-       // TestDataset.class,
-         TestShare.class,
+        TestDataset.class,
+        TestShare.class,
+        TestAssociatedTargets.class,
+        TestExtends.class,
+        TestReplication.class,
+        TestTargets.class,
+        TestVolume.class,
+        TestZVol.class
 })
 
 public class TestSuiteDataset {
