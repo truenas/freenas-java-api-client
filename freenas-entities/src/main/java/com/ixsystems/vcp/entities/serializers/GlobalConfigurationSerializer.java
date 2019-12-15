@@ -31,13 +31,15 @@
 package com.ixsystems.vcp.entities.serializers;
 
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
-import org.json.JSONObject;
+import kong.unirest.json.JSONObject;
 
-public class GlobalConfigurationSerializer implements EntitySerializer<GlobalConfigurations>{
+public class GlobalConfigurationSerializer{
 
 
     public GlobalConfigurations decode(JSONObject obj, GlobalConfigurations gc){
-        gc.setGcHostnameVirtual(obj.get("gc_hostname_virtual").toString());
+        if (obj.get("gc_hostname_virtual")!=null)
+            gc.setGcHostnameVirtual(obj.get("gc_hostname_virtual").toString());
+
         gc.setGcHosts(obj.getString("gc_hosts"));
         gc.setGcDomain(obj.getString("gc_domain"));
         gc.setGcHostname(obj.getString("gc_hostname"));

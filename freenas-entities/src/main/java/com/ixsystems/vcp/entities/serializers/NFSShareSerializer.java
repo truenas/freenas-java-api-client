@@ -36,9 +36,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.share.NFSShare;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,28 +46,10 @@ import java.util.List;
 
 
 
-public class NFSShareSerializer extends StdSerializer<NFSShare> implements EntitySerializer<NFSShare>  {
+public class NFSShareSerializer  {
     private static final Logger LOGGER = Logger.getLogger(NFSShareSerializer.class);
 
-    public NFSShareSerializer(Class<NFSShare> t) {
-        super(t);
-    }
 
-    public NFSShareSerializer(JavaType type) {
-        super(type);
-    }
-
-    public NFSShareSerializer(Class<?> t, boolean dummy) {
-        super(t, dummy);
-    }
-
-    public NFSShareSerializer(StdSerializer<?> src) {
-        super(src);
-    }
-
-    public void serialize(NFSShare NFSShare, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-
-    }
 
     public NFSShare decode(JSONObject obj, NFSShare instance) {
 //        instance.setComment(obj.getString("nfs_comment"));

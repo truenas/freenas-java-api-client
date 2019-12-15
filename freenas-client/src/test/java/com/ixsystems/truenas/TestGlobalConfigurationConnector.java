@@ -32,10 +32,10 @@ package com.ixsystems.truenas;
 
 
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
-import org.freenas.client.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.network.GlobalConfigurationConnector;
-import org.freenas.client.network.rest.impl.GlobalConfigurationRestConnector;
+import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v1.network.GlobalConfigurationConnector;
+import org.freenas.client.v1.network.rest.impl.GlobalConfigurationRestConnector;
 import org.junit.Test;
 
 public class TestGlobalConfigurationConnector {
@@ -45,7 +45,7 @@ public class TestGlobalConfigurationConnector {
     public void tryFetch() {
 
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
-        EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, "http");
+        EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
         GlobalConfigurationConnector gs = new GlobalConfigurationRestConnector(ep, auth);
         String hostname = gs.getHostname();
         System.out.println("The FreeNAS hostname is: " + hostname);
