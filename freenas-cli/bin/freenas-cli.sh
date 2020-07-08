@@ -1,3 +1,5 @@
 #!/bin/bash
 # Run the java process and pass arguments
-java -jar /mnt/c/Users/bastiao/PProj/freenas-java-api-client/freenas-cli/target/freenas-cli-1.0-SNAPSHOT-jar-with-dependencies.jar "$@"
+VERSION="1.1-SNAPSHOT"
+PATH="../freenas-cli/target/freenas-cli-$VERSION-jar-with-dependencies.jar"
+/usr/bin/java -jar $PATH "$@"
