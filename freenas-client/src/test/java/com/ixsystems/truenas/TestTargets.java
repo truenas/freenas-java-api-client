@@ -34,7 +34,7 @@ import com.ixsystems.vcp.entities.Volume;
 import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
 import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
 import org.freenas.client.v1.storage.rest.impl.VolumeRestConnector;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

@@ -37,7 +37,7 @@ import org.freenas.client.utils.SSLManager;
 import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
 import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
 import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -46,16 +46,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+/*import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;*/
 
 public class TestDataset {
 
@@ -77,7 +76,8 @@ public class TestDataset {
 
 
         Dataset ds  = gs.create(volumeName, args);
-        assertNotNull("Dataset is not returned", ds);
+        //assertNotNull("Dataset is not returned", ds);
+        assertNotNull(ds, "Dataset is not returned");
 
         //List<Dataset> volumeList = gs.list();
 

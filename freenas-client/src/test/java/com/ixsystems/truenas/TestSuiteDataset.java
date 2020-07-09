@@ -31,12 +31,15 @@
 package com.ixsystems.truenas;
 
 
+import org.junit.platform.suite.api.SelectPackages;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.junit.platform.runner.JUnitPlatform;
+
+//Converting from JUnit4 to JUnit5
+//import org.junit.runners.Suite;
 
 
-
-@RunWith(Suite.class)
+/*@RunWith(Suite.class)
 @Suite.SuiteClasses({
         TestGlobalConfigurationConnector.class,
         TestDataset.class,
@@ -47,7 +50,10 @@ import org.junit.runners.Suite;
         TestTargets.class,
         TestVolume.class,
         TestZVol.class
-})
+})*/
+
+@RunWith(JUnitPlatform.class)
+@SelectPackages("com.ixsystems.truenas")
 
 public class TestSuiteDataset {
 

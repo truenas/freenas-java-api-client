@@ -38,7 +38,8 @@ import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.share.NFSShare;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ import java.util.List;
 
 
 public class NFSShareSerializer  {
-    private static final Logger LOGGER = Logger.getLogger(NFSShareSerializer.class);
+    private static final Logger LOGGER = LogManager.getLogger(NFSShareSerializer.class);
 
 
 

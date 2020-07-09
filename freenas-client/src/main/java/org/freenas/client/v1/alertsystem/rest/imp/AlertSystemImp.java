@@ -36,7 +36,8 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.freenas.client.v1.alertsystem.AlertSystem;
 import org.freenas.client.v1.connectors.Authentication;
 import org.freenas.client.v1.connectors.Endpoint;
@@ -49,7 +50,7 @@ public class AlertSystemImp implements AlertSystem {
     private static String ENDPOINT_ALERTS_LIST = "/api/v1.0/system/alert/";
     private static String ENDPOINT_ALERTS_DISMISS = "/api/v1.0/system/alert/(string: id)/dismiss/";
     // /api/v1.0/system/alert/(string: id)/dismiss/
-    private static final Logger LOGGER = Logger.getLogger(DatasetRestConnector.class);
+    private static final Logger LOGGER = LogManager.getLogger(DatasetRestConnector.class);
 
 
     private Endpoint endpoint;

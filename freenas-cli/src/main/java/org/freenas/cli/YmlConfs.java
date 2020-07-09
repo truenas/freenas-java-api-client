@@ -30,7 +30,8 @@
  */
 package org.freenas.cli;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -40,7 +41,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class YmlConfs {
-    private static final org.apache.log4j.Logger LOGGER = Logger.getLogger(YmlConfs.class);
+    private static final Logger LOGGER = LogManager.getLogger(YmlConfs.class);
     Map<String, Object> properties = null;
 
     public void setProperties(Map<String, Object> properties) {

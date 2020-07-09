@@ -39,7 +39,8 @@ import com.ixsystems.vcp.entities.Volume;
 import com.ixsystems.vcp.entities.exceptions.DatasetAlreadyExists;
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 
 import java.io.IOException;
@@ -47,7 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatasetSerializer extends StdSerializer<Dataset> {
-    private static final Logger LOGGER = Logger.getLogger(DatasetSerializer.class);
+    private static final Logger LOGGER = LogManager.getLogger(DatasetSerializer.class);
 
     public DatasetSerializer(Class<Dataset> t) {
         super(t);

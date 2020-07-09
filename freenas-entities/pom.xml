@@ -1,8 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<!--
-	<parent>
+	<!--<parent>
 		<groupId>com.ixsystems</groupId>
 		<artifactId>vcp-plugin</artifactId>
 		<version>${build.version}</version>
@@ -12,64 +10,57 @@
 		<groupId>org.freenas.client</groupId>
 		<version>1.1-SNAPSHOT</version>
 	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
     <groupId>org.freenas.client</groupId>
     <artifactId>freenas-entities</artifactId>
-
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.1.0.RELEASE</spring.version>
-		<jackson.version>2.9.10.1</jackson.version>
-		<unirest.version>3.3.00</unirest.version>
-
+		<spring.version>4.3.22.RELEASE</spring.version>
+		<jackson.version>2.11.1</jackson.version>
+		<unirest.version>3.8.06</unirest.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20140107</version>
+			<version>20200518</version>
 		</dependency>
 		<dependency>
 			<groupId>com.konghq</groupId>
 			<artifactId>unirest-java</artifactId>
 			<version>${unirest.version}</version>
 		</dependency>
-
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.13.3</version>
 		</dependency>
-
-
-
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-
-
-
 	</dependencies>
-
 	<build>
 		<plugins>
-			<plugin>
+			<!--<plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>3.0</version>
+				<version>4.0.rc1</version>
 				<configuration>
-					<header>../LICENSE</header>
-					<includes>
-						<include>**/*.java</include>
-					</includes>
-					<excludes>
-						<exclude>**/package-info.java</exclude>
-					</excludes>
-
+                    <licenseSets>
+                        <licenseSet>
+                            <header>LICENSE</header>
+                            <includes>
+                                <include>**/*.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/package-info.java</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
 				</configuration>
 				<executions>
 					<execution>
@@ -78,23 +69,18 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-
+			</plugin>-->
 			<!-- Plugin adds add existing MANIFEST file into jar. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
 				<configuration>
 					<archive>
 						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
 					</archive>
 				</configuration>
 			</plugin>
-			
-
 		</plugins>
 	</build>
-
-
 </project>

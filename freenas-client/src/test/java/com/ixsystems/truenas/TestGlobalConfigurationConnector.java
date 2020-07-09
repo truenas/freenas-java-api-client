@@ -36,7 +36,7 @@ import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
 import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
 import org.freenas.client.v1.network.GlobalConfigurationConnector;
 import org.freenas.client.v1.network.rest.impl.GlobalConfigurationRestConnector;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TestGlobalConfigurationConnector {
 

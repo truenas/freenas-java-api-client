@@ -38,8 +38,11 @@ import com.ixsystems.vcp.entities.Volume;
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 import com.ixsystems.vcp.entities.share.NFSShare;
 import org.apache.commons.cli.*;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.config.Configurator;
+import org.apache.logging.log4j.core.config.DefaultConfiguration;
 import org.freenas.client.v1.alertsystem.AlertSystem;
 import org.freenas.client.v1.alertsystem.rest.imp.AlertSystemImp;
 import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
@@ -64,7 +67,7 @@ import java.util.*;
  */
 public class Main {
 
-    private static final org.apache.log4j.Logger LOGGER = Logger.getLogger(Main.class);
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
     private String url;
     private String username;
     private String password;
@@ -84,9 +87,8 @@ public class Main {
      * @param args
      */
     public static void main(String [] args){
-        org.apache.log4j.BasicConfigurator.configure();
-        Logger.getRootLogger().setLevel(Level.ERROR);
-
+	Configurator.initialize(new DefaultConfiguration());
+        Configurator.setRootLevel(Level.INFO);
 
         // create Options object
         Options options = new Options();

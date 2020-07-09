@@ -31,7 +31,8 @@
 package org.freenas.client.websockets;
 
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class WSClient  {
     private static Object waitLock = new Object();
 
     private String wsUrl = "ws://10.20.21.194/websocket";
-    private static final org.apache.log4j.Logger LOGGER = Logger.getLogger(WSClient.class);
+    private static final Logger LOGGER = LogManager.getLogger(WSClient.class);
     private RemoteEndpoint.Basic basicSession = null;
     private String id ;
     private String username ;

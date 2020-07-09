@@ -32,7 +32,7 @@ package com.ixsystems.truenas;
 
 import com.ixsystems.vcp.entities.Volume;
 import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

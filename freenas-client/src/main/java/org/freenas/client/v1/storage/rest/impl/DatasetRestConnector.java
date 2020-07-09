@@ -46,7 +46,8 @@ import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONObject;
 import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.freenas.client.utils.SSLManager;
 import org.freenas.client.v1.connectors.Authentication;
 import org.freenas.client.v1.connectors.Endpoint;
@@ -73,7 +74,7 @@ public class DatasetRestConnector implements DatasetConnector {
     private Authentication auth;
     private String rootUrl = "";
 
-    private static final Logger LOGGER = Logger.getLogger(DatasetRestConnector.class);
+    private static final Logger LOGGER = LogManager.getLogger(DatasetRestConnector.class);
 
     private JSONObject myObj;
 
