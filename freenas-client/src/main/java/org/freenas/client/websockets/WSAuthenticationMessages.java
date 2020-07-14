@@ -30,8 +30,8 @@
  */
 package org.freenas.client.websockets;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+/*import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;*/
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -44,8 +44,6 @@ public class WSAuthenticationMessages {
     public static final String MSG_CONNECTED = "connected";
     public static final String MSG_RESULT = "result";
 
-
-
     public static String getConnectMsg(){
         Map<String, Object> args = new HashMap<String, Object>();
 
@@ -54,7 +52,7 @@ public class WSAuthenticationMessages {
         List<String> arr = new ArrayList<String>();
         arr.add("1");
         args.put("support", arr);
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        //Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JSONObject obj = new JSONObject(args);
         return obj.toString();
     }
@@ -86,12 +84,8 @@ public class WSAuthenticationMessages {
         arr.add(username);
         arr.add(password);
         args.put("params", arr);
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        //Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JSONObject obj = new JSONObject(args);
         return obj.toString();
     }
-
-
-
-
 }

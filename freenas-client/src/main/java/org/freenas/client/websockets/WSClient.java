@@ -43,6 +43,8 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import javax.rmi.CORBA.Util;
 import javax.websocket.*;
+import org.glassfish.tyrus.client.*;
+//import org.glassfish.tyrus.container.grizzly.client.*;
 
 /**
  * This is the module to do WebSocket Communication
@@ -50,14 +52,21 @@ import javax.websocket.*;
 @ClientEndpoint
 public class WSClient  {
     private static Object waitLock = new Object();
-
-    private String wsUrl = "ws://10.20.21.194/websocket";
-    private static final Logger LOGGER = LogManager.getLogger(WSClient.class);
-    private RemoteEndpoint.Basic basicSession = null;
-    private String id ;
-    private String username ;
-    private String password;
     private Map<String, ReceivedMessage> callableMap = new HashMap<String, ReceivedMessage>();
+
+    private static final Logger LOGGER = LogManager.getLogger(WSClient.class);
+
+    //Defaults not used. Matches the following form from conf
+    private String wsUrl = "ws://NAME_OR_IP/websocket";
+    private String username = "root";
+    private String password = "password";
+
+    //Set after connecting
+    private RemoteEndpoint.Basic basicSession = null;
+
+    //Set during authentication
+    private String id;
+
 
     public WSClient(String wsUrl, String username, String password) {
         this.wsUrl = wsUrl;
@@ -69,16 +78,18 @@ public class WSClient  {
      * Perform the steps of authentication and connections
      */
     public void start(){
-        WebSocketContainer container=null;//
-        Session session=null;
         try {
-            container = ContainerProvider.getWebSocketContainer();
+            ClientManager client = ClientManager.createClient();
+            SslEngineConfigurator sslEngineConfigurator = new SslEngineConfigurator(new SslContextConfigurator());
+            client.getProperties().put(ClientProperties.SSL_ENGINE_CONFIGURATOR, sslEngineConfigurator);
+
             LOGGER.info(("Trying to the server " + wsUrl));
-            //System.out.println(("Trying to the server " + wsUrl));
-            session = container.connectToServer(this, URI.create(wsUrl));
+            System.out.println(("Trying to the server " + wsUrl));
+
+            Session session = client.connectToServer(this, URI.create(wsUrl));
 
             basicSession = session.getBasicRemote();
-            //System.out.println("Connected.");
+            System.out.println("Connected.");
         }
         catch (Exception e){
             LOGGER.error("There is a problem while starting websockets ", e);
@@ -90,7 +101,7 @@ public class WSClient  {
      * @return
      */
     public boolean retrieveSessionId() {
-        //System.out.println(WSAuthenticationMessages.getConnectMsg());
+        System.out.println(WSAuthenticationMessages.getConnectMsg());
         sendMessage(WSAuthenticationMessages.getConnectMsg());
         return true;
     }
@@ -107,30 +118,23 @@ public class WSClient  {
                     id,
                     username
                     , password));
+            return true;
         } catch (IOException e) {
             LOGGER.error("There is a problem while sending the message ", e);
+            return false;
         }
-
-
-        return true;
     }
 
     public boolean registerCallable(String idMsg,  ReceivedMessage callable){
-
         this.callableMap.put(idMsg, callable);
         return true;
-
     }
 
-    // WSSharingMessages.getNFSSharingQuery(id)
     public String listNfsShare(String idMsg){
-
-
         String message = WSSharingMessages.getNFSSharingQuery(idMsg);
         sendMessage(message);
 
         return idMsg;
-
     }
 
     /**
@@ -151,22 +155,19 @@ public class WSClient  {
      */
     @OnMessage
     public void onMessage(String message) {
-        //System.out.println("Received msg: "+message);
+        System.out.println("Received msg: "+message);
         String msg = WSAuthenticationMessages.decodeMessage(message);
         if (msg.equals(WSAuthenticationMessages.MSG_CONNECTED)) {
-
             try {
-
                 this.authentication(message);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         else if (msg.equals(WSAuthenticationMessages.MSG_RESULT)){
-            //System.out.println("Authenticated via Websockets with Storage Node at "+ wsUrl);
+            System.out.println("Authenticated via Websockets with Storage Node at "+ wsUrl);
             ReceivedMessage call = callableMap.get(WSAuthenticationMessages.decodeId(message));
-            //System.out.println(callableMap);
+            System.out.println(callableMap);
             if (call!=null)
                 call.call(message);
 
