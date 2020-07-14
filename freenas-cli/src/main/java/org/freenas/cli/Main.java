@@ -43,14 +43,14 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.DefaultConfiguration;
-import org.freenas.client.v1.alertsystem.AlertSystem;
-import org.freenas.client.v1.alertsystem.rest.imp.AlertSystemImp;
-import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.v1.network.GlobalConfigurationConnector;
-import org.freenas.client.v1.network.rest.impl.GlobalConfigurationRestConnector;
-import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
-import org.freenas.client.v1.storage.rest.impl.SharingNFSRestConnector;
+import org.freenas.client.v2.alertsystem.AlertSystem;
+import org.freenas.client.v2.alertsystem.rest.imp.AlertSystemImp;
+import org.freenas.client.v2.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v2.network.GlobalConfigurationConnector;
+import org.freenas.client.v2.network.rest.impl.GlobalConfigurationRestConnector;
+import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v2.storage.rest.impl.SharingNFSRestConnector;
 import org.freenas.client.websockets.ReceivedMessage;
 import org.freenas.client.websockets.WSClient;
 import org.json.JSONArray;
@@ -87,7 +87,7 @@ public class Main {
      * @param args
      */
     public static void main(String [] args){
-	Configurator.initialize(new DefaultConfiguration());
+        Configurator.initialize(new DefaultConfiguration());
         Configurator.setRootLevel(Level.INFO);
 
         // create Options object
