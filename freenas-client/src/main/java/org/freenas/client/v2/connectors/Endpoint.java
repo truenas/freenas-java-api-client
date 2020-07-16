@@ -28,10 +28,9 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.connectors;
+package org.freenas.client.v2.connectors;
 
 public interface Endpoint {
-
     public String getRootEndPoint();
     public String getProtocol();
 }

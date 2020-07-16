@@ -28,10 +28,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.connectors.rest.imp;
+package org.freenas.client.v2.connectors.rest.imp;
 
 import org.freenas.client.utils.SSLManager;
-import org.freenas.client.v1.connectors.Endpoint;
+import org.freenas.client.v2.connectors.Endpoint;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -51,7 +51,6 @@ public class EndpointConnector implements Endpoint {
         } catch (KeyManagementException e) {
             e.printStackTrace();
         }
-
     }
 
     public String getEndpoint() {

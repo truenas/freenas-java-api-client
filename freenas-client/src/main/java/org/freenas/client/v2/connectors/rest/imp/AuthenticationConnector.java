@@ -28,26 +28,20 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.connectors.rest.imp;
+package org.freenas.client.v2.connectors.rest.imp;
 
 import org.apache.commons.codec.binary.Base64;
-import org.freenas.client.v1.connectors.Authentication;
+import org.freenas.client.v2.connectors.Authentication;
 
-
-/**
- *
- */
 public class AuthenticationConnector implements Authentication {
 
     private String username;
     private String password;
 
-
     public AuthenticationConnector(String username, String password) {
         setUsername(username);
         setPassword(password);
     }
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -57,7 +51,6 @@ public class AuthenticationConnector implements Authentication {
         this.password = password;
     }
 
-
     public String getUsername() {
         return username;
     }
@@ -66,9 +59,7 @@ public class AuthenticationConnector implements Authentication {
         return password;
     }
 
-
     public String get64bitEncoded() {
-
         byte[] encodedCredentials = (this.username + ":" + this.password).getBytes();
         Base64 encoder = new Base64();
         byte[] bytes = encoder.encode(encodedCredentials);

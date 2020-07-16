@@ -28,13 +28,11 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.connectors.websocket;
-
-
-
+package org.freenas.client.v2.connectors.websocket;
 
 /**
  * @author luis.silva
  */
 public class WebSocketConnection {
+
 }
