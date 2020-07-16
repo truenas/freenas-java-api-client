@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage.rest.impl;
+package org.freenas.client.v2.storage.rest.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
@@ -49,9 +49,9 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.freenas.client.utils.SSLManager;
-import org.freenas.client.v1.connectors.Authentication;
-import org.freenas.client.v1.connectors.Endpoint;
-import org.freenas.client.v1.storage.DatasetConnector;
+import org.freenas.client.v2.connectors.Authentication;
+import org.freenas.client.v2.connectors.Endpoint;
+import org.freenas.client.v2.storage.DatasetConnector;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,14 +61,22 @@ import java.util.Map;
 
 public class DatasetRestConnector implements DatasetConnector {
 
-    private String ENDPOINT_VOLUME_LIST = "/api/v1.0/storage/volume/";
-    private String ENDPOINT_DATASET_CREATE = "/api/v1.0/storage/dataset/";
-    private String ENDPOINT_DATASET_LIST = "/api/v1.0/storage/dataset/";
-    private String ENDPOINT_DATASET_UPDATE = "/api/v1.0/storage/volume/";
-    private String ENDPOINT_DATASET_DELETE = "/api/v1.0/storage/dataset/";
-    private String ENDPOINT_DATASET_SHARING_CIFS = "/api/v1.0/sharing/cifs";
-    private String ENDPOINT_DATASET_SHARING_NFS = "/api/v1.0/sharing/nfs";
-    private String ENDPOINT_DATASET_SHARING_ISCISI = "/api/v1.0/sharing/nfs"; // FIXME
+    // /api/v1.0/storage/volume/ (GET)
+    private String ENDPOINT_VOLUME_LIST = "/api/v2.0/pool";
+    // /api/v1.0/storage/dataset/ (POST)
+    private String ENDPOINT_DATASET_CREATE = "/api/v2.0/pool/dataset/";
+    // /api/v1.0/storage/dataset/ (GET)
+    private String ENDPOINT_DATASET_LIST = "/api/v2.0/pool/dataset/";
+    // /api/v1.0/storage/volume/ (PUT)
+    private String ENDPOINT_DATASET_UPDATE = "/api/v2.0/pool/dataset/id/{id}";
+    // /api/v1.0/storage/dataset/ (DELETE)
+    private String ENDPOINT_DATASET_DELETE = "/api/v2.0/pool/dataset/id/{id}";
+    // /api/v1.0/sharing/cifs (GET)
+    private String ENDPOINT_DATASET_SHARING_SMB = "/api/v2.0/sharing/smb";
+    // /api/v1.0/sharing/nfs (GET)
+    private String ENDPOINT_DATASET_SHARING_NFS = "/api/v2.0/sharing/nfs";
+    // /api/v1.0/sharing/nfs (BROKEN) (GET)
+    private String ENDPOINT_DATASET_SHARING_ISCSI = "/api/v2.0/sharing/iscsi/global";
 
     private Endpoint endpoint;
     private Authentication auth;
@@ -154,27 +162,22 @@ public class DatasetRestConnector implements DatasetConnector {
         return null;
     }
 
-
     public Dataset update(Dataset id) {
         return null;
     }
 
     public Dataset delete(String name) {
-
         try {
 
             HttpResponse<String> jsonResponse = Unirest.delete(endpoint.getRootEndPoint() + ENDPOINT_DATASET_DELETE + name + "/")
                     .header("accept", "*/*")
                     .header("Content-Type", "application/json")
-                    //.header("Content-Type", "application/x-www-form-urlencoded")
                     .header("Authorization", "Basic " + auth.get64bitEncoded())
                     .asString();
 
         } catch (UnirestException e) {
             LOGGER.error("Error while delete the dataset named " + name);
         }
-
-
         return null;
     }
 
@@ -182,8 +185,7 @@ public class DatasetRestConnector implements DatasetConnector {
         return null;
     }
 
-
-    public List<Volume> list(Long id) {
+    public List<Volume> list() {
         ObjectMapper om = new ObjectMapper() {
             private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper =
                     new com.fasterxml.jackson.databind.ObjectMapper();
@@ -205,7 +207,6 @@ public class DatasetRestConnector implements DatasetConnector {
             }
         };
 
-
         Unirest.config().setObjectMapper(om);
         try {
 
@@ -213,7 +214,7 @@ public class DatasetRestConnector implements DatasetConnector {
                     .basicAuth(auth.getUsername(), auth.getPassword())
                     .header("accept", "application/json")
                     .asObject(Volume[].class);
-            //System.out.print(jsonResponse.getBody());
+            System.out.print(jsonResponse.getBody());
 
             if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
                 Volume[] body = jsonResponse.getBody();
@@ -247,7 +248,7 @@ public class DatasetRestConnector implements DatasetConnector {
 
         HttpResponse<JsonNode> jsonResponse = null;
         try {
-            jsonResponse = Unirest.post(endpoint.getRootEndPoint() + ENDPOINT_DATASET_SHARING_CIFS)
+            jsonResponse = Unirest.post(endpoint.getRootEndPoint() + ENDPOINT_DATASET_SHARING_SMB)
                     .header("accept", "*/*")
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Basic " + auth.get64bitEncoded())
@@ -275,8 +276,6 @@ public class DatasetRestConnector implements DatasetConnector {
             args.put("nfs_comment", name);
             args.put("nfs_paths'", path);
             args.put("nfs_security", "sys");
-
-
 
             Map<String, Object> mapStr = new HashMap<String, Object>();
             args.forEach((s, k) ->  mapStr.put(s, k));

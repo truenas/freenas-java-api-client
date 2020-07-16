@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
@@ -36,8 +36,6 @@ import com.ixsystems.vcp.entities.Volume;
 import java.util.List;
 
 public interface VolumeConnector {
-
-
     public Volume create();
     public Volume update(Dataset id);
     public Volume delete(Long id);

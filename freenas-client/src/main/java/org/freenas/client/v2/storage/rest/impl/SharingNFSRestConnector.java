@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage.rest.impl;
+package org.freenas.client.v2.storage.rest.impl;
 
 import com.ixsystems.vcp.entities.serializers.NFSShareSerializer;
 import com.ixsystems.vcp.entities.share.NFSShare;
@@ -40,10 +40,10 @@ import kong.unirest.UnirestException;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.freenas.client.v1.connectors.Authentication;
-import org.freenas.client.v1.connectors.Endpoint;
-import org.freenas.client.v1.storage.SharingNFSConnector;
-import org.freenas.client.v1.utils.UnirestUtils;
+import org.freenas.client.v2.connectors.Authentication;
+import org.freenas.client.v2.connectors.Endpoint;
+import org.freenas.client.v2.storage.SharingNFSConnector;
+import org.freenas.client.v2.utils.UnirestUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -51,9 +51,12 @@ import java.util.List;
 import java.util.Map;
 
 public class SharingNFSRestConnector implements SharingNFSConnector {
-    private String ENDPOINT_SHARING_LIST = "/api/v2.0/sharing/nfs/";
-    private String ENDPOINT_SHARING_CREATE = "/api/v2.0/sharing/nfs/";
-    private String ENDPOINT_SHARING_DELETE = "/api/v2.0/sharing/nfs/";
+    // /api/v1.0/sharing/nfs/ (GET)
+    private String ENDPOINT_SHARING_LIST = "/api/v2.0/sharing/nfs";
+    // /api/v1.0/sharing/nfs/ (POST)
+    private String ENDPOINT_SHARING_CREATE = "/api/v2.0/sharing/nfs";
+    // /api/v1.0/sharing/nfs/ (DELETE)
+    private String ENDPOINT_SHARING_DELETE = "/api/v2.0/sharing/nfs/id/{id}";
 
     private static final Logger LOGGER = LogManager.getLogger(SharingNFSRestConnector.class);
 
@@ -88,8 +91,6 @@ public class SharingNFSRestConnector implements SharingNFSConnector {
             ds.decode(jsonResponse.getBody().getObject(), result);
             return result;
 
-
-
         } catch (UnirestException e) {
             LOGGER.error("Error while connecting service ", e);
         }
@@ -117,10 +118,7 @@ public class SharingNFSRestConnector implements SharingNFSConnector {
             LOGGER.error("Error while delete the dataset named " + name);
         }
 
-
         return null;
-
-
     }
 
     public NFSShare get(Long id) {
@@ -137,20 +135,20 @@ public class SharingNFSRestConnector implements SharingNFSConnector {
                     .asObject(NFSShare[].class);
             System.out.print(jsonResponse.getBody());
 
-            if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
-                NFSShare[] body = jsonResponse.getBody();
+            List<NFSShare> list = new ArrayList<NFSShare>();
+            /*if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
                 List<NFSShare> list = new ArrayList<NFSShare>();
+                NFSShare[] body = jsonResponse.getBody();
                 for (NFSShare b : body) {
                     list.add(b);
                 }
                 return list;
-            }
+            }*/
+            return list;
 
         } catch (UnirestException e) {
             LOGGER.error("Error while connecting service ", e);
         }
-
-
 
         return null;
     }

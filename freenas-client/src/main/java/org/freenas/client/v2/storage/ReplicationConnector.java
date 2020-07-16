@@ -28,14 +28,12 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.Replication;
-
 import java.util.List;
 
 public interface ReplicationConnector {
-
     public Replication create();
     public Replication update(Replication id);
     public Replication delete(Long id);

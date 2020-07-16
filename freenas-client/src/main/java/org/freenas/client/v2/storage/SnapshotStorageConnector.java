@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.StorageArray;
 import com.ixsystems.vcp.entities.exceptions.StorageException;
@@ -39,6 +39,5 @@ import com.ixsystems.vcp.entities.exceptions.StorageException;
  *
  */
 public interface SnapshotStorageConnector{
-	
 	<T, V> T create(StorageArray storage, String urlString, Class<T> clazz, V t) throws StorageException;
 }

@@ -28,19 +28,16 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.share.NFSShare;
-
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * Manage the shares for datasets
  */
 public interface SharingCIFSConnector {
-
     public NFSShare create(String volumeName, Map<String, String> args);
     public NFSShare update(NFSShare id);
     public NFSShare delete(String name);

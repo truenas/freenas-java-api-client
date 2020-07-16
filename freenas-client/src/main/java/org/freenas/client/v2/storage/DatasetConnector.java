@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
@@ -41,7 +41,6 @@ import java.util.Map;
  * The Dataset resource represents ZFS datasets.
  */
 public interface DatasetConnector {
-
     public Dataset create(String volumeName, Map<String, String> args) throws DatasetAlreadyExists;
     public Dataset update(Dataset id);
     public Dataset delete(String name);
@@ -53,5 +52,4 @@ public interface DatasetConnector {
 
     public List<String> getNFSShares();
     public List<String> getCIFS();
-
 }

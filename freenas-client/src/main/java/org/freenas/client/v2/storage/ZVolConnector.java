@@ -28,22 +28,19 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.ZVol;
-
 import java.util.List;
 
 /**
  * The Dataset resource represents ZFS datasets.
  */
 public interface ZVolConnector {
-
     public ZVol create();
     public ZVol update(ZVol id);
     public ZVol delete(Long id);
     public ZVol get(Long id);
-    public List<ZVol> list(Long id);
-
-
+    //public List<ZVol> list(Long id);
+    public List<ZVol> list();
 }

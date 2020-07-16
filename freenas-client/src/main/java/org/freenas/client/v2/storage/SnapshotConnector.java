@@ -28,14 +28,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.Snapshot;
 
 import java.util.List;
 
 public interface SnapshotConnector {
-
     public Snapshot create();
     public Snapshot update(Snapshot id);
     public Snapshot delete(Long id);

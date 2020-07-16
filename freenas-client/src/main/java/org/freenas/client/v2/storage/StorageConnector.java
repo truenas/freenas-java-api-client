@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage;
+package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.StorageArray;
 import com.ixsystems.vcp.entities.exceptions.StorageException;
@@ -41,11 +41,8 @@ import java.util.Map;
  *
  */
 public interface StorageConnector{
-	
 	<T> T create(StorageArray storage, String urlString, Class<T> clazz, T t) throws StorageException;
 	<T> T update(StorageArray storage, String urlString, Class<T> clazz, T t)throws StorageException;
 	<T> T read(StorageArray storage, String urlString, Class<T> clazz, Map<String, String> param)throws StorageException;
 	boolean delete(StorageArray storage, String urlString, Map<String, String> param)throws StorageException;
-
-
 }

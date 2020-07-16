@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.storage.rest.impl;
+package org.freenas.client.v2.storage.rest.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ixsystems.vcp.entities.Dataset;
@@ -38,9 +38,9 @@ import kong.unirest.ObjectMapper;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import org.apache.http.HttpStatus;
-import org.freenas.client.v1.connectors.Authentication;
-import org.freenas.client.v1.connectors.Endpoint;
-import org.freenas.client.v1.storage.VolumeConnector;
+import org.freenas.client.v2.connectors.Authentication;
+import org.freenas.client.v2.connectors.Endpoint;
+import org.freenas.client.v2.storage.VolumeConnector;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -51,7 +51,8 @@ public class VolumeRestConnector implements VolumeConnector {
 
 
     private String ENDPOINT_DATASET_CREATE;
-    private String ENDPOINT_DATASET_LIST = "/api/v1.0/storage/volume/";
+    // /api/v1.0/storage/volume/
+    private String ENDPOINT_DATASET_LIST = "/api/v2.0/pool";
 
     private Endpoint endpoint;
     private Authentication auth;
