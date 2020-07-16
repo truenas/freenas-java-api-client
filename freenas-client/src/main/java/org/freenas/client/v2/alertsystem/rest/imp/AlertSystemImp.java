@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.alertsystem.rest.imp;
+package org.freenas.client.v2.alertsystem.rest.imp;
 
 import com.ixsystems.vcp.entities.AlertMessage;
 import com.ixsystems.vcp.entities.AlertsMessageTransport;
@@ -38,20 +38,22 @@ import kong.unirest.UnirestException;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
-import org.freenas.client.v1.alertsystem.AlertSystem;
-import org.freenas.client.v1.connectors.Authentication;
-import org.freenas.client.v1.connectors.Endpoint;
-import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
-import org.freenas.client.v1.utils.UnirestUtils;
+import org.freenas.client.v2.alertsystem.AlertSystem;
+import org.freenas.client.v2.connectors.Authentication;
+import org.freenas.client.v2.connectors.Endpoint;
+import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v2.utils.UnirestUtils;
 
 import java.util.List;
 
 public class AlertSystemImp implements AlertSystem {
     private static String ENDPOINT_ALERTS_LIST = "/api/v2.0/alert/list";
+    ///api/v1.0/system/alert/(string: id)/dismiss/
     private static String ENDPOINT_ALERTS_DISMISS = "/api/v2.0/alert/dismiss/";
-    // /api/v1.0/system/alert/(string: id)/dismiss/
+    private static String ENDPOINT_ALERTS_RESTORE = "/api/v2.0/alert/restore/"; //New in v2
+    private static String ENDPOINT_ALERTS_CATEGORIES = "/api/v2.0/alert/list_categories/"; //New in v2
+    private static String ENDPOINT_ALERTS_POLICIES = "/api/v2.0/alert/list_policies/"; //New in v2
     private static final Logger LOGGER = LogManager.getLogger(DatasetRestConnector.class);
-
 
     private Endpoint endpoint;
     private Authentication auth;
@@ -60,6 +62,7 @@ public class AlertSystemImp implements AlertSystem {
         this.endpoint = endpoint;
         this.auth = auth;
     }
+
     public List<AlertMessage> list() {
         try {
             UnirestUtils.mapUnirest();
@@ -69,15 +72,14 @@ public class AlertSystemImp implements AlertSystem {
                         .basicAuth(auth.getUsername(), auth.getPassword())
                         .header("accept", "application/json")
                         .asObject(AlertsMessageTransport.class);
-                //System.out.print(jsonResponse.getBody());
+                System.out.print(jsonResponse.getBody());
 
                 System.out.println("FreeNAS - get list of alerts.");
 
                 if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
                     AlertsMessageTransport body = jsonResponse.getBody();
-                    // STOPSHIP: 11/24/2018
-                    //System.out.println("body.getObjects() = " + body.getObjects());
-                    //System.out.println(body);
+                    System.out.println("body.getObjects() = " + body.getObjects());
+                    System.out.println(body);
                     return body.getObjects();
                 }
 
@@ -92,13 +94,26 @@ public class AlertSystemImp implements AlertSystem {
         return null;
     }
 
-    public List<AlertMessage> list(String filter) {
+    /*public List<AlertMessage> list(String filter) {
+        return null;
+    }*/
+
+    public void dismiss(String id) {
+        //Id sent as param instead of in endpoint
+        String url = ENDPOINT_ALERTS_DISMISS;//.replace("(string: id)", id);
+    }
+
+    public void restore(String id) {
+        String url = ENDPOINT_ALERTS_RESTORE;
+    }
+
+    public List<String> listCategories() {
+        String url = ENDPOINT_ALERTS_CATEGORIES;
         return null;
     }
 
-    public void dismiss(String id) {
-
-        String url = ENDPOINT_ALERTS_DISMISS.replace("(string: id)", id);
-
+    public List<String> listPolicies() {
+        String url = ENDPOINT_ALERTS_POLICIES;
+        return null;
     }
 }

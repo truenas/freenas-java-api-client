@@ -28,9 +28,9 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.account.rest.imp;
+package org.freenas.client.v2.account.rest.imp;
 
-import org.freenas.client.v1.account.UsersConnector;
+import org.freenas.client.v2.account.UsersConnector;
 
 public class UserRestConnector implements UsersConnector {
 

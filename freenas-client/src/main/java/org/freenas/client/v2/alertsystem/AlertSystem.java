@@ -28,12 +28,11 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.alertsystem;
+package org.freenas.client.v2.alertsystem;
 
 import com.ixsystems.vcp.entities.AlertMessage;
 
 import java.util.List;
-
 
 /**
  * Manage the alerts/alarms
@@ -42,6 +41,7 @@ public interface AlertSystem {
 
     /**
      * Get list of all alert messages
+     * 
      * @return
      */
     public List<AlertMessage> list();
@@ -50,14 +50,36 @@ public interface AlertSystem {
      * Get a list of alert message that contains a specific term.
      *
      * @param filter
+     *
      * @return
      */
-    public List<AlertMessage> list(String filter);
+    //public List<AlertMessage> list(String filter);
+
+    /**
+     * Get a list of all possible alert types by category
+     *
+     * @return
+     */
+    public List<String> listCategories();
+
+    /**
+     * Get a list of all possible policies
+     *
+     * @return
+     */
+    public List<String> listPolicies();
 
     /**
      * Dismiss a particular alert message
+     *
      * @param id
      */
     public void dismiss(String id);
 
+    /**
+     * Restore an already dismissed alert message
+     *
+     * @param id
+     */
+    public void restore(String id);
 }
