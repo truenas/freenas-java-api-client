@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.utils;
+package org.freenas.client.v2.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kong.unirest.ObjectMapper;
@@ -62,8 +62,6 @@ public class UnirestUtils {
                 return null;
             }
         };
-
-
 
         //objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Unirest.config().setObjectMapper(objectMapper);
