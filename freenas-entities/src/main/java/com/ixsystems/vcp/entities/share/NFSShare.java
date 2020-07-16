@@ -44,9 +44,10 @@ public class NFSShare {
     @JsonAlias("nfs_comment")
     @JsonProperty("comment")
     private String comment;
-    //TODO: Figure out if this is best
     @JsonProperty("hosts")
-    private List<String> getHostList(){
+    private List<String> hosts; //Changed from String to List<String>
+    //TODO: Figure out if this is best
+    /*private List<String> getHostList(){
         List<String> hosts = new ArrayList<String>();
         if (this.hosts!=null) {
             String[] tmp = this.hosts.split(",");
@@ -54,7 +55,7 @@ public class NFSShare {
                 hosts.add(tmp[i]);
         }
         return hosts;
-    }
+    }*/
     @JsonAlias("nfs_alldirs")
     @JsonProperty("alldirs")
     private Boolean allDirs;
@@ -106,13 +107,13 @@ public class NFSShare {
         this.comment = comment;
     }
 
-    /*public String getHosts() {
+    public List<String> getHosts() {
         return hosts;
     }
 
-    public void setHosts(String hosts) {
+    public void setHosts(List<String> hosts) {
         this.hosts = hosts;
-    }*/
+    }
 
     public String getMapAllUser() {
         return mapAllUser;
@@ -210,7 +211,7 @@ public class NFSShare {
 
         if (allDirs != null ? !allDirs.equals(nfsShare.allDirs) : nfsShare.allDirs != null) return false;
         if (comment != null ? !comment.equals(nfsShare.comment) : nfsShare.comment != null) return false;
-        //if (hosts != null ? !hosts.equals(nfsShare.hosts) : nfsShare.hosts != null) return false;
+        if (hosts != null ? !hosts.equals(nfsShare.hosts) : nfsShare.hosts != null) return false;
         if (mapAllGroup != null ? !mapAllGroup.equals(nfsShare.mapAllGroup) : nfsShare.mapAllGroup != null)
             return false;
         if (mapRootUser != null ? !mapRootUser.equals(nfsShare.mapRootUser) : nfsShare.mapRootUser != null)
@@ -227,7 +228,7 @@ public class NFSShare {
     public int hashCode() {
         int result = allDirs != null ? allDirs.hashCode() : 0;
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        //result = 31 * result + (hosts != null ? hosts.hashCode() : 0);
+        result = 31 * result + (hosts != null ? hosts.hashCode() : 0);
         result = 31 * result + (mapAllGroup != null ? mapAllGroup.hashCode() : 0);
         result = 31 * result + (mapRootUser != null ? mapRootUser.hashCode() : 0);
         result = 31 * result + (networks != null ? networks.hashCode() : 0);
@@ -245,7 +246,7 @@ public class NFSShare {
                 "allDirs=" + allDirs +
                 ", id='" + id + '\'' +
                 ", comment='" + comment + '\'' +
-                //", hosts='" + hosts + '\'' +
+                ", hosts='" + hosts + '\'' +
                 ", mapAllUser='" + mapAllUser + '\'' +
                 ", mapAllGroup='" + mapAllGroup + '\'' +
                 ", mapRootUser='" + mapRootUser + '\'' +

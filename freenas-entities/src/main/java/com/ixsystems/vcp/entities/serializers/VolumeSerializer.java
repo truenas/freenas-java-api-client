@@ -38,7 +38,7 @@ import com.ixsystems.vcp.entities.Volume;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class VolumeSerializer extends StdSerializer<Volume> implements EntitySerializer<Volume>  {
@@ -73,7 +73,7 @@ public class VolumeSerializer extends StdSerializer<Volume> implements EntitySer
         //instance.setAvailableSi(obj.getString("avail_si"));
         instance.setMountPoint(obj.getString("mountpoint"));
         instance.setVolEncrypted(obj.getString("encrypt"));
-        instance.setChildren(new List<Map<String, Volume>>());
+        instance.setChildren(new ArrayList<Map<String, Volume>>());
         //instance.setTotalSi(obj.getString("total_si"));
         return instance;
     }

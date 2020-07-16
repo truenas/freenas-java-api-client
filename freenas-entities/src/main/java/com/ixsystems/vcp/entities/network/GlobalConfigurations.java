@@ -130,6 +130,14 @@ public class GlobalConfigurations {
         this.gcNameservers2 = gcNameservers2;
     }
 
+    public String getGcNameservers3() {
+        return gcNameservers3;
+    }
+
+    public void setGcNameservers3(String gcNameservers3) {
+        this.gcNameservers3 = gcNameservers3;
+    }
+
     public String getGcHttpProxy() {
         return gcHttpProxy;
     }
@@ -211,6 +219,8 @@ public class GlobalConfigurations {
             return false;
         if (gcNameservers2 != null ? !gcNameservers2.equals(that.gcNameservers2) : that.gcNameservers2 != null)
             return false;
+        if (gcNameservers3 != null ? !gcNameservers3.equals(that.gcNameservers3) : that.gcNameservers3 != null)
+            return false;
         if (gcHttpProxy != null ? !gcHttpProxy.equals(that.gcHttpProxy) : that.gcHttpProxy != null) return false;
         if (domain != null ? !domain.equals(that.domain) : that.domain != null) return false;
         if (gcNetwaitEnabled != null ? !gcNetwaitEnabled.equals(that.gcNetwaitEnabled) : that.gcNetwaitEnabled != null)
@@ -232,6 +242,7 @@ public class GlobalConfigurations {
         result = 31 * result + (gcHostname != null ? gcHostname.hashCode() : 0);
         result = 31 * result + (gcNameservers1 != null ? gcNameservers1.hashCode() : 0);
         result = 31 * result + (gcNameservers2 != null ? gcNameservers2.hashCode() : 0);
+        result = 31 * result + (gcNameservers3 != null ? gcNameservers3.hashCode() : 0);
         result = 31 * result + (gcHttpProxy != null ? gcHttpProxy.hashCode() : 0);
         result = 31 * result + (domain != null ? domain.hashCode() : 0);
         result = 31 * result + (gcNetwaitEnabled != null ? gcNetwaitEnabled.hashCode() : 0);

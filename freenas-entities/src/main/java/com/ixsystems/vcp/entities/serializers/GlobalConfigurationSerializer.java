@@ -32,6 +32,10 @@ package com.ixsystems.vcp.entities.serializers;
 
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 import kong.unirest.json.JSONObject;
+import kong.unirest.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GlobalConfigurationSerializer{
     public GlobalConfigurations decode(JSONObject obj, GlobalConfigurations gc){
@@ -41,7 +45,15 @@ public class GlobalConfigurationSerializer{
             gc.setGcHostnameVirtual(obj.get("hostname_virtual").toString());
 
         gc.setGcDomain(obj.getString("domain"));
-        gc.setDomains(obj.getJsonArray("domains"));
+
+        List<String> props = new ArrayList<String>();
+        JSONArray arrDomains = obj.getJSONArray("domains");
+        for (int i = 0; i < arrDomains.length(); i++){
+            String prop = arrDomains.getString(i);
+            props.add(prop);
+        }
+        gc.setGcDomains(props);
+
         gc.setGcIpv4Gateway(obj.getString("ipv4gateway"));
         gc.setGcIpv4Gateway(obj.getString("ipv6gateway"));
         gc.setGcNameservers1(obj.getString("nameserver1"));
@@ -49,7 +61,15 @@ public class GlobalConfigurationSerializer{
         gc.setGcNameservers3(obj.getString("nameserver3"));
         gc.setGcHttpProxy(obj.getString("httpproxy"));
         gc.setGcNetwaitEnabled(obj.getBoolean("netwait_enabled"));
-        gc.setGcNetwaitIp(obj.getJsonArray("netwait_ip"));
+
+        props = new ArrayList<String>();
+        JSONArray arrNetwait = obj.getJSONArray("netwait_ip");
+        for (int i = 0; i < arrNetwait.length(); i++){
+            String prop = arrNetwait.getString(i);
+            props.add(prop);
+        }
+        gc.setGcNetwaitIp(props);
+
         gc.setGcHosts(obj.getString("hosts"));
         gc.setId(obj.get("id").toString());
         return gc;

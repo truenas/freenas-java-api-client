@@ -110,7 +110,8 @@ public class DatasetSerializer extends StdSerializer<Dataset> {
         instance.setPool(obj.getString("pool"));
         instance.setQuota(obj.getLong("quota"));
         instance.setReadOnly(obj.getString("readonly"));
-        instance.setRecordSize(obj.getLong("recordsize"));
+        //instance.setRecordSize(obj.getLong("recordsize"));
+        instance.setRecordSize(obj.getString("recordsize"));
         instance.setVolSize(obj.getLong("volsize"));
         //instance.setRefer(obj.getLong("refer"));
         instance.setRefQuota(obj.getLong("refquota"));

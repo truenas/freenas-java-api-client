@@ -71,7 +71,7 @@ public class Volume {
     private String volEncryptedKey;
 
     //@JsonProperty("vol_name")
-    //private String volName ;
+    //private String volName;
 
     @JsonProperty("is_decrypted")
     private String isDecrypted;
@@ -133,13 +133,13 @@ public class Volume {
         this.volGuid = volGuid;
     }
 
-    public String getUsed() {
+    /*public String getUsed() {
         return used;
     }
 
     public void setUsed(String used) {
         this.used = used;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -149,7 +149,7 @@ public class Volume {
         this.name = name;
     }
 
-    public String getUsed_pct() {
+    /*public String getUsed_pct() {
         return used_pct;
     }
 
@@ -163,7 +163,7 @@ public class Volume {
 
     public void setUsed_si(String used_si) {
         this.used_si = used_si;
-    }
+    }*/
 
     public String getId() {
         return id;
@@ -181,13 +181,13 @@ public class Volume {
         this.volEncryptedKey = volEncryptedKey;
     }
 
-    public String getVolName() {
+    /*public String getVolName() {
         return volName;
     }
 
     public void setVolName(String volName) {
         this.volName = volName;
-    }
+    }*/
 
     public String getIsDecrypted() {
         return isDecrypted;
@@ -197,13 +197,13 @@ public class Volume {
         this.isDecrypted = isDecrypted;
     }
 
-    public String getAvailableSi() {
+    /*public String getAvailableSi() {
         return availableSi;
     }
 
     public void setAvailableSi(String availableSi) {
         this.availableSi = availableSi;
-    }
+    }*/
 
     public String getMountPoint() {
         return mountPoint;
@@ -221,7 +221,7 @@ public class Volume {
         this.volEncrypted = volEncrypted;
     }
 
-    public String getTotalSi() {
+    /*public String getTotalSi() {
         return totalSi;
     }
 
@@ -235,27 +235,27 @@ public class Volume {
 
     public void setAvailable(String available) {
         this.available = available;
-    }
+    }*/
 
     @Override
     public String toString() {
         return "Volume{" +
                 "status='" + status + '\'' +
                 ", volGuid='" + volGuid + '\'' +
-                ", used='" + used + '\'' +
+                //", used='" + used + '\'' +
                 ", name='" + name + '\'' +
-                ", used_pct='" + used_pct + '\'' +
-                ", used_si='" + used_si + '\'' +
+                //", used_pct='" + used_pct + '\'' +
+                //", used_si='" + used_si + '\'' +
                 ", id='" + id + '\'' +
                 ", volEncryptedKey='" + volEncryptedKey + '\'' +
-                ", volName='" + volName + '\'' +
+                //", volName='" + volName + '\'' +
                 ", isDecrypted='" + isDecrypted + '\'' +
-                ", availableSi='" + availableSi + '\'' +
-                ", available='" + available + '\'' +
+                /*", availableSi='" + availableSi + '\'' +
+                ", available='" + available + '\'' +*/
                 ", mountPoint='" + mountPoint + '\'' +
                 ", volEncrypted='" + volEncrypted + '\'' +
                 ", children='" + children + '\'' +
-                ", totalSi='" + totalSi + '\'' +
+                //", totalSi='" + totalSi + '\'' +
                 '}';
     }
 }

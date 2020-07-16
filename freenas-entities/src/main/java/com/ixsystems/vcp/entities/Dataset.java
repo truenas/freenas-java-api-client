@@ -45,7 +45,7 @@ public class Dataset {
     @JsonProperty("available")
     private Long available;
     @JsonProperty("volsize")
-    private Long volsize;
+    private Long volSize;
     //@JsonProperty("comments")
     //private String comments;
     @JsonProperty("compression")
@@ -126,7 +126,7 @@ public class Dataset {
     }
 
     public void setExec(String exec) {
-        this.exec = esec;
+        this.exec = exec;
     }
 
     public Long getAvailable() {
@@ -217,6 +217,14 @@ public class Dataset {
         this.recordSize = recordSize;
     }
 
+    public Long getVolSize() {
+        return volSize;
+    }
+
+    public void setVolSize(Long volSize) {
+        this.volSize = volSize;
+    }
+
     /*public Long getRefer() {
         return refer;
     }
@@ -268,6 +276,7 @@ public class Dataset {
         if (exec != null ? !exec.equals(dataset.exec) : dataset.exec != null) return false;
         if (available != null ? !available.equals(dataset.available) : dataset.available != null) return false;
         //if (comments != null ? !comments.equals(dataset.comments) : dataset.comments != null) return false;
+        if (volSize != null ? !volSize.equals(dataset.volSize) : dataset.volSize != null) return false;
         if (compression != null ? !compression.equals(dataset.compression) : dataset.compression != null) return false;
         if (dedup != null ? !dedup.equals(dataset.dedup) : dataset.dedup != null) return false;
         //if (inheritProps != null ? !inheritProps.equals(dataset.inheritProps) : dataset.inheritProps != null) return false;
@@ -290,7 +299,7 @@ public class Dataset {
         int result = atime != null ? atime.hashCode() : 0;
         result = 31 * result + (exec != null ? exec.hashCode() : 0);
         result = 31 * result + (available != null ? available.hashCode() : 0);
-        result = 31 * result + (volsize != null ? volsize.hashCode() : 0);
+        result = 31 * result + (volSize != null ? volSize.hashCode() : 0);
         //result = 31 * result + (comments != null ? comments.hashCode() : 0);
         result = 31 * result + (compression != null ? compression.hashCode() : 0);
         result = 31 * result + (dedup != null ? dedup.hashCode() : 0);

@@ -66,13 +66,13 @@ public class DiskSerializer extends StdSerializer<Disk> implements EntitySeriali
         instance.setDiskAcousticLevel(obj.getString("acousticlevel"));
         instance.setDiskAdvPowerMgmt(obj.getString("advpowermgmt"));
         instance.setDiskSerial(obj.getString("serial"));
-        instance.setDiskSize(obj.getLong("size"));
+        instance.setSize(obj.getLong("size"));
         instance.setDiskMultiPathName(obj.getString("multipath_name"));
         instance.setDiskIdentifier(obj.getString("identifier"));
         instance.setDiskToggleSmart(obj.getBoolean("togglesmart"));
         instance.setDiskHddStandBy(obj.getString("hddstandby"));
         instance.setDiskTransferMode(obj.getString("transfermode"));
-        instance.setDiskMultiPathMember(obj.getString("multipath_member"));
+        instance.setMultiPathMember(obj.getString("multipath_member"));
         instance.setDiskDescription(obj.getString("description"));
         instance.setDiskSmartOptions(obj.getString("smartoptions"));
         instance.setDiskExpireTime(obj.getString("expiretime"));

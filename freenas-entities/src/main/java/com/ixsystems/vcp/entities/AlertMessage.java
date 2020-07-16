@@ -36,7 +36,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AlertMessage {
     //@JsonProperty("uuid") String
     @JsonProperty("source")
-    private String souce;
+    private String source;
     //@JsonProperty("klass") String
     //@JsonProperty("args") List<String> (or String)
     @JsonProperty("node")
@@ -118,7 +118,7 @@ public class AlertMessage {
                 "id='" + id + '\'' +
                 ", level='" + level + '\'' +
                 ", text='" + text + '\'' +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + datetime +
                 ", dismissed=" + dismissed +
                 ", node=" + node +
                 ", source=" + source +

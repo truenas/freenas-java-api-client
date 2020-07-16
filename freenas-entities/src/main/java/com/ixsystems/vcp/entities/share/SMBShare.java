@@ -240,7 +240,7 @@ public class SMBShare {
 
         SMBShare cifsShare = (SMBShare) o;
 
-        if (hostAllow != null ? !hostAllow.equals(cifsShare.hostAllow) : cifsShare.hostAllow != null) return false;
+        if (hostsAllow != null ? !hostsAllow.equals(cifsShare.hostsAllow) : cifsShare.hostsAllow != null) return false;
         if (name != null ? !name.equals(cifsShare.name) : cifsShare.name != null) return false;
         if (home != null ? !home.equals(cifsShare.home) : cifsShare.home != null) return false;
         //if (defaultPermissions != null ? !defaultPermissions.equals(cifsShare.defaultPermissions) : cifsShare.defaultPermissions != null) return false;
@@ -262,7 +262,7 @@ public class SMBShare {
 
     @Override
     public int hashCode() {
-        int result = hostAllow != null ? hostAllow.hashCode() : 0;
+        int result = hostsAllow != null ? hostsAllow.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (home != null ? home.hashCode() : 0);
         //result = 31 * result + (defaultPermissions != null ? defaultPermissions.hashCode() : 0);
@@ -285,7 +285,7 @@ public class SMBShare {
     @Override
     public String toString() {
         return "SMBShare{" +
-                "hostAllow='" + hostAllow + '\'' +
+                "hostsAllow='" + hostsAllow + '\'' +
                 ", name='" + name + '\'' +
                 ", home=" + home +
                 //", defaultPermissions='" + defaultPermissions + '\'' +

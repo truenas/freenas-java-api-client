@@ -328,10 +328,8 @@ public class Main {
      * @param optLst
      */
     private void dismissAlert(String optLst) {
-
         AlertSystem alertSystem = new AlertSystemImp(getEndPointConnector(),getAuth());
         alertSystem.dismiss(optLst);
-
     }
 
 
@@ -340,19 +338,15 @@ public class Main {
      * @param optLst
      */
     private void listAlerts(String optLst) {
-
-
         AlertSystem alertSystem = new AlertSystemImp(getEndPointConnector(),getAuth());
         List<AlertMessage> alerts = alertSystem.list();
         if (alerts.size()==0) {
             System.out.println("No alerts available at moment.");
-            return ;
+            return;
         }
-
         System.out.printf("############################\n");
         for (AlertMessage m : alerts){
-
-            //System.out.println(m.getId());
+            System.out.println(m.getId());
             System.out.println(m.getMessage());
         }
         System.out.printf("############################\n");

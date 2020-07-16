@@ -111,7 +111,7 @@ public class Replication {
     private String replZfs;*/
 
 
-    public String getReplEnd() {
+    /*public String getReplEnd() {
         return replEnd;
     }
 
@@ -133,7 +133,7 @@ public class Replication {
 
     public void setReplUserPl(Boolean replUserPl) {
         this.replUserPl = replUserPl;
-    }
+    }*/
 
     public Long getReplLimit() {
         return replLimit;
@@ -143,7 +143,7 @@ public class Replication {
         this.replLimit = replLimit;
     }
 
-    public Integer getReplRemotePort() {
+    /*public Integer getReplRemotePort() {
         return replRemotePort;
     }
 
@@ -189,8 +189,7 @@ public class Replication {
 
     public void setReplRemoteHostKey(String replRemoteHostKey) {
         this.replRemoteHostKey = replRemoteHostKey;
-    }
-
+    }*/
 
     public Boolean getReplEnabled() {
         return replEnabled;
@@ -208,7 +207,7 @@ public class Replication {
         this.replCompression = replCompression;
     }
 
-    public String getReplRemoteHostname() {
+    /*public String getReplRemoteHostname() {
         return replRemoteHostname;
     }
 
@@ -230,7 +229,7 @@ public class Replication {
 
     public void setReplStatus(String replStatus) {
         this.replStatus = replStatus;
-    }
+    }*/
 
     public Long getId() {
         return id;
@@ -240,13 +239,13 @@ public class Replication {
         this.id = id;
     }
 
-    public String getReplZfs() {
+    /*public String getReplZfs() {
         return replZfs;
     }
 
     public void setReplZfs(String replZfs) {
         this.replZfs = replZfs;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -255,12 +254,12 @@ public class Replication {
 
         Replication that = (Replication) o;
 
-        if (replEnd != null ? !replEnd.equals(that.replEnd) : that.replEnd != null) return false;
-        if (replRemoteDedicatedUser != null ? !replRemoteDedicatedUser.equals(that.replRemoteDedicatedUser) : that.replRemoteDedicatedUser != null)
-            return false;
-        if (replUserPl != null ? !replUserPl.equals(that.replUserPl) : that.replUserPl != null) return false;
+        //if (replEnd != null ? !replEnd.equals(that.replEnd) : that.replEnd != null) return false;
+        /*if (replRemoteDedicatedUser != null ? !replRemoteDedicatedUser.equals(that.replRemoteDedicatedUser) : that.replRemoteDedicatedUser != null)
+            return false;*/
+        //if (replUserPl != null ? !replUserPl.equals(that.replUserPl) : that.replUserPl != null) return false;
         if (replLimit != null ? !replLimit.equals(that.replLimit) : that.replLimit != null) return false;
-        if (replRemotePort != null ? !replRemotePort.equals(that.replRemotePort) : that.replRemotePort != null)
+        /*if (replRemotePort != null ? !replRemotePort.equals(that.replRemotePort) : that.replRemotePort != null)
             return false;
         if (isReplRemoteDedicatedUserEnabled != null ? !isReplRemoteDedicatedUserEnabled.equals(that.isReplRemoteDedicatedUserEnabled) : that.isReplRemoteDedicatedUserEnabled != null)
             return false;
@@ -270,39 +269,39 @@ public class Replication {
         if (replRemoteCipher != null ? !replRemoteCipher.equals(that.replRemoteCipher) : that.replRemoteCipher != null)
             return false;
         if (replRemoteHostKey != null ? !replRemoteHostKey.equals(that.replRemoteHostKey) : that.replRemoteHostKey != null)
-            return false;
+            return false;*/
 
         if (replEnabled != null ? !replEnabled.equals(that.replEnabled) : that.replEnabled != null) return false;
         if (replCompression != null ? !replCompression.equals(that.replCompression) : that.replCompression != null)
             return false;
-        if (replRemoteHostname != null ? !replRemoteHostname.equals(that.replRemoteHostname) : that.replRemoteHostname != null)
+        /*if (replRemoteHostname != null ? !replRemoteHostname.equals(that.replRemoteHostname) : that.replRemoteHostname != null)
             return false;
         if (replLastSnapshot != null ? !replLastSnapshot.equals(that.replLastSnapshot) : that.replLastSnapshot != null)
             return false;
         if (replStatus != null ? !replStatus.equals(that.replStatus) : that.replStatus != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        return replZfs != null ? replZfs.equals(that.replZfs) : that.replZfs == null;
+        if (replZfs != null ? replZfs.equals(that.replZfs) : that.replZfs == null) return false;*/
+        return (id != null ? !id.equals(that.id) : that.id != null);
     }
 
     @Override
     public int hashCode() {
-        int result = replEnd != null ? replEnd.hashCode() : 0;
-        result = 31 * result + (replRemoteDedicatedUser != null ? replRemoteDedicatedUser.hashCode() : 0);
+        int result = replLimit != null ? replLimit.hashCode() : 0;
+        /*result = 31 * result + (replRemoteDedicatedUser != null ? replRemoteDedicatedUser.hashCode() : 0);
         result = 31 * result + (replUserPl != null ? replUserPl.hashCode() : 0);
-        result = 31 * result + (replLimit != null ? replLimit.hashCode() : 0);
+        result = 31 * result + (replEnd != null ? replEnd.hashCode() : 0);
         result = 31 * result + (replRemotePort != null ? replRemotePort.hashCode() : 0);
         result = 31 * result + (isReplRemoteDedicatedUserEnabled != null ? isReplRemoteDedicatedUserEnabled.hashCode() : 0);
         result = 31 * result + (replBegin != null ? replBegin.hashCode() : 0);
         result = 31 * result + (replFilesystem != null ? replFilesystem.hashCode() : 0);
         result = 31 * result + (replRemoteCipher != null ? replRemoteCipher.hashCode() : 0);
-        result = 31 * result + (replRemoteHostKey != null ? replRemoteHostKey.hashCode() : 0);
+        result = 31 * result + (replRemoteHostKey != null ? replRemoteHostKey.hashCode() : 0);*/
         result = 31 * result + (replEnabled != null ? replEnabled.hashCode() : 0);
         result = 31 * result + (replCompression != null ? replCompression.hashCode() : 0);
-        result = 31 * result + (replRemoteHostname != null ? replRemoteHostname.hashCode() : 0);
-        result = 31 * result + (replLastSnapshot != null ? replLastSnapshot.hashCode() : 0);
-        result = 31 * result + (replStatus != null ? replStatus.hashCode() : 0);
+        //result = 31 * result + (replRemoteHostname != null ? replRemoteHostname.hashCode() : 0);
+        //result = 31 * result + (replLastSnapshot != null ? replLastSnapshot.hashCode() : 0);
+        //result = 31 * result + (replStatus != null ? replStatus.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (replZfs != null ? replZfs.hashCode() : 0);
+        //result = 31 * result + (replZfs != null ? replZfs.hashCode() : 0);
         return result;
     }
 }
