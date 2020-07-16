@@ -64,9 +64,7 @@ public class AlertsMessageTransportSerializer extends
     }
 
     public AlertsMessageTransport decode(JSONObject obj, AlertsMessageTransport instance) {
-
         //instance.setMeta(obj.getString("meta"));
-        System.out.println("AlertsMessageTransportSerializer.decode");
         System.out.println("AlertsMessageTransportSerializer.decode");
         System.out.println("instance = " + instance);
         JSONObject o = obj.getJSONObject("objects");
@@ -75,14 +73,11 @@ public class AlertsMessageTransportSerializer extends
         for (int i = 0; i<arr.length();i++){
             //messageList.add((AlertMessage)arr.getJSONObject(i));
         }
-
-
         return instance;
     }
 
     public void serialize(AlertsMessageTransport volume,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider) throws IOException {
-
     }
 }

@@ -46,23 +46,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class NFSShareSerializer  {
     private static final Logger LOGGER = LogManager.getLogger(NFSShareSerializer.class);
 
-
-
     public NFSShare decode(JSONObject obj, NFSShare instance) {
-//        instance.setComment(obj.getString("nfs_comment"));
-        JSONArray arr = obj.getJSONArray("nfs_paths");
+        //instance.setComment(obj.getString("nfs_comment"));
+        JSONArray arr = obj.getJSONArray("paths");
         List<String> paths = new ArrayList<String>();
         for (int i = 0 ; i<arr.length(); i++){
             paths.add(arr.getString(i));
         }
         instance.setPaths(paths);
+        JSONArray arrNetworks = obj.getJSONArray("networks");
+        List<String> networks = new ArrayList<String>();
+        for (int i = 0 ; i<arrNetworks.length(); i++){
+            networks.add(arrNetworks.getString(i));
+        }
+        instance.setNetworks(networks);
 
         return instance;
     }
-
-
 }

@@ -59,14 +59,11 @@ public class ReplicationSerializer extends StdSerializer<Replication> implements
 
     public Replication decode(JSONObject obj, Replication instance) {
 
-
-
         return instance;
     }
 
     public void serialize(Replication volume,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider) throws IOException {
-
     }
 }

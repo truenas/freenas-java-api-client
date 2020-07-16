@@ -31,35 +31,66 @@
 package com.ixsystems.vcp.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class Disk {
 
-    @JsonProperty("disk_acousticlevel")
-    private String diskAcousticLevel;
-    @JsonProperty("disk_serial")
-    private String diskAdvPowerMgmt;
-    @JsonProperty("disk_serial")
+    @JsonAlias("disk_acousticlevel")
+    @JsonProperty("acousticlevel")
+    private String diskAcousticLevel; //DISALBED, MINIMUM, MEDIUM, or MAXIMUM
+    @JsonAlias("disk_advpowermgmt")
+    @JsonProperty("advpowermgmt")
+    private String diskAdvPowerMgmt; //ENUM
+    @JsonAlias("disk_serial")
+    @JsonProperty("serial")
     private String diskSerial;
-    @JsonProperty("disk_multipath_name")
+    @JsonAlias("disk_size")
+    @JsonProperty("size")
+    private Long diskSize;
+    @JsonAlias("disk_multipath_name")
+    @JsonProperty("multipath_name")
     private String diskMultiPathName;
-    @JsonProperty("disk_identifier")
+    @JsonAlias("disk_identifier")
+    @JsonProperty("identifier")
     private String diskIdentifier;
-    @JsonProperty("disk_togglesmart")
-    private Boolean diskToggerSmart;
-    @JsonProperty("disk_hddstandby")
-    private String diskHddStandBy;
-    @JsonProperty("disk_transfermode")
+    @JsonAlias("disk_togglesmart")
+    @JsonProperty("togglesmart")
+    private Boolean diskToggleSmart;
+    @JsonAlias("disk_hddstandby")
+    @JsonProperty("hddstandby")
+    private String diskHddStandBy; //ENUM
+    @JsonAlias("disk_transfermode")
+    @JsonProperty("transfermode")
     private String diskTransferMode;
-    @JsonProperty("disk_multipath_member")
+    @JsonAlias("disk_multipath_member")
+    @JsonProperty("multipath_member")
     private String multiPathMember;
-    @JsonProperty("disk_description")
+    @JsonAlias("disk_description")
+    @JsonProperty("description")
     private String diskDescription;
-    @JsonProperty("disk_smartoptions")
+    @JsonAlias("disk_smartoptions")
+    @JsonProperty("smartoptions")
     private String diskSmartOptions;
-    @JsonProperty("disk_expiretime")
+    @JsonAlias("disk_expiretime")
+    @JsonProperty("expiretime")
     private String diskExpireTime;
-    @JsonProperty("disk_name")
+    @JsonAlias("disk_name")
+    @JsonProperty("name")
     private String diskName;
+    /*
+     * Other fields
+     *  rotationrate
+     *  type
+     *  devname
+     *  enclosure
+     *  model
+     *  informational
+     *  difference
+     *  critical
+     *  hddstandby_force
+     *  number
+     *  subsystem
+    */
 
     public String getDiskAcousticLevel() {
         return diskAcousticLevel;
@@ -85,6 +116,14 @@ public class Disk {
         this.diskSerial = diskSerial;
     }
 
+    public Long getSize() {
+        return diskSize;
+    }
+
+    public void setSize(Long diskSize) {
+        this.diskSize = diskSize;
+    }
+
     public String getDiskMultiPathName() {
         return diskMultiPathName;
     }
@@ -101,12 +140,12 @@ public class Disk {
         this.diskIdentifier = diskIdentifier;
     }
 
-    public Boolean getDiskToggerSmart() {
-        return diskToggerSmart;
+    public Boolean getDiskToggleSmart() {
+        return diskToggleSmart;
     }
 
-    public void setDiskToggerSmart(Boolean diskToggerSmart) {
-        this.diskToggerSmart = diskToggerSmart;
+    public void setDiskToggleSmart(Boolean diskToggleSmart) {
+        this.diskToggleSmart = diskToggleSmart;
     }
 
     public String getDiskHddStandBy() {
@@ -181,7 +220,7 @@ public class Disk {
             return false;
         if (diskIdentifier != null ? !diskIdentifier.equals(disk.diskIdentifier) : disk.diskIdentifier != null)
             return false;
-        if (diskToggerSmart != null ? !diskToggerSmart.equals(disk.diskToggerSmart) : disk.diskToggerSmart != null)
+        if (diskToggleSmart != null ? !diskToggleSmart.equals(disk.diskToggleSmart) : disk.diskToggleSmart != null)
             return false;
         if (diskHddStandBy != null ? !diskHddStandBy.equals(disk.diskHddStandBy) : disk.diskHddStandBy != null)
             return false;
@@ -205,7 +244,7 @@ public class Disk {
         result = 31 * result + (diskSerial != null ? diskSerial.hashCode() : 0);
         result = 31 * result + (diskMultiPathName != null ? diskMultiPathName.hashCode() : 0);
         result = 31 * result + (diskIdentifier != null ? diskIdentifier.hashCode() : 0);
-        result = 31 * result + (diskToggerSmart != null ? diskToggerSmart.hashCode() : 0);
+        result = 31 * result + (diskToggleSmart != null ? diskToggleSmart.hashCode() : 0);
         result = 31 * result + (diskHddStandBy != null ? diskHddStandBy.hashCode() : 0);
         result = 31 * result + (diskTransferMode != null ? diskTransferMode.hashCode() : 0);
         result = 31 * result + (multiPathMember != null ? multiPathMember.hashCode() : 0);

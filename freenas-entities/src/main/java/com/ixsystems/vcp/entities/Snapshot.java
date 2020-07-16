@@ -31,29 +31,35 @@
 package com.ixsystems.vcp.entities;
 
 public class Snapshot {
-    private String filesystem;
-    private String fullname;
+    @JsonProperty("id")
     private String id;
-    private Boolean mostRecent;
+    @JsonProperty("name")
     private String name;
-    private String parentType;
+    @JsonProperty("pool")
+    private String pool;
+    @JsonProperty("type")
+    private String type; //ENUM
+    //private String filesystem;
+    //private String fullname;
+    //private Boolean mostRecent;
+    //Within properties object
+    @JsonAlias("refer")
+    @JsonProperty("referenced")
     private String refer;
+    @JsonProperty("used")
     private String used;
+    //@JsonProperty("holds") //Object
+    //@JsonProperty("dataset") //String
+    //@JsonProperty("snapshot_name") //String
+    //@JsonProperty("mountpoint") //String
+    //33 other properties mentioned in the object
 
-    public String getFilesystem() {
-        return filesystem;
+    public String getPool() {
+        return pool;
     }
 
-    public void setFilesystem(String filesystem) {
-        this.filesystem = filesystem;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
+    public void setPool(String pool) {
+        this.pool = pool;
     }
 
     public String getId() {
@@ -64,14 +70,6 @@ public class Snapshot {
         this.id = id;
     }
 
-    public Boolean getMostRecent() {
-        return mostRecent;
-    }
-
-    public void setMostRecent(Boolean mostRecent) {
-        this.mostRecent = mostRecent;
-    }
-
     public String getName() {
         return name;
     }
@@ -80,12 +78,12 @@ public class Snapshot {
         this.name = name;
     }
 
-    public String getParentType() {
-        return parentType;
+    public String getType() {
+        return type;
     }
 
-    public void setParentType(String parentType) {
-        this.parentType = parentType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getRefer() {
@@ -111,24 +109,20 @@ public class Snapshot {
 
         Snapshot snapshot = (Snapshot) o;
 
-        if (filesystem != null ? !filesystem.equals(snapshot.filesystem) : snapshot.filesystem != null) return false;
-        if (fullname != null ? !fullname.equals(snapshot.fullname) : snapshot.fullname != null) return false;
+        if (pool != null ? !pool.equals(snapshot.pool) : snapshot.pool != null) return false;
         if (id != null ? !id.equals(snapshot.id) : snapshot.id != null) return false;
-        if (mostRecent != null ? !mostRecent.equals(snapshot.mostRecent) : snapshot.mostRecent != null) return false;
         if (name != null ? !name.equals(snapshot.name) : snapshot.name != null) return false;
-        if (parentType != null ? !parentType.equals(snapshot.parentType) : snapshot.parentType != null) return false;
+        if (type != null ? !type.equals(snapshot.type) : snapshot.type != null) return false;
         if (refer != null ? !refer.equals(snapshot.refer) : snapshot.refer != null) return false;
         return used != null ? used.equals(snapshot.used) : snapshot.used == null;
     }
 
     @Override
     public int hashCode() {
-        int result = filesystem != null ? filesystem.hashCode() : 0;
-        result = 31 * result + (fullname != null ? fullname.hashCode() : 0);
+        int result = pool != null ? pool.hashCode() : 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
-        result = 31 * result + (mostRecent != null ? mostRecent.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (parentType != null ? parentType.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (refer != null ? refer.hashCode() : 0);
         result = 31 * result + (used != null ? used.hashCode() : 0);
         return result;

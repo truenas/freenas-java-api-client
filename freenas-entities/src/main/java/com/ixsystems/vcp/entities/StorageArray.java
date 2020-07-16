@@ -43,7 +43,7 @@ public class StorageArray {
 
 	private String protocol;
 	
-	private String apiVersion = "v1.0";
+	private String apiVersion = "v2.0";
 	
 	private long totalSize;
 	
@@ -191,7 +191,4 @@ public class StorageArray {
 				+ ", freeSize=" + freeSize + ", status=" + status
 				+ ", authenticated=" + authenticated + "]";
 	}
-	
-	
-	
 }

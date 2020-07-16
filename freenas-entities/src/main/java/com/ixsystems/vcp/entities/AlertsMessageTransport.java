@@ -36,7 +36,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class AlertsMessageTransport {
-
     //@JsonProperty("meta")
     @JsonIgnore
     @JsonProperty("meta")
@@ -44,7 +43,7 @@ public class AlertsMessageTransport {
 
     @JsonIgnore
     @JsonProperty("timestamp")
-    private Object timestamp ;
+    private Object timestamp;
     @JsonProperty("objects")
     private List<AlertMessage> objects;
 

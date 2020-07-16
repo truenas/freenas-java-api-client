@@ -34,24 +34,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AlertMessage {
-
-
-    @JsonProperty("id")
-    private String id ;
-
-    @JsonProperty("level")
-    private String level;
-
-    @JsonProperty("message")
-    private String message;
-
-
-    @JsonIgnore
-    @JsonProperty("timestamp")
-    private Object timestamp ;
-
+    //@JsonProperty("uuid") String
+    @JsonProperty("source")
+    private String souce;
+    //@JsonProperty("klass") String
+    //@JsonProperty("args") List<String> (or String)
+    @JsonProperty("node")
+    private String node;
+    //@JsonProperty("key") String
     @JsonProperty("dismissed")
     private boolean dismissed;
+    //@JsonProperty("mail") String
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("level")
+    private String level;
+    @JsonProperty("formatted")
+    private String formatted;
+    @JsonProperty("text")
+    private String text; //Changed from message
+    @JsonProperty("datetime")
+    private Object datetime; //Changed from timestamp
 
     public String getId() {
         return id;
@@ -69,12 +72,12 @@ public class AlertMessage {
         this.level = level;
     }
 
-    public String getMessage() {
-        return message;
+    public String getText() {
+        return text;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public boolean isDismissed() {
@@ -85,14 +88,41 @@ public class AlertMessage {
         this.dismissed = dismissed;
     }
 
+    public String getNode();
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String souce) {
+        this.source = source;
+    }
+
+    public String getFormatted() {
+        return formatted;
+    }
+
+    public void setFormatted(String formatted) {
+        this.formatted = formatted;
+    }
+
     @Override
     public String toString() {
         return "AlertMessage{" +
                 "id='" + id + '\'' +
                 ", level='" + level + '\'' +
-                ", message='" + message + '\'' +
+                ", text='" + text + '\'' +
                 ", timestamp=" + timestamp +
                 ", dismissed=" + dismissed +
+                ", node=" + node +
+                ", source=" + source +
+                ", formatted=" + formatted +
                 '}';
     }
 }

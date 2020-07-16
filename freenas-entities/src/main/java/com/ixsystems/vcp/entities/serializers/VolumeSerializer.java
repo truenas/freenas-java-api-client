@@ -38,7 +38,8 @@ import com.ixsystems.vcp.entities.Volume;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class VolumeSerializer extends StdSerializer<Volume> implements EntitySerializer<Volume>  {
 
@@ -59,27 +60,26 @@ public class VolumeSerializer extends StdSerializer<Volume> implements EntitySer
     }
 
     public Volume decode(JSONObject obj, Volume instance) {
-
         instance.setStatus(obj.getString("status"));
-        instance.setVolGuid(obj.getString("vol_guid"));
-        instance.setUsed(obj.getString("used"));
+        instance.setVolGuid(obj.getString("guid"));
+        /*instance.setUsed(obj.getString("used"));
         instance.setUsed_pct(obj.getString("used_pct"));
-        instance.setUsed_si(obj.getString("used_si"));
+        instance.setUsed_si(obj.getString("used_si"));*/
         instance.setId(obj.getString("id"));
-        instance.setVolEncrypted(obj.getString("vol_encryptkey"));
-        instance.setVolName(obj.getString("vol_name"));
+        instance.setVolEncrypted(obj.getString("encryptkey"));
+        //instance.setVolName(obj.getString("vol_name"));
+        instance.setName(obj.getString("name"));
         instance.setIsDecrypted(obj.getString("is_decrypted"));
-        instance.setAvailableSi(obj.getString("avail_si"));
+        //instance.setAvailableSi(obj.getString("avail_si"));
         instance.setMountPoint(obj.getString("mountpoint"));
-        instance.setVolEncrypted(obj.getString("vol_encrypt"));
-        //instance.setChildren(new ArrayList<String>());
-        instance.setTotalSi(obj.getString("total_si"));
+        instance.setVolEncrypted(obj.getString("encrypt"));
+        instance.setChildren(new List<Map<String, Volume>>());
+        //instance.setTotalSi(obj.getString("total_si"));
         return instance;
     }
 
     public void serialize(Volume volume,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider) throws IOException {
-
     }
 }

@@ -32,74 +32,76 @@ package com.ixsystems.vcp.entities.share;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
+//TODO: Add set/get for new attributes
 
-
-public class CIFSShare {
-
-
-
-
-    @JsonProperty("cifs_hostsallow")
-    private String hostAllow ;
-
-    @JsonProperty("cifs_name")
-    private String name;
-
-    @JsonProperty("cifs_home")
-    private Boolean home;
-
-    @JsonProperty("cifs_default_permissions")
-    private String defaultPermissions;
-
-    @JsonProperty("cifs_guestok")
-    private Boolean guestOk ;
-
-    @JsonProperty("cifs_showhiddenfiles")
-    private Boolean showHiddenFiles;
-
-
-    @JsonProperty("cifs_hostsdeny")
-    private Boolean hostsDeny;
-
-    @JsonProperty("cifs_recyclebin")
-    private Boolean recycleBin;
-
-
-    @JsonProperty("cifs_auxsmbconf")
-    private String auxSmbConf;
-
-
-    @JsonProperty("cifs_comment")
-    private String comment;
-
-    @JsonProperty("cifs_path")
-    private String path;
-
-
-    @JsonProperty("cifs_ro")
-    private Boolean readOnly;
-
-    @JsonProperty("cifs_guestonly")
-    private Boolean guestOnly;
-
-
-    @JsonProperty("cifs_storage_task")
-    private Boolean storageTask;
-
-
+public class SMBShare {
     @JsonProperty("id")
     private Long id;
-
-    @JsonProperty("cifs_browsable")
+    @JsonAlias("cifs_path")
+    @JsonProperty("path")
+    private String path;
+    @JsonAlias("cifs_home")
+    @JsonProperty("home")
+    private Boolean home;
+    @JsonProperty("timemachine")
+    private Boolean timemachine; //new in v2.0
+    @JsonAlias("cifs_name")
+    @JsonProperty("name")
+    private String name;
+    @JsonAlias("cifs_comment")
+    @JsonProperty("comment")
+    private String comment;
+    @JsonAlias("cifs_ro")
+    @JsonProperty("ro")
+    private Boolean readOnly;
+    @JsonAlias("cifs_browsable")
+    @JsonProperty("browsable")
     private Boolean browseble;
+    @JsonAlias("cifs_recyclebin")
+    @JsonProperty("recyclebin")
+    private Boolean recycleBin;
+    @JsonAlias("cifs_showhiddenfiles")
+    @JsonProperty("showhiddenfiles")
+    private Boolean showHiddenFiles;
+    @JsonProperty("shadowcopy")
+    private Boolean shadowCopy; //new in v2.0
+    @JsonAlias("cifs_guestok")
+    @JsonProperty("guestok")
+    private Boolean guestOk ;
+    @JsonAlias("cifs_guestonly")
+    @JsonProperty("guestonly")
+    private Boolean guestOnly;
+    @JsonProperty("abe")
+    private Boolean abe; //new in v2.0
+    @JsonAlias("cifs_hostsallow")
+    @JsonProperty("hostsallow")
+    private List<String> hostsAllow; //Changed from String to List<String>
+    @JsonAlias("cifs_hostsdeny")
+    @JsonProperty("hostsdeny")
+    private List<String> hostsDeny; //Changed from Boolean to List<String>
+    @JsonAlias("cifs_auxsmbconf")
+    @JsonProperty("auxsmbconf")
+    private String auxSmbConf;
+    @JsonProperty("vfsobjects")
+    private List<String> vfsobjects; //new in v2.0
+    @JsonProperty("vuid")
+    private String vuid; //new in v2.0
+    @JsonProperty("enabled")
+    private Boolean enabled; //new in v2.0
 
-    public String getHostAllow() {
-        return hostAllow;
+    /*@JsonProperty("cifs_default_permissions")
+    private String defaultPermissions;
+    @JsonProperty("cifs_storage_task")
+    private Boolean storageTask;*/
+
+    public List<String> getHostsAllow() {
+        return hostsAllow;
     }
 
-    public void setHostAllow(String hostAllow) {
-        this.hostAllow = hostAllow;
+    public void setHostAllow(List<String> hostsAllow) {
+        this.hostsAllow = hostsAllow;
     }
 
     public String getName() {
@@ -118,13 +120,13 @@ public class CIFSShare {
         this.home = home;
     }
 
-    public String getDefaultPermissions() {
+    /*public String getDefaultPermissions() {
         return defaultPermissions;
     }
 
     public void setDefaultPermissions(String defaultPermissions) {
         this.defaultPermissions = defaultPermissions;
-    }
+    }*/
 
     public Boolean getGuestOk() {
         return guestOk;
@@ -142,11 +144,11 @@ public class CIFSShare {
         this.showHiddenFiles = showHiddenFiles;
     }
 
-    public Boolean getHostsDeny() {
+    public List<String> getHostsDeny() {
         return hostsDeny;
     }
 
-    public void setHostsDeny(Boolean hostsDeny) {
+    public void setHostsDeny(List<String> hostsDeny) {
         this.hostsDeny = hostsDeny;
     }
 
@@ -198,13 +200,13 @@ public class CIFSShare {
         this.guestOnly = guestOnly;
     }
 
-    public Boolean getStorageTask() {
+    /*public Boolean getStorageTask() {
         return storageTask;
     }
 
     public void setStorageTask(Boolean storageTask) {
         this.storageTask = storageTask;
-    }
+    }*/
 
     public Long getId() {
         return id;
@@ -222,18 +224,25 @@ public class CIFSShare {
         this.browseble = browseble;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CIFSShare cifsShare = (CIFSShare) o;
+        SMBShare cifsShare = (SMBShare) o;
 
         if (hostAllow != null ? !hostAllow.equals(cifsShare.hostAllow) : cifsShare.hostAllow != null) return false;
         if (name != null ? !name.equals(cifsShare.name) : cifsShare.name != null) return false;
         if (home != null ? !home.equals(cifsShare.home) : cifsShare.home != null) return false;
-        if (defaultPermissions != null ? !defaultPermissions.equals(cifsShare.defaultPermissions) : cifsShare.defaultPermissions != null)
-            return false;
+        //if (defaultPermissions != null ? !defaultPermissions.equals(cifsShare.defaultPermissions) : cifsShare.defaultPermissions != null) return false;
         if (guestOk != null ? !guestOk.equals(cifsShare.guestOk) : cifsShare.guestOk != null) return false;
         if (showHiddenFiles != null ? !showHiddenFiles.equals(cifsShare.showHiddenFiles) : cifsShare.showHiddenFiles != null)
             return false;
@@ -244,9 +253,9 @@ public class CIFSShare {
         if (path != null ? !path.equals(cifsShare.path) : cifsShare.path != null) return false;
         if (readOnly != null ? !readOnly.equals(cifsShare.readOnly) : cifsShare.readOnly != null) return false;
         if (guestOnly != null ? !guestOnly.equals(cifsShare.guestOnly) : cifsShare.guestOnly != null) return false;
-        if (storageTask != null ? !storageTask.equals(cifsShare.storageTask) : cifsShare.storageTask != null)
-            return false;
+        //if (storageTask != null ? !storageTask.equals(cifsShare.storageTask) : cifsShare.storageTask != null) return false;
         if (id != null ? !id.equals(cifsShare.id) : cifsShare.id != null) return false;
+        if (enabled != null ? !enabled.equals(cifsShare.enabled) : cifsShare.enabled != null) return false;
         return browseble != null ? browseble.equals(cifsShare.browseble) : cifsShare.browseble == null;
     }
 
@@ -255,7 +264,7 @@ public class CIFSShare {
         int result = hostAllow != null ? hostAllow.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (home != null ? home.hashCode() : 0);
-        result = 31 * result + (defaultPermissions != null ? defaultPermissions.hashCode() : 0);
+        //result = 31 * result + (defaultPermissions != null ? defaultPermissions.hashCode() : 0);
         result = 31 * result + (guestOk != null ? guestOk.hashCode() : 0);
         result = 31 * result + (showHiddenFiles != null ? showHiddenFiles.hashCode() : 0);
         result = 31 * result + (hostsDeny != null ? hostsDeny.hashCode() : 0);
@@ -265,19 +274,20 @@ public class CIFSShare {
         result = 31 * result + (path != null ? path.hashCode() : 0);
         result = 31 * result + (readOnly != null ? readOnly.hashCode() : 0);
         result = 31 * result + (guestOnly != null ? guestOnly.hashCode() : 0);
-        result = 31 * result + (storageTask != null ? storageTask.hashCode() : 0);
+        //result = 31 * result + (storageTask != null ? storageTask.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         result = 31 * result + (browseble != null ? browseble.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "CIFSShare{" +
+        return "SMBShare{" +
                 "hostAllow='" + hostAllow + '\'' +
                 ", name='" + name + '\'' +
                 ", home=" + home +
-                ", defaultPermissions='" + defaultPermissions + '\'' +
+                //", defaultPermissions='" + defaultPermissions + '\'' +
                 ", guestOk=" + guestOk +
                 ", showHiddenFiles=" + showHiddenFiles +
                 ", hostsDeny=" + hostsDeny +
@@ -287,8 +297,9 @@ public class CIFSShare {
                 ", path='" + path + '\'' +
                 ", readOnly=" + readOnly +
                 ", guestOnly=" + guestOnly +
-                ", storageTask=" + storageTask +
+                //", storageTask=" + storageTask +
                 ", id=" + id +
+                ", enabled=" + enabled +
                 ", browseble=" + browseble +
                 '}';
     }

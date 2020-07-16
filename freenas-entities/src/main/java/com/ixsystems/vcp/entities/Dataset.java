@@ -31,29 +31,32 @@
 package com.ixsystems.vcp.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 import java.util.List;
 
 public class Dataset {
-
-
     @JsonProperty("atime")
-    private String atime;
-
-    @JsonProperty("avail")
+    private String atime; //ON or OFF
+    //New with v2.0
+    @JsonProperty("exec")
+    private String exec; //ON or OFF
+    @JsonAlias("avail")
+    @JsonProperty("available")
     private Long available;
-
-    @JsonProperty("comments")
-    private String comments;
-
+    @JsonProperty("volsize")
+    private Long volsize;
+    //@JsonProperty("comments")
+    //private String comments;
     @JsonProperty("compression")
-    private String compression;
+    private String compression;//OFF, LZ4, GZIP,..., INHERIT
 
-    @JsonProperty("dedup")
-    private String dedup;
+    @JsonAlias("dedup")
+    @JsonProperty("deduplication")
+    private String dedup;//VISIBLE or HIDDEN or INHERIT
 
-    @JsonProperty("inherit_props")
-    private List<String> inheritProps;
+    //@JsonProperty("inherit_props")
+    //private List<String> inheritProps;
 
     @JsonProperty("mountpoint")
     private String mountPoint;
@@ -65,19 +68,20 @@ public class Dataset {
     private String pool;
 
     @JsonProperty("quota")
-    private Long quota;
+    private Long quota; //Can be null
 
     @JsonProperty("readonly")
-    private String readOnly;
+    private String readOnly; //ON or OFF
 
+    //Switched to String enum in v2.0
     @JsonProperty("recordsize")
-    private Long recordSize;
+    private String recordSize; //512, 1K, 2K,..., 1024K
 
-    @JsonProperty("refer")
-    private Long refer;
+    //@JsonProperty("refer")
+    //private Long refer;
 
     @JsonProperty("refquota")
-    private Long refQuota;
+    private Long refQuota; //Can be null
 
     @JsonProperty("refreservation")
     private Long refReservation;
@@ -87,6 +91,26 @@ public class Dataset {
 
     @JsonProperty("used")
     private Long used;
+    /* Other Fields
+     * type
+     * children
+     * encryption_root
+     * key_loaded
+     * managedby  
+     * pbkdf2iters
+     * special_small_block_size
+     * encryption_algorithm
+     * key_format
+     * snapdir
+     * copies
+     * origin
+     * compressratio
+     * sync
+     * casesensitivity
+     * xattr
+     * acltype
+     * aclmode
+     */
 
 
     public String getAtime() {
@@ -97,6 +121,14 @@ public class Dataset {
         this.atime = atime;
     }
 
+    public String getExec() {
+        return exec;
+    }
+
+    public void setExec(String exec) {
+        this.exec = esec;
+    }
+
     public Long getAvailable() {
         return available;
     }
@@ -105,13 +137,13 @@ public class Dataset {
         this.available = available;
     }
 
-    public String getComments() {
+    /*public String getComments() {
         return comments;
     }
 
     public void setComments(String comments) {
         this.comments = comments;
-    }
+    }*/
 
     public String getCompression() {
         return compression;
@@ -129,13 +161,13 @@ public class Dataset {
         this.dedup = dedup;
     }
 
-    public List<String> getInheritProps() {
+    /*public List<String> getInheritProps() {
         return inheritProps;
     }
 
     public void setInheritProps(List<String> inheritProps) {
         this.inheritProps = inheritProps;
-    }
+    }*/
 
     public String getMountPoint() {
         return mountPoint;
@@ -177,21 +209,21 @@ public class Dataset {
         this.readOnly = readOnly;
     }
 
-    public Long getRecordSize() {
+    public String getRecordSize() {
         return recordSize;
     }
 
-    public void setRecordSize(Long recordSize) {
+    public void setRecordSize(String recordSize) {
         this.recordSize = recordSize;
     }
 
-    public Long getRefer() {
+    /*public Long getRefer() {
         return refer;
     }
 
     public void setRefer(Long refer) {
         this.refer = refer;
-    }
+    }*/
 
     public Long getRefQuota() {
         return refQuota;
@@ -233,19 +265,19 @@ public class Dataset {
         Dataset dataset = (Dataset) o;
 
         if (atime != null ? !atime.equals(dataset.atime) : dataset.atime != null) return false;
+        if (exec != null ? !exec.equals(dataset.exec) : dataset.exec != null) return false;
         if (available != null ? !available.equals(dataset.available) : dataset.available != null) return false;
-        if (comments != null ? !comments.equals(dataset.comments) : dataset.comments != null) return false;
+        //if (comments != null ? !comments.equals(dataset.comments) : dataset.comments != null) return false;
         if (compression != null ? !compression.equals(dataset.compression) : dataset.compression != null) return false;
         if (dedup != null ? !dedup.equals(dataset.dedup) : dataset.dedup != null) return false;
-        if (inheritProps != null ? !inheritProps.equals(dataset.inheritProps) : dataset.inheritProps != null)
-            return false;
+        //if (inheritProps != null ? !inheritProps.equals(dataset.inheritProps) : dataset.inheritProps != null) return false;
         if (mountPoint != null ? !mountPoint.equals(dataset.mountPoint) : dataset.mountPoint != null) return false;
         if (name != null ? !name.equals(dataset.name) : dataset.name != null) return false;
         if (pool != null ? !pool.equals(dataset.pool) : dataset.pool != null) return false;
         if (quota != null ? !quota.equals(dataset.quota) : dataset.quota != null) return false;
         if (readOnly != null ? !readOnly.equals(dataset.readOnly) : dataset.readOnly != null) return false;
         if (recordSize != null ? !recordSize.equals(dataset.recordSize) : dataset.recordSize != null) return false;
-        if (refer != null ? !refer.equals(dataset.refer) : dataset.refer != null) return false;
+        //if (refer != null ? !refer.equals(dataset.refer) : dataset.refer != null) return false;
         if (refQuota != null ? !refQuota.equals(dataset.refQuota) : dataset.refQuota != null) return false;
         if (refReservation != null ? !refReservation.equals(dataset.refReservation) : dataset.refReservation != null)
             return false;
@@ -256,18 +288,20 @@ public class Dataset {
     @Override
     public int hashCode() {
         int result = atime != null ? atime.hashCode() : 0;
+        result = 31 * result + (exec != null ? exec.hashCode() : 0);
         result = 31 * result + (available != null ? available.hashCode() : 0);
-        result = 31 * result + (comments != null ? comments.hashCode() : 0);
+        result = 31 * result + (volsize != null ? volsize.hashCode() : 0);
+        //result = 31 * result + (comments != null ? comments.hashCode() : 0);
         result = 31 * result + (compression != null ? compression.hashCode() : 0);
         result = 31 * result + (dedup != null ? dedup.hashCode() : 0);
-        result = 31 * result + (inheritProps != null ? inheritProps.hashCode() : 0);
+        //result = 31 * result + (inheritProps != null ? inheritProps.hashCode() : 0);
         result = 31 * result + (mountPoint != null ? mountPoint.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (pool != null ? pool.hashCode() : 0);
         result = 31 * result + (quota != null ? quota.hashCode() : 0);
         result = 31 * result + (readOnly != null ? readOnly.hashCode() : 0);
         result = 31 * result + (recordSize != null ? recordSize.hashCode() : 0);
-        result = 31 * result + (refer != null ? refer.hashCode() : 0);
+        //result = 31 * result + (refer != null ? refer.hashCode() : 0);
         result = 31 * result + (refQuota != null ? refQuota.hashCode() : 0);
         result = 31 * result + (refReservation != null ? refReservation.hashCode() : 0);
         result = 31 * result + (reservation != null ? reservation.hashCode() : 0);

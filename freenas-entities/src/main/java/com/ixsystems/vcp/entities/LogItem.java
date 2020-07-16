@@ -41,7 +41,7 @@ public class LogItem {
 	private String username;
 	private String description;
 	private String logLevel = "Error";
-	private String version = "3.0.0";
+	private String version = "3.3.0";
 	private String ip;
 
 	private String[] logLevels = new String[] { "Debug", "Info", "Error" };

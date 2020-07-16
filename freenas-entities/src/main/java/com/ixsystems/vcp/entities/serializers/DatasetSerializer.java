@@ -71,6 +71,7 @@ public class DatasetSerializer extends StdSerializer<Dataset> {
     }
 
     public Dataset decode(JSONObject obj, Dataset instance) throws DatasetAlreadyExists {
+
         // Eventually, the dataset already exists.
         if (obj.has("__all__")){
             if (obj.getString("__all__").contains("already exists"))
@@ -81,38 +82,37 @@ public class DatasetSerializer extends StdSerializer<Dataset> {
 
         if (obj.has("atime"))
             instance.setAtime(obj.getString("atime"));
-        instance.setAvailable(obj.getLong("avail"));
-        try {
+        if (obj.has("exec"))
+            instance.setAtime(obj.getString("exec"));
+        instance.setAvailable(obj.getLong("available"));
+        /*try {
             instance.setComments(obj.getString("comments"));
         }
         catch (Exception e)
         {
             LOGGER.debug("Problem decoding comments ", e);
-        }
+        }*/
         instance.setCompression(obj.getString("compression"));
         instance.setDedup(obj.getString("dedup"));
         instance.setName(obj.getString("name"));
         instance.setPool(obj.getString("pool"));
 
-        // Get Inherit Props
-
+        /* Get Inherit Props
         List<String> props = new ArrayList<String>();
-
         JSONArray iInheritProps = obj.getJSONArray("inherit_props");
-
         for (int i = 0 ; i<iInheritProps.length();i++){
             String prop = iInheritProps.getString(i);
             props.add(prop);
         }
+        instance.setInheritProps(props);*/
 
-        instance.setInheritProps(props);
         instance.setMountPoint(obj.getString("mountpoint"));
-        instance.setName(obj.getString("name"));
         instance.setPool(obj.getString("pool"));
         instance.setQuota(obj.getLong("quota"));
         instance.setReadOnly(obj.getString("readonly"));
         instance.setRecordSize(obj.getLong("recordsize"));
-        instance.setRefer(obj.getLong("refer"));
+        instance.setVolSize(obj.getLong("volsize"));
+        //instance.setRefer(obj.getLong("refer"));
         instance.setRefQuota(obj.getLong("refquota"));
         instance.setRefReservation(obj.getLong("refreservation"));
         instance.setReservation(obj.getLong("reservation"));

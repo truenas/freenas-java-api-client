@@ -33,16 +33,61 @@ package com.ixsystems.vcp.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Replication {
+    @JsonProperty("id")
+    private Long id;
+    @JsonProperty("name")
+    private String name; //New in v2.0
+    @JsonProperty("direction")
+    private String direction; //New in v2.0
+    @JsonProperty("transport")
+    private String transport; //New in v2.0
+    //@JsonProperty("ssh_credentials") //Object
+    //@JsonProperty("netcat_active_side") //String
+    //@JsonProperty("netcat_active_side_list_address") //String
+    //@JsonProperty("netcat_active_side_port_min") //String
+    //@JsonProperty("netcat_active_side_port_max") //String
+    //@JsonProperty("netcat_passive_side_connect_address") //String
+    //@JsonProperty("source_datasets") //List<String>
+    //@JsonProperty("target_dataset") //String
+    //@JsonProperty("recrusive") //Boolean
+    //@JsonProperty("exclude") //List<String>
+    //@JsonProperty("properties") //Boolean
+    //@JsonProperty("nameing_chema") //List<String>
+    //@JsonProperty("auto") //Boolean
+    //@JsonProperty("only_matching_schedule") //Boolean
+    //@JsonProperty("readonly") //String (ENUM)
+    //@JsonProperty("allow_from_scratch") //Boolean
+    //@JsonProperty("hold_pending_snapshots") //Boolean
+    //@JsonProperty("retention_policy") //String (ENUM)
+    //@JsonProperty("lifetime_value") //String
+    //@JsonProperty("lifetime_unit") //String
+    @JsonAlias("repl_compression")
+    @JsonProperty("compression")
+    private String replCompression;
+    @JsonAlias("repl_limit")
+    @JsonProperty("speed_limit")
+    private Long replLimit;
+    //@JsonProperty("large_block") //Boolean
+    //@JsonProperty("embed") //Boolean
+    //@JsonProperty("compressed") //Boolean
+    //@JsonProperty("retries") //Integer
+    //@JsonProperty("logging_level") //String
+    @JsonAlias("repl_enabled")
+    @JsonProperty("enabled")
+    private Boolean replEnabled;
+    //@JsonProperty("state") //Object
+    //@JsonProperty("periodic_snapshot_tasks") //List<Object>
+    //@JsonProperty("also_include_naming_schema") //List<String>
+    //@JsonProperty("schedule") //String
+    //@JsonProperty("restrict_schedule") //String
+    //@JsonProperty("job") //String
 
-
-    @JsonProperty("repl_end")
+    /*@JsonProperty("repl_end")
     private String replEnd;
     @JsonProperty("repl_remote_dedicateduser")
     private String replRemoteDedicatedUser;
     @JsonProperty("repl_userepl")
     private Boolean replUserPl;
-    @JsonProperty("repl_limit")
-    private Long replLimit;
     @JsonProperty("repl_remote_port")
     private Integer replRemotePort;
     @JsonProperty("repl_remote_dedicateduser_enabled")
@@ -55,21 +100,14 @@ public class Replication {
     private String replRemoteCipher;
     @JsonProperty("repl_remote_hostkey")
     private String replRemoteHostKey;
-
-    @JsonProperty("repl_enabled")
-    private Boolean replEnabled;
-    @JsonProperty("repl_compression")
-    private String replCompression;
     @JsonProperty("repl_remote_hostname")
     private String replRemoteHostname;
     @JsonProperty("repl_lastsnapshot")
     private String replLastSnapshot;
     @JsonProperty("repl_status")
     private String replStatus;
-    @JsonProperty("id")
-    private Long id;
     @JsonProperty("repl_zfs")
-    private String replZfs;
+    private String replZfs;*/
 
 
     public String getReplEnd() {

@@ -34,26 +34,24 @@ import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 import kong.unirest.json.JSONObject;
 
 public class GlobalConfigurationSerializer{
-
-
     public GlobalConfigurations decode(JSONObject obj, GlobalConfigurations gc){
-        if (obj.get("gc_hostname_virtual")!=null)
-            gc.setGcHostnameVirtual(obj.get("gc_hostname_virtual").toString());
+        gc.setGcHostname(obj.getString("hostname"));
+        gc.setGcHostnameB(obj.getString("hostname_b"));
+        if (obj.get("hostname_virtual")!=null)
+            gc.setGcHostnameVirtual(obj.get("hostname_virtual").toString());
 
-        gc.setGcHosts(obj.getString("gc_hosts"));
-        gc.setGcDomain(obj.getString("gc_domain"));
-        gc.setGcHostname(obj.getString("gc_hostname"));
-        gc.setGcNameservers1(obj.getString("gc_nameserver1"));
-        gc.setGcNameservers2(obj.getString("gc_nameserver2"));
-        gc.setGcHttpProxy(obj.getString("gc_httpproxy"));
-        gc.setDomains(obj.getString("gc_domains"));
-        gc.setGcNetwaitEnabled(obj.getBoolean("gc_netwait_enabled"));
-        gc.setGcIpv4Gateway(obj.getString("gc_ipv4gateway"));
+        gc.setGcDomain(obj.getString("domain"));
+        gc.setDomains(obj.getJsonArray("domains"));
+        gc.setGcIpv4Gateway(obj.getString("ipv4gateway"));
+        gc.setGcIpv4Gateway(obj.getString("ipv6gateway"));
+        gc.setGcNameservers1(obj.getString("nameserver1"));
+        gc.setGcNameservers2(obj.getString("nameserver2"));
+        gc.setGcNameservers3(obj.getString("nameserver3");
+        gc.setGcHttpProxy(obj.getString("httpproxy"));
+        gc.setGcNetwaitEnabled(obj.getBoolean("netwait_enabled"));
+        gc.setGcNetwaitIp(obj.getJsonArray("netwait_ip"));
+        gc.setGcHosts(obj.getString("hosts"));
         gc.setId(obj.get("id").toString());
-//        gc.setGcHostnameB(obj.getString("gc_hostname_b"));
-        gc.setGcIpv4Gateway(obj.getString("gc_ipv6gateway"));
-        gc.setGcNetwaitIp(obj.getString("gc_netwait_ip"));
         return gc;
     }
-
 }

@@ -30,22 +30,47 @@
  */
 package com.ixsystems.vcp.entities.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
+
+import java.util.List;
+
 public class GlobalConfigurations {
 
-    private String gcHostnameVirtual;
-    private String gcHosts;
-    private String gcDomains;
+    @JsonProperty("hostname")
     private String gcHostname;
-    private String gcNameservers1;
-    private String gcNameservers2;
-    private String gcHttpProxy;
-    private String domains;
-    private Boolean gcNetwaitEnabled;
-    private String gcIpv4Gateway;
-    private String id;
+    @jsonProperty("hostname_b")
     private String gcHostnameB;
+    //@JsonProperty("hostname_local") (String)
+    //@JsonProperty("service_announcement") (Object)
+    @JsonProperty("hostname_virtual")
+    private String gcHostnameVirtual;
+    @JsonProperty("domain")
+    private String domain;
+    @JsonProperty("domains")
+    private List<String> gcDomains;
+    @jsonProperty("ipv4gateway")
+    private String gcIpv4Gateway;
+    @jsonProperty("ipv6gateway")
     private String gcIpv6Gateway;
-    private String gcNetwaitIp;
+    @JsonProperty("nameserver1")
+    private String gcNameservers1;
+    @JsonProperty("nameserver2")
+    private String gcNameservers2;
+    @JsonProperty("nameserver3")
+    private String gcNameservers3;
+    @JsonProperty("httpproxy")
+    private String gcHttpProxy;
+    @JsonProperty("netwait_enabled")
+    private Boolean gcNetwaitEnabled;
+    @jsonProperty("netwait_ip")
+    private List<String> gcNetwaitIp;
+    @JsonProperty("hosts")
+    private String gcHosts;
+
+    //Only for GET, not PUT
+    @JsonProperty("id")
+    private String id;
 
     public String getGcDomain() {
         return gcDomain;
@@ -73,11 +98,11 @@ public class GlobalConfigurations {
         this.gcHosts = gcHosts;
     }
 
-    public String getGcDomains() {
+    public List<String> getGcDomains() {
         return gcDomains;
     }
 
-    public void setGcDomains(String gcDomains) {
+    public void setGcDomains(List<String> gcDomains) {
         this.gcDomains = gcDomains;
     }
 
@@ -113,12 +138,12 @@ public class GlobalConfigurations {
         this.gcHttpProxy = gcHttpProxy;
     }
 
-    public String getDomains() {
-        return domains;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setDomains(String domains) {
-        this.domains = domains;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public Boolean getGcNetwaitEnabled() {
@@ -161,11 +186,11 @@ public class GlobalConfigurations {
         this.gcIpv6Gateway = gcIpv6Gateway;
     }
 
-    public String getGcNetwaitIp() {
+    public List<String> getGcNetwaitIp() {
         return gcNetwaitIp;
     }
 
-    public void setGcNetwaitIp(String gcNetwaitIp) {
+    public void setGcNetwaitIp(List<String> gcNetwaitIp) {
         this.gcNetwaitIp = gcNetwaitIp;
     }
 
@@ -187,7 +212,7 @@ public class GlobalConfigurations {
         if (gcNameservers2 != null ? !gcNameservers2.equals(that.gcNameservers2) : that.gcNameservers2 != null)
             return false;
         if (gcHttpProxy != null ? !gcHttpProxy.equals(that.gcHttpProxy) : that.gcHttpProxy != null) return false;
-        if (domains != null ? !domains.equals(that.domains) : that.domains != null) return false;
+        if (domain != null ? !domain.equals(that.domain) : that.domain != null) return false;
         if (gcNetwaitEnabled != null ? !gcNetwaitEnabled.equals(that.gcNetwaitEnabled) : that.gcNetwaitEnabled != null)
             return false;
         if (gcIpv4Gateway != null ? !gcIpv4Gateway.equals(that.gcIpv4Gateway) : that.gcIpv4Gateway != null)
@@ -208,7 +233,7 @@ public class GlobalConfigurations {
         result = 31 * result + (gcNameservers1 != null ? gcNameservers1.hashCode() : 0);
         result = 31 * result + (gcNameservers2 != null ? gcNameservers2.hashCode() : 0);
         result = 31 * result + (gcHttpProxy != null ? gcHttpProxy.hashCode() : 0);
-        result = 31 * result + (domains != null ? domains.hashCode() : 0);
+        result = 31 * result + (domain != null ? domain.hashCode() : 0);
         result = 31 * result + (gcNetwaitEnabled != null ? gcNetwaitEnabled.hashCode() : 0);
         result = 31 * result + (gcIpv4Gateway != null ? gcIpv4Gateway.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);

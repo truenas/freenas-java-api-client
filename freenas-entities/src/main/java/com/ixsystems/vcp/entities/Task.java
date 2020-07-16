@@ -31,7 +31,4 @@
 package com.ixsystems.vcp.entities;
 
 public class Task {
-
-
-
 }

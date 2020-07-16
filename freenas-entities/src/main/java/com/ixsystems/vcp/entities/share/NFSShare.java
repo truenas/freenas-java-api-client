@@ -39,28 +39,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NFSShare {
-
-    //{"id": 1, "comment": "", "hosts": [], "alldirs": true, "ro": false, "quiet": false, "maproot_user": "root",
-    // "maproot_group": "wheel", "mapall_user": null, "mapall_group": null, "security": [],
-    // "paths": ["/mnt/primary"], "networks": []}
-
-
-    @JsonAlias("alldirs")
-    @JsonProperty("nfs_alldirs")
-    private Boolean allDirs ;
-
     @JsonProperty("id")
-    private String id ;
-
-
-    @JsonAlias("comment")
-    @JsonProperty("nfs_comment")
-    private String comment ;
-
-
-    @JsonProperty("nfs_hosts")
-    private String hosts ;
-
+    private Long id; //Changed from String to Long
+    @JsonAlias("nfs_comment")
+    @JsonProperty("comment")
+    private String comment;
+    //TODO: Figure out if this is best
     @JsonProperty("hosts")
     private List<String> getHostList(){
         List<String> hosts = new ArrayList<String>();
@@ -71,44 +55,40 @@ public class NFSShare {
         }
         return hosts;
     }
-
-
-    @JsonAlias("mapall_user")
-    @JsonProperty("nfs_mapall_user")
+    @JsonAlias("nfs_alldirs")
+    @JsonProperty("alldirs")
+    private Boolean allDirs;
+    @JsonAlias("nfs_ro")
+    @JsonProperty("ro")
+    private Boolean readOnly;
+    @JsonAlias("nfs_quiet")
+    @JsonProperty("quiet")
+    private Boolean quiet;
+    @JsonAlias("nfs_mapall_user")
+    @JsonProperty("mapall_user")
     private String mapAllUser;
-
-    @JsonAlias("mapall_group")
-    @JsonProperty("nfs_mapall_group")
+    @JsonAlias("nfs_mapall_group")
+    @JsonProperty("mapall_group")
     private String mapAllGroup;
-
-    @JsonAlias("maproot_user")
-    @JsonProperty("nfs_maproot_user")
+    @JsonAlias("nfs_maproot_user")
+    @JsonProperty("maproot_user")
     private String mapRootUser;
-
-    @JsonAlias({"maproot_group", "nfs_maproot_group"})
-    @JsonProperty("nfs_maproot_group")
+    @JsonAlias("nfs_maproot_group")
+    @JsonProperty("maproot_group")
     private String mapRootGroup;
-
-    @JsonAlias("network")
-    @JsonProperty("nfs_network")
-    private String network;
-
-    @JsonAlias({"paths", "nfs_paths"})
+    @JsonIgnore
+    @JsonAlias("nfs_security")
+    @JsonProperty("security")
+    private List<String> security;
+    @JsonAlias("nfs_enabled")
+    @JsonProperty("enabled")
+    private Boolean enabled;
+    @JsonAlias("nfs_paths")
     @JsonProperty("paths")
     private List<String> paths;
-
-    @JsonAlias("quiet")
-    @JsonProperty("nfs_quiet")
-    private Boolean quiet;
-
-    @JsonAlias("ro")
-    @JsonProperty("nfs_ro")
-    private Boolean readOnly;
-
-    @JsonIgnore
-    @JsonAlias("security")
-    @JsonProperty("nfs_security")
-    private List<String> security;
+    @JsonAlias("nfs_network")
+    @JsonProperty("networks")
+    private List<String> networks; //Changed from String to List<String>
 
     public Boolean getAllDirs() {
         return allDirs;
@@ -126,13 +106,13 @@ public class NFSShare {
         this.comment = comment;
     }
 
-    public String getHosts() {
+    /*public String getHosts() {
         return hosts;
     }
 
     public void setHosts(String hosts) {
         this.hosts = hosts;
-    }
+    }*/
 
     public String getMapAllUser() {
         return mapAllUser;
@@ -165,12 +145,12 @@ public class NFSShare {
         this.mapRootUser = mapRootUser;
     }
 
-    public String getNetwork() {
-        return network;
+    public List<String> getNetworks() {
+        return networks;
     }
 
-    public void setNetwork(String network) {
-        this.network = network;
+    public void setNetworks(List<String> networks) {
+        this.networks = networks;
     }
 
     public List<String> getPaths() {
@@ -197,6 +177,14 @@ public class NFSShare {
         this.readOnly = readOnly;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public List<String> getSecurity() {
         return security;
     }
@@ -205,17 +193,13 @@ public class NFSShare {
         this.security = security;
     }
 
-
-
-
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -226,15 +210,16 @@ public class NFSShare {
 
         if (allDirs != null ? !allDirs.equals(nfsShare.allDirs) : nfsShare.allDirs != null) return false;
         if (comment != null ? !comment.equals(nfsShare.comment) : nfsShare.comment != null) return false;
-        if (hosts != null ? !hosts.equals(nfsShare.hosts) : nfsShare.hosts != null) return false;
+        //if (hosts != null ? !hosts.equals(nfsShare.hosts) : nfsShare.hosts != null) return false;
         if (mapAllGroup != null ? !mapAllGroup.equals(nfsShare.mapAllGroup) : nfsShare.mapAllGroup != null)
             return false;
         if (mapRootUser != null ? !mapRootUser.equals(nfsShare.mapRootUser) : nfsShare.mapRootUser != null)
             return false;
-        if (network != null ? !network.equals(nfsShare.network) : nfsShare.network != null) return false;
+        if (networks != null ? !networks.equals(nfsShare.networks) : nfsShare.networks != null) return false;
         if (paths != null ? !paths.equals(nfsShare.paths) : nfsShare.paths != null) return false;
         if (quiet != null ? !quiet.equals(nfsShare.quiet) : nfsShare.quiet != null) return false;
         if (readOnly != null ? !readOnly.equals(nfsShare.readOnly) : nfsShare.readOnly != null) return false;
+        if (enabled != null ? !enabled.equals(nfsShare.enabled) : nfsShare.enabled != null) return false;
         return security != null ? security.equals(nfsShare.security) : nfsShare.security == null;
     }
 
@@ -242,13 +227,14 @@ public class NFSShare {
     public int hashCode() {
         int result = allDirs != null ? allDirs.hashCode() : 0;
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
-        result = 31 * result + (hosts != null ? hosts.hashCode() : 0);
+        //result = 31 * result + (hosts != null ? hosts.hashCode() : 0);
         result = 31 * result + (mapAllGroup != null ? mapAllGroup.hashCode() : 0);
         result = 31 * result + (mapRootUser != null ? mapRootUser.hashCode() : 0);
-        result = 31 * result + (network != null ? network.hashCode() : 0);
+        result = 31 * result + (networks != null ? networks.hashCode() : 0);
         result = 31 * result + (paths != null ? paths.hashCode() : 0);
         result = 31 * result + (quiet != null ? quiet.hashCode() : 0);
         result = 31 * result + (readOnly != null ? readOnly.hashCode() : 0);
+        result = 31 * result + (enabled != null ? enabled.hashCode() : 0);
         result = 31 * result + (security != null ? security.hashCode() : 0);
         return result;
     }
@@ -259,15 +245,16 @@ public class NFSShare {
                 "allDirs=" + allDirs +
                 ", id='" + id + '\'' +
                 ", comment='" + comment + '\'' +
-                ", hosts='" + hosts + '\'' +
+                //", hosts='" + hosts + '\'' +
                 ", mapAllUser='" + mapAllUser + '\'' +
                 ", mapAllGroup='" + mapAllGroup + '\'' +
                 ", mapRootUser='" + mapRootUser + '\'' +
                 ", mapRootGroup='" + mapRootGroup + '\'' +
-                ", network='" + network + '\'' +
+                ", networks='" + networks + '\'' +
                 ", paths=" + paths +
                 ", quiet=" + quiet +
                 ", readOnly=" + readOnly +
+                ", enabled=" + enabled +
                 ", security=" + security +
                 '}';
     }

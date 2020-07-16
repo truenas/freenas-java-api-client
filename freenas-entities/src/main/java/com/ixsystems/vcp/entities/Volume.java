@@ -33,62 +33,81 @@ package com.ixsystems.vcp.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.ixsystems.vcp.entities.serializers.VolumeSerializer;
 
 import java.util.List;
 import java.util.Map;
 
-
 @JsonSerialize(using = VolumeSerializer.class)
 @JsonIgnoreProperties(ignoreUnknown = true,
         value = {"hibernateLazyInitializer", "children", "created"})
+
 public class Volume {
-
-
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("vol_guid")
+    @JsonAlias("vol_guid")
+    @JsonProperty("guid")
     private String volGuid;
 
-    @JsonProperty("used")
-    private String used;
+    //@JsonProperty("used")
+    //private String used;
 
     @JsonProperty("name")
     private String name;
 
-    @JsonProperty("used_pct")
-    private String used_pct;
+    //@JsonProperty("used_pct")
+    //private String used_pct;
 
-    @JsonProperty("used_si")
-    private String used_si;
+    //@JsonProperty("used_si")
+    //private String used_si;
 
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("vol_encryptkey")
+    @JsonAlias("vol_encryptkey")
+    @JsonProperty("encryptkey")
     private String volEncryptedKey;
 
-    @JsonProperty("vol_name")
-    private String volName ;
+    //@JsonProperty("vol_name")
+    //private String volName ;
 
     @JsonProperty("is_decrypted")
     private String isDecrypted;
 
-    @JsonProperty("avail_si")
-    private String availableSi;
+    //@JsonProperty("avail_si")
+    //private String availableSi;
 
-
-
-    @JsonProperty("avail")
-    private String available;
+    //@JsonProperty("avail")
+    //private String available;
 
     @JsonProperty("mountpoint")
     private String mountPoint;
 
-    @JsonProperty("vol_encrypt")
+    @JsonAlias("vol_encrypt")
+    @JsonProperty("encrypt")
     private String volEncrypted;
 
+    @JsonProperty("children")
+    private List<Map<String, Volume>> children;
+
+    //@JsonProperty("total_si")
+    //private String totalSi;
+
+    //TODO Add get/set
+    @JsonProperty("path")
+    private String path;
+    /* Other Fields
+     * healthy
+     * status_detail
+     * encryptkey_path
+     * stats
+     * device
+     * disk
+     */
+
+    public Volume() { }
 
     public List<Map<String, Volume>> getChildren() {
         return children;
@@ -96,15 +115,6 @@ public class Volume {
 
     public void setChildren(List<Map<String, Volume>> children) {
         this.children = children;
-    }
-
-    @JsonProperty("children")
-    private List<Map<String, Volume>> children;
-
-    @JsonProperty("total_si")
-    private String totalSi;
-
-    public Volume() {
     }
 
     public String getStatus() {
@@ -226,7 +236,6 @@ public class Volume {
     public void setAvailable(String available) {
         this.available = available;
     }
-
 
     @Override
     public String toString() {

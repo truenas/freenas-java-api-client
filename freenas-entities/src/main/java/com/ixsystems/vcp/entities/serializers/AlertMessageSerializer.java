@@ -64,8 +64,10 @@ public class AlertMessageSerializer extends StdSerializer<AlertMessage> implemen
         instance.setId(obj.getString("id"));
         instance.setDismissed(obj.getBoolean("dismissed"));
         instance.setLevel(obj.getString("level"));
-        instance.setMessage(obj.getString("message"));
-
+        instance.setText(obj.getString("text"));
+        instance.setFormatted(obj.getString("formatted"));
+        instance.setSource(obj.getString("source"));
+        instance.setNode(obj.getString("node"));
 
         return instance;
     }
@@ -73,6 +75,5 @@ public class AlertMessageSerializer extends StdSerializer<AlertMessage> implemen
     public void serialize(AlertMessage volume,
                           JsonGenerator jsonGenerator,
                           SerializerProvider serializerProvider) throws IOException {
-
     }
 }
