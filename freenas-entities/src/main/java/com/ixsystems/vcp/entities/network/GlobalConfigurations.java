@@ -39,7 +39,7 @@ public class GlobalConfigurations {
 
     @JsonProperty("hostname")
     private String gcHostname;
-    @jsonProperty("hostname_b")
+    @JsonProperty("hostname_b")
     private String gcHostnameB;
     //@JsonProperty("hostname_local") (String)
     //@JsonProperty("service_announcement") (Object)
@@ -49,9 +49,9 @@ public class GlobalConfigurations {
     private String domain;
     @JsonProperty("domains")
     private List<String> gcDomains;
-    @jsonProperty("ipv4gateway")
+    @JsonProperty("ipv4gateway")
     private String gcIpv4Gateway;
-    @jsonProperty("ipv6gateway")
+    @JsonProperty("ipv6gateway")
     private String gcIpv6Gateway;
     @JsonProperty("nameserver1")
     private String gcNameservers1;
@@ -63,7 +63,7 @@ public class GlobalConfigurations {
     private String gcHttpProxy;
     @JsonProperty("netwait_enabled")
     private Boolean gcNetwaitEnabled;
-    @jsonProperty("netwait_ip")
+    @JsonProperty("netwait_ip")
     private List<String> gcNetwaitIp;
     @JsonProperty("hosts")
     private String gcHosts;

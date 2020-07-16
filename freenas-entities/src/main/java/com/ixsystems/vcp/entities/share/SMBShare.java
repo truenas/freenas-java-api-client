@@ -34,8 +34,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
-//TODO: Add set/get for new attributes
+import java.util.List;
 
+//TODO: Add set/get for new attributes
 public class SMBShare {
     @JsonProperty("id")
     private Long id;

@@ -88,7 +88,7 @@ public class AlertMessage {
         this.dismissed = dismissed;
     }
 
-    public String getNode();
+    public String getNode() {
         return node;
     }
 

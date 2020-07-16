@@ -31,6 +31,7 @@
 package com.ixsystems.vcp.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class Replication {
     @JsonProperty("id")

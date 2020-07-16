@@ -46,7 +46,7 @@ public class GlobalConfigurationSerializer{
         gc.setGcIpv4Gateway(obj.getString("ipv6gateway"));
         gc.setGcNameservers1(obj.getString("nameserver1"));
         gc.setGcNameservers2(obj.getString("nameserver2"));
-        gc.setGcNameservers3(obj.getString("nameserver3");
+        gc.setGcNameservers3(obj.getString("nameserver3"));
         gc.setGcHttpProxy(obj.getString("httpproxy"));
         gc.setGcNetwaitEnabled(obj.getBoolean("netwait_enabled"));
         gc.setGcNetwaitIp(obj.getJsonArray("netwait_ip"));
