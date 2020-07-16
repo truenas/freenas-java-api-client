@@ -28,14 +28,11 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.network;
+package org.freenas.client.v2.network;
 
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 
 public interface GlobalConfigurationConnector {
-
-
     public String getHostname();
     public GlobalConfigurations get();
-
 }

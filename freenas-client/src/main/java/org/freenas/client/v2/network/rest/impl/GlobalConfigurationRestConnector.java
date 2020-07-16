@@ -28,7 +28,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.freenas.client.v1.network.rest.impl;
+package org.freenas.client.v2.network.rest.impl;
 
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 import com.ixsystems.vcp.entities.serializers.GlobalConfigurationSerializer;
@@ -37,25 +37,20 @@ import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONObject;
-import org.freenas.client.v1.connectors.Authentication;
-import org.freenas.client.v1.connectors.Endpoint;
-import org.freenas.client.v1.network.GlobalConfigurationConnector;
+import org.freenas.client.v2.connectors.Authentication;
+import org.freenas.client.v2.connectors.Endpoint;
+import org.freenas.client.v2.network.GlobalConfigurationConnector;
 
 public class GlobalConfigurationRestConnector implements GlobalConfigurationConnector {
-    private static String ENDPOINT_DATASET_CREATE = "/api/v1.0/network/globalconfiguration/";
-    private Endpoint endpoint;
-    private Authentication auth;
-    private String rootUrl = "";
+    // /api/v1.0/network/globalconfiguration/
+    private static String ENDPOINT_DATASET_CREATE = "/api/v2.0/network/configuration/";
 
     private JSONObject myObj;
     private GlobalConfigurationSerializer serializer;
     private GlobalConfigurations gc;
 
     public GlobalConfigurationRestConnector(Endpoint endpoint, Authentication auth){
-        this.endpoint = endpoint;
-        this.auth = auth;
-        this.rootUrl = endpoint.getRootEndPoint();
-
+        String rootUrl = endpoint.getRootEndPoint();
         this.serializer = new GlobalConfigurationSerializer();
 
         try {
@@ -64,20 +59,17 @@ public class GlobalConfigurationRestConnector implements GlobalConfigurationConn
                     .header("accept", "application/json")
                     .asJson();
 
-
             this.myObj = jsonResponse.getBody().getObject();
             this.init();
 
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
     }
 
     private void init(){
         this.gc = new GlobalConfigurations();
         this.serializer.decode(myObj, gc);
-
     }
 
     public String getHostname() {
