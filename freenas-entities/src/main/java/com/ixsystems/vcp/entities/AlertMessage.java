@@ -32,6 +32,7 @@ package com.ixsystems.vcp.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class AlertMessage {
     //@JsonProperty("uuid") String
@@ -55,6 +56,9 @@ public class AlertMessage {
     private String text; //Changed from message
     @JsonProperty("datetime")
     private Object datetime; //Changed from timestamp
+    @JsonIgnore
+    @JsonProperty("one_shot")
+    private Boolean one_shot;
 
     public String getId() {
         return id;

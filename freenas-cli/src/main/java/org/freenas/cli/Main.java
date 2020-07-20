@@ -295,8 +295,6 @@ public class Main {
         System.out.println("Enter the command or \"stop\" to exit");
     }
 
-
-
     /**
      * Handle the alerts
      *
@@ -347,7 +345,7 @@ public class Main {
         System.out.printf("############################\n");
         for (AlertMessage m : alerts){
             System.out.println(m.getId());
-            System.out.println(m.getMessage());
+            System.out.println(m.getFormatted());
         }
         System.out.printf("############################\n");
     }
@@ -492,8 +490,7 @@ public class Main {
         String volumeName = this.volumeName;
         List<Volume> datasets  = null ;
         try {
-            datasets = gs.list(0L);
-
+            datasets = gs.list();
             result = true;
         }
         catch (Exception e){
@@ -506,7 +503,7 @@ public class Main {
                     System.out.println(">> Dataset id: "+v.getId());
                 if (v.getName()!=null)
                     System.out.println(">> Dataset name: "+v.getName());
-                System.out.println(">> Dataset " + v.getName() + " in "+ v.getMountPoint() + " with "+Long.parseLong(v.getAvailable()) / 1024 / 1024 / 1024 + "GB available.");
+                System.out.println(">> Dataset " + v.getName() + " in "+ v.getMountPoint()); //+ " with "+Long.parseLong(v.getAvailable()) / 1024 / 1024 / 1024 + "GB available.");
                 System.out.println(">> ===========");
             }
 

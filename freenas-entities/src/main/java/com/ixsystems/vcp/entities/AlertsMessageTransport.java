@@ -30,21 +30,9 @@
  */
 package com.ixsystems.vcp.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public class AlertsMessageTransport {
-    //@JsonProperty("meta")
-    @JsonIgnore
-    @JsonProperty("meta")
-    private Object meta ;
-
-    @JsonIgnore
-    @JsonProperty("timestamp")
-    private Object timestamp;
-    @JsonProperty("objects")
     private List<AlertMessage> objects;
 
     public List<AlertMessage> getObjects() {

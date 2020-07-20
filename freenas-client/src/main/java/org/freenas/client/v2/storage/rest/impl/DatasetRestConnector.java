@@ -30,15 +30,14 @@
  */
 package org.freenas.client.v2.storage.rest.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+/*import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;*/
 import com.ixsystems.vcp.entities.Dataset;
-
 import com.ixsystems.vcp.entities.Volume;
 import com.ixsystems.vcp.entities.exceptions.DatasetAlreadyExists;
 import com.ixsystems.vcp.entities.serializers.DatasetSerializer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.ObjectMapper;
@@ -62,15 +61,15 @@ import java.util.Map;
 public class DatasetRestConnector implements DatasetConnector {
 
     // /api/v1.0/storage/volume/ (GET)
-    private String ENDPOINT_VOLUME_LIST = "/api/v2.0/pool";
+    //private String ENDPOINT_VOLUME_LIST = "/api/v2.0/pool";
     // /api/v1.0/storage/dataset/ (POST)
-    private String ENDPOINT_DATASET_CREATE = "/api/v2.0/pool/dataset/";
+    private String ENDPOINT_DATASET_CREATE = "/api/v2.0/pool/dataset";
     // /api/v1.0/storage/dataset/ (GET)
-    private String ENDPOINT_DATASET_LIST = "/api/v2.0/pool/dataset/";
+    private String ENDPOINT_DATASET_LIST = "/api/v2.0/pool/dataset";
     // /api/v1.0/storage/volume/ (PUT)
-    private String ENDPOINT_DATASET_UPDATE = "/api/v2.0/pool/dataset/id/{id}";
+    //private String ENDPOINT_DATASET_UPDATE = "/api/v2.0/pool/dataset/id";
     // /api/v1.0/storage/dataset/ (DELETE)
-    private String ENDPOINT_DATASET_DELETE = "/api/v2.0/pool/dataset/id/{id}";
+    private String ENDPOINT_DATASET_DELETE = "/api/v2.0/pool/dataset/id";
     // /api/v1.0/sharing/cifs (GET)
     private String ENDPOINT_DATASET_SHARING_SMB = "/api/v2.0/sharing/smb";
     // /api/v1.0/sharing/nfs (GET)
@@ -93,8 +92,7 @@ public class DatasetRestConnector implements DatasetConnector {
 
     public Dataset create(String volumeName, Map<String, String> args) throws DatasetAlreadyExists {
         try {
-            //Gson gson = new Gson();
-            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+            //Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             ObjectMapper mapper = new ObjectMapper() {
                 com.fasterxml.jackson.databind.ObjectMapper mapper
                         = new com.fasterxml.jackson.databind.ObjectMapper();
@@ -168,8 +166,8 @@ public class DatasetRestConnector implements DatasetConnector {
 
     public Dataset delete(String name) {
         try {
-
-            HttpResponse<String> jsonResponse = Unirest.delete(endpoint.getRootEndPoint() + ENDPOINT_DATASET_DELETE + name + "/")
+            //HttpResponse<String> jsonResponse = Unirest.delete(endpoint.getRootEndPoint() + ENDPOINT_DATASET_DELETE + name + "/")
+            HttpResponse<String> jsonResponse = Unirest.delete(endpoint.getRootEndPoint() + ENDPOINT_DATASET_DELETE + "/" + name)
                     .header("accept", "*/*")
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Basic " + auth.get64bitEncoded())
@@ -233,14 +231,16 @@ public class DatasetRestConnector implements DatasetConnector {
     }
 
     public boolean shareCIFS(String name, String path) {
-
-        //Gson gson = new Gson();
         Map<String, String> args = new HashMap<String, String>();
 
-        args.put("cifs_name", name);
+        /*args.put("cifs_name", name);
         args.put("cifs_path'", path);
-        args.put("cifs_guestonly", "True");
-        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+        args.put("cifs_guestonly", "True");*/
+        //Now using v2.0 names
+        args.put("name", name);
+        args.put("path", path);
+        args.put("guestonly", "True");
+        //Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
         Map<String, Object> mapStr = new HashMap<String, Object>();
         args.forEach((s, k) ->  mapStr.put(s, k));
@@ -254,28 +254,36 @@ public class DatasetRestConnector implements DatasetConnector {
                     .header("Authorization", "Basic " + auth.get64bitEncoded())
                     .body(obj)
                     .asJson();
+            //Matching SMB with NFS
+            jsonResponse.getStatus();
+            jsonResponse.getBody();
+
+            DatasetSerializer ds = new DatasetSerializer(Dataset.class);
+            Dataset result = new Dataset();
+            ds.decode(jsonResponse.getBody().getObject(), result);
         } catch (UnirestException e) {
             LOGGER.error("Error while connecting service ", e);
+            return false;
         }
-
         return true;
     }
 
     public boolean shareNFS(String name, String path) {
 
         try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+            //Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             Map<String, String> args = new HashMap<String, String>();
 
-            /**
-             *           "nfs_comment": "My Test Share",
-             *           "nfs_paths": ["/mnt/tank"],
-             *           "nfs_security": "sys"
-             */
 
-            args.put("nfs_comment", name);
-            args.put("nfs_paths'", path);
-            args.put("nfs_security", "sys");
+            /*args.put("nfs_comment", name);
+            args.put("nfs_paths", path);
+            args.put("nfs_security", "sys");*/
+
+            //Now using v2.0 names
+            //TODO: Verify if paths or security are broken since they need to be arrays.  Security is only an array in v2.0
+            args.put("comment", name);
+            args.put("paths", path);
+            args.put("security", "sys");
 
             Map<String, Object> mapStr = new HashMap<String, Object>();
             args.forEach((s, k) ->  mapStr.put(s, k));
@@ -293,9 +301,9 @@ public class DatasetRestConnector implements DatasetConnector {
             DatasetSerializer ds = new DatasetSerializer(Dataset.class);
             Dataset result = new Dataset();
             ds.decode(jsonResponse.getBody().getObject(), result);
-            return true;
         } catch (Exception e) {
             LOGGER.error("Error while connecting service ", e);
+            return false;
         }
         return true;
     }

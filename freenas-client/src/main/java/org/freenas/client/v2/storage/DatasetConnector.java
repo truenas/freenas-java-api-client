@@ -45,7 +45,8 @@ public interface DatasetConnector {
     public Dataset update(Dataset id);
     public Dataset delete(String name);
     public Dataset get(Long id);
-    public List<Volume> list(Long id);
+    //public List<Volume> list(Long id);
+    public List<Volume> list();
 
     public boolean shareCIFS(String name, String path);
     public boolean shareNFS(String name, String path);

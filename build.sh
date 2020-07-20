@@ -2,5 +2,5 @@
 
 mvn clean install
 cd freenas-cli
-java -jar target/freenas-cli-1.1-SNAPSHOT-with-dependencies.jar -alerts list all
+java -jar target/freenas-*-with-*.jar -alerts list all
 cd ../
