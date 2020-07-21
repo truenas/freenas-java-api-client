@@ -301,7 +301,6 @@ public class Main {
      * @param cmd
      */
     private void handleAlerts(CommandLine cmd) {
-
         System.out.println("[FreeNAS] Alerts");
 
         String [] opts = cmd.getArgs();
@@ -329,7 +328,6 @@ public class Main {
         AlertSystem alertSystem = new AlertSystemImp(getEndPointConnector(),getAuth());
         alertSystem.dismiss(optLst);
     }
-
 
     /**
      * List all alerts from FreeNAS system
