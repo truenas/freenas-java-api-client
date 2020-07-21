@@ -68,6 +68,11 @@ public class AlertMessageSerializer extends StdSerializer<AlertMessage> implemen
         instance.setFormatted(obj.getString("formatted"));
         instance.setSource(obj.getString("source"));
         instance.setNode(obj.getString("node"));
+        instance.setKlass(obj.getString("klass"));
+        instance.setMail(obj.getString("mail"));
+        instance.setKey(obj.getString("key"));
+        instance.setUuid(obj.getString("uuid"));
+        instance.setArgs(obj.getString("args"));
 
         return instance;
     }

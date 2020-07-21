@@ -35,17 +35,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class AlertMessage {
-    //@JsonProperty("uuid") String
+    @JsonProperty("uuid")
+    private String uuid;
     @JsonProperty("source")
     private String source;
-    //@JsonProperty("klass") String
-    //@JsonProperty("args") List<String> (or String)
+    @JsonProperty("klass")
+    private String klass;
+    @JsonProperty("args")
+    private Object args;
     @JsonProperty("node")
     private String node;
-    //@JsonProperty("key") String
+    @JsonProperty("key")
+    private String key;
     @JsonProperty("dismissed")
     private boolean dismissed;
-    //@JsonProperty("mail") String
+    @JsonProperty("mail")
+    private String mail;
     @JsonProperty("id")
     private String id;
     @JsonProperty("level")
@@ -116,16 +121,61 @@ public class AlertMessage {
         this.formatted = formatted;
     }
 
+    public String getKlass() {
+        return klass;
+    }
+
+    public void setKlass(String klass) {
+        this.klass = klass;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Object getArgs() {
+        return args;
+    }
+
+    public void setArgs(Object args) {
+        this.args = args;
+    }
+
     @Override
     public String toString() {
         return "AlertMessage{" +
                 "id='" + id + '\'' +
                 ", level='" + level + '\'' +
                 ", text='" + text + '\'' +
+                ", klass=" + klass +
+                ", uuid=" + uuid +
+                ", mail=" + mail +
+                ", key=" + key +
                 ", timestamp=" + datetime +
                 ", dismissed=" + dismissed +
                 ", node=" + node +
                 ", source=" + source +
+                ", args=" + args +
                 ", formatted=" + formatted +
                 '}';
     }
