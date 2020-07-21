@@ -30,8 +30,10 @@
  */
 package org.freenas.client.v2.alertsystem.rest.imp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ixsystems.vcp.entities.AlertMessage;
 import com.ixsystems.vcp.entities.AlertsMessageTransport;
+import kong.unirest.ObjectMapper;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
@@ -44,7 +46,9 @@ import org.freenas.client.v2.connectors.Endpoint;
 import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
 import org.freenas.client.v2.utils.UnirestUtils;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 public class AlertSystemImp implements AlertSystem {
     private static String ENDPOINT_ALERTS_LIST = "/api/v2.0/alert/list";
@@ -55,8 +59,7 @@ public class AlertSystemImp implements AlertSystem {
     private static String ENDPOINT_ALERTS_POLICIES = "/api/v2.0/alert/list_policies/"; //New in v2
     private static final Logger LOGGER = LogManager.getLogger(DatasetRestConnector.class);
 
-    private Endpoint endpoint;
-    private Authentication auth;
+    private Endpoint endpoint; private Authentication auth;
 
     public AlertSystemImp(Endpoint endpoint, Authentication auth){
         this.endpoint = endpoint;
@@ -64,32 +67,50 @@ public class AlertSystemImp implements AlertSystem {
     }
 
     public List<AlertMessage> list() {
-        try {
-            UnirestUtils.mapUnirest();
-            try {
+        ObjectMapper om = new ObjectMapper() {
+            private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper =
+                    new com.fasterxml.jackson.databind.ObjectMapper();
 
-                HttpResponse<AlertsMessageTransport> jsonResponse = Unirest.get(endpoint.getRootEndPoint() + ENDPOINT_ALERTS_LIST)
+            public <T> T readValue(String value, Class<T> valueType) {
+                try {
+                    return jacksonObjectMapper.readValue(value, valueType);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            public String writeValue(Object value) {
+                try {
+                    return jacksonObjectMapper.writeValueAsString(value);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+
+        Unirest.config().setObjectMapper(om);
+            try {
+                HttpResponse<AlertMessage[]> jsonResponse = Unirest.get(endpoint.getRootEndPoint() + ENDPOINT_ALERTS_LIST)
                         .basicAuth(auth.getUsername(), auth.getPassword())
                         .header("accept", "application/json")
-                        .asObject(AlertsMessageTransport.class);
+                        .asObject(AlertMessage[].class);
                 System.out.print(jsonResponse.getBody());
 
                 System.out.println("FreeNAS - get list of alerts.");
 
                 if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
-                    AlertsMessageTransport body = jsonResponse.getBody();
-                    System.out.println("body.getObjects() = " + body.getObjects());
-                    System.out.println(body);
-                    return body.getObjects();
+                    AlertMessage[] body = jsonResponse.getBody();
+                    List<AlertMessage> alertList = new ArrayList<AlertMessage>();
+                    for (AlertMessage b : body) {
+                        alertList.add(b);
+                    }
+                    System.out.println(alertList);
+                    return alertList;
                 }
 
             } catch (UnirestException e) {
                 LOGGER.error("Error while connecting service ", e);
             }
-
-        } catch (Exception e) {
-            LOGGER.error("Error while connecting service ", e);
-        }
 
         return null;
     }

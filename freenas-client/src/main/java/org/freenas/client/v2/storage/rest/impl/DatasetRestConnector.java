@@ -207,7 +207,6 @@ public class DatasetRestConnector implements DatasetConnector {
 
         Unirest.config().setObjectMapper(om);
         try {
-
             HttpResponse<Volume[]> jsonResponse = Unirest.get(endpoint.getRootEndPoint() + ENDPOINT_DATASET_LIST)
                     .basicAuth(auth.getUsername(), auth.getPassword())
                     .header("accept", "application/json")
@@ -230,7 +229,7 @@ public class DatasetRestConnector implements DatasetConnector {
         return null;
     }
 
-    public boolean shareCIFS(String name, String path) {
+    public boolean shareCIFS(String name, String path) throws DatasetAlreadyExists {
         Map<String, String> args = new HashMap<String, String>();
 
         /*args.put("cifs_name", name);
@@ -268,8 +267,7 @@ public class DatasetRestConnector implements DatasetConnector {
         return true;
     }
 
-    public boolean shareNFS(String name, String path) {
-
+    public boolean shareNFS(String name, String path) throws DatasetAlreadyExists {
         try {
             //Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
             Map<String, String> args = new HashMap<String, String>();

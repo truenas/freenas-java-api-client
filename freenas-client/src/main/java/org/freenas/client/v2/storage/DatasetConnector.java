@@ -48,8 +48,8 @@ public interface DatasetConnector {
     //public List<Volume> list(Long id);
     public List<Volume> list();
 
-    public boolean shareCIFS(String name, String path);
-    public boolean shareNFS(String name, String path);
+    public boolean shareCIFS(String name, String path) throws DatasetAlreadyExists;
+    public boolean shareNFS(String name, String path) throws DatasetAlreadyExists;
 
     public List<String> getNFSShares();
     public List<String> getCIFS();
