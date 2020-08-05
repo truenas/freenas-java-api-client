@@ -61,19 +61,19 @@ public class VolumeSerializer extends StdSerializer<Volume> implements EntitySer
 
     public Volume decode(JSONObject obj, Volume instance) {
         instance.setStatus(obj.getString("status"));
-        instance.setVolGuid(obj.getString("guid"));
+        instance.setVol_guid(obj.getString("guid"));
         /*instance.setUsed(obj.getString("used"));
         instance.setUsed_pct(obj.getString("used_pct"));
         instance.setUsed_si(obj.getString("used_si"));*/
-        instance.setId(obj.getString("id"));
-        instance.setVolEncrypted(obj.getString("encryptkey"));
+        instance.setId(obj.getInt("id"));
+        instance.setVol_encryptkey(obj.getString("encryptkey"));
         //instance.setVolName(obj.getString("vol_name"));
         instance.setName(obj.getString("name"));
-        instance.setIsDecrypted(obj.getString("is_decrypted"));
+        instance.setIs_decrypted(obj.getBoolean("is_decrypted"));
         //instance.setAvailableSi(obj.getString("avail_si"));
-        instance.setMountPoint(obj.getString("mountpoint"));
-        instance.setVolEncrypted(obj.getString("encrypt"));
-        instance.setChildren(new ArrayList<Map<String, Volume>>());
+        //instance.setMountPoint(obj.getString("mountpoint"));
+        instance.setVol_encrypt(obj.getInt("encrypt"));
+        //instance.setChildren(new ArrayList<Map<String, Volume>>());
         //instance.setTotalSi(obj.getString("total_si"));
         return instance;
     }

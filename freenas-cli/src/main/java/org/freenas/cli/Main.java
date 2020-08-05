@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ixsystems.vcp.entities.AlertMessage;
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
+import com.ixsystems.vcp.entities.Children;
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 import com.ixsystems.vcp.entities.share.NFSShare;
 import org.apache.commons.cli.*;
@@ -50,6 +51,7 @@ import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
 import org.freenas.client.v2.network.GlobalConfigurationConnector;
 import org.freenas.client.v2.network.rest.impl.GlobalConfigurationRestConnector;
 import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v2.storage.rest.impl.VolumeRestConnector;
 import org.freenas.client.v2.storage.rest.impl.SharingNFSRestConnector;
 import org.freenas.client.websockets.ReceivedMessage;
 import org.freenas.client.websockets.WSClient;
@@ -176,38 +178,23 @@ public class Main {
             app.volumeName = cmd.getOptionValue("vname");
         }
         if(cmd.hasOption("volume")) {
-
             app.handleVolumes(cmd);
         }
-
         if(cmd.hasOption("config")) {
-
             app.globalConfigurations(cmd);
         }
-
         if(cmd.hasOption("share")) {
-
             // Need to handle here the shares type
             app.handleShares(cmd);
-
         }
-
         if(cmd.hasOption("alerts")) {
-
             // Need to handle here the shares type
             app.handleAlerts(cmd);
-
         }
-
-
         if(cmd.hasOption("iterative")) {
-
             // Need to handle here the shares type
-            app.handleIterativeMode(cmd);
-
+            //app.handleIterativeMode(cmd);
         }
-
-
         if(cmd.hasOption("help")) {
 
             HelpFormatter formatter = new HelpFormatter();
@@ -227,9 +214,6 @@ public class Main {
         WSClient wsClient = new WSClient(websocketsUri, username, password);
         wsClient.start();
         wsClient.retrieveSessionId();
-
-
-
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String input = "";
@@ -354,25 +338,20 @@ public class Main {
      * @param cmd Command Line options
      */
     private void handleVolumes(CommandLine cmd){
-
         System.out.println("[FreeNAS] Volumes");
 
         String [] opts = cmd.getOptionValues("volume");
-        int indexOpt = 0 ;
+        int indexOpt = 0;
         if (opts[indexOpt].equals("add")){
             System.out.println("FreeNAS - adding new dataset named "+opts[indexOpt+1]);
             addDataset(opts[indexOpt+1]);
-        }
-        else if (opts[indexOpt].equals("delete")){
+        } else if (opts[indexOpt].equals("delete")){
             System.out.println("FreeNAS - delete new dataset named "+opts[indexOpt+1]);
             deleteDataset(opts[indexOpt+1]);
-        }
-        else if (opts[indexOpt].equals("list")){
-            System.out.println("FreeNAS - listing current datasets");
-            listDatasets();
-        }
-
-        else{
+        } else if (opts[indexOpt].equals("list")){
+            System.out.println("FreeNAS - listing current pools");
+            listPools();
+        } else{
             System.out.println("No options available for volume.");
         }
     }
@@ -392,12 +371,10 @@ public class Main {
             System.out.println("FreeNAS - creating a new share "+opts[indexOpt+1]);
             createShare(opts[indexOpt+1], opts[indexOpt+2], opts[indexOpt+3], opts[indexOpt+4]);
             System.out.println("FreeNAS - created a new share.");
-        }
-        else if (opts[indexOpt].equals("delete")){
+        }else if (opts[indexOpt].equals("delete")){
             System.out.println("FreeNAS - remove an existing share "+opts[indexOpt+1]);
             deleteShare(opts[indexOpt+1]);
-        }
-        else if (opts[indexOpt].equals("list")){
+        }else if (opts[indexOpt].equals("list")){
             System.out.println("FreeNAS - listing current shares");
             listCurrentShares();
         }
@@ -447,10 +424,15 @@ public class Main {
 
     public DatasetRestConnector getConnector(){
         AuthenticationConnector auth = getAuth();
-
-
         EndpointConnector ep = getEndPointConnector();
         DatasetRestConnector gs = new DatasetRestConnector(ep, auth);
+
+        return gs;
+    }
+    public VolumeRestConnector getVolumeConnector(){
+        AuthenticationConnector auth = getAuth();
+        EndpointConnector ep = getEndPointConnector();
+        VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
 
         return gs;
     }
@@ -479,38 +461,64 @@ public class Main {
 
     }
 
+    private boolean listPools(){
+        boolean result = false;
+        VolumeRestConnector gs = getVolumeConnector();
+        Map<String, String> args = new HashMap<String, String>();
+
+        List<Volume> pools = null;
+        try {
+            pools = gs.list();
+            result = true;
+        } catch (Exception e) {
+            LOGGER.error("Error while listing pools", e);
+        }
+        if (result){
+            System.out.println("The following pools:");
+            for (Volume v: pools){
+                if (v.getId() !=0 )
+                    System.out.println(">> Pool id: " + v.getId());
+                if (v.getName() != null)
+                    System.out.println(">> Pool name: " + v.getName() + " in " + v.getPath());
+                System.out.println(">> Used size " + v.getUsed() + " or " + v.getUsed_pct());
+                if (v.getChildren() != null && v.getChildren().length != 0) {
+                    System.out.println(">> Children");
+                    for(Children c : v.getChildren()) {
+                        System.out.println(c);
+                    }
+                }else{
+                    System.out.println(">> Childless");
+                }
+                System.out.println(">> ===========");
+            }
+        }
+        return result;
+    }
+
     private boolean listDatasets(){
         boolean result = false;
         DatasetRestConnector gs = getConnector();
         Map<String, String> args = new HashMap<String, String>();
 
-
-        String volumeName = this.volumeName;
-        List<Volume> datasets  = null ;
+        //String volumeName = this.volumeName;
+        List<Dataset> datasets = null;
         try {
-            datasets = gs.list();
+            //datasets = gs.list();
             result = true;
-        }
-        catch (Exception e){
-            LOGGER.error("Error while lists datasets", e);
+        } catch (Exception e) {
+            LOGGER.error("Error while listing datasets", e);
         }
         if (result){
             System.out.println("The following datasets:");
-            for (Volume v: datasets){
-                if (v.getId()!=null)
-                    System.out.println(">> Dataset id: "+v.getId());
-                if (v.getName()!=null)
-                    System.out.println(">> Dataset name: "+v.getName());
-                System.out.println(">> Dataset " + v.getName() + " in "+ v.getMountPoint()); //+ " with "+Long.parseLong(v.getAvailable()) / 1024 / 1024 / 1024 + "GB available.");
+            for (Dataset d : datasets){
+                if (d.getName() != null)
+                    System.out.println(">> Dataset name: " + d.getName() + " in " + d.getMountPoint());
+                System.out.println(">> Used size " + d.getUsed());
                 System.out.println(">> ===========");
             }
-
         }
-
         return result;
-
     }
-
 
     /**
      * List the current shares

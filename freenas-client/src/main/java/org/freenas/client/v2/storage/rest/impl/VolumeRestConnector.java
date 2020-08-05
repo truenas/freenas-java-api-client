@@ -48,8 +48,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VolumeRestConnector implements VolumeConnector {
-
-
     private String ENDPOINT_DATASET_CREATE;
     // /api/v1.0/storage/volume/
     private String ENDPOINT_DATASET_LIST = "/api/v2.0/pool";
@@ -85,10 +83,7 @@ public class VolumeRestConnector implements VolumeConnector {
                 }
             }
         };
-
-
         Unirest.config().setObjectMapper(om);
-
     }
 
     public Volume create() {
@@ -125,32 +120,25 @@ public class VolumeRestConnector implements VolumeConnector {
     }
 
     public List<Volume> list() {
-
-
         // This will be the result
         List<Volume> volumes = new ArrayList<Volume>();
-
         try {
-
             HttpResponse<Volume[]> jsonResponse = Unirest.get(rootUrl + ENDPOINT_DATASET_LIST)
                     .basicAuth(auth.getUsername(),auth.getPassword())
                     .header("accept", "application/json")
                     .asObject(Volume[].class);
-            //System.out.print(jsonResponse.getBody());
+            //System.out.println(jsonResponse.getBody());
 
             if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
-                Volume [] body = jsonResponse.getBody();
-                System.out.println(body);
-
+                Volume[] body = jsonResponse.getBody();
+                //System.out.println(body);
                 for (Volume b: body){
                     volumes.add(b);
                 }
             }
-
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
         return volumes;
     }
 }

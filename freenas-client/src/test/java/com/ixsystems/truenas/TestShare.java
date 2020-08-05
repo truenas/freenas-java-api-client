@@ -73,8 +73,8 @@ public class TestShare {
         DatasetRestConnector ds = AuxiliarAuth.getConnector();
         System.out.println(ds.get(1L));
         Volume v = getAvailableStoresByName(getAvailableStore());
-        System.out.println("Trying to share NFS with " + v.getName() + " and " + v.getMountPoint() );
-        ds.shareNFS(v.getName(), v.getMountPoint());
+        System.out.println("Trying to share NFS with " + v.getName() + " and " + v.getPath() );
+        ds.shareNFS(v.getName(), v.getPath());
 
     }
 }

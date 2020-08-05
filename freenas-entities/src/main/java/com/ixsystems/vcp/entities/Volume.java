@@ -30,232 +30,188 @@
  */
 package com.ixsystems.vcp.entities;
 
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.ixsystems.vcp.entities.serializers.VolumeSerializer;
 
-import java.util.List;
-import java.util.Map;
-
-@JsonSerialize(using = VolumeSerializer.class)
-@JsonIgnoreProperties(ignoreUnknown = true,
+/* Retrieved with /pool */
+@JsonIgnoreProperties(ignoreUnknown=true,
         value = {"hibernateLazyInitializer", "children", "created"})
-
+@JsonSerialize(include=Inclusion.NON_NULL)
+//@JsonSerialize(using = VolumeSerializer.class)
 public class Volume {
-    @JsonProperty("status")
-    private String status;
-
-    @JsonAlias("vol_guid")
-    @JsonProperty("guid")
-    private String volGuid;
-
-    //@JsonProperty("used")
-    //private String used;
-
-    @JsonProperty("name")
+    private int id;
     private String name;
-
-    //@JsonProperty("used_pct")
-    //private String used_pct;
-
-    //@JsonProperty("used_si")
-    //private String used_si;
-
-    @JsonProperty("id")
-    private String id;
-
-    @JsonAlias("vol_encryptkey")
-    @JsonProperty("encryptkey")
-    private String volEncryptedKey;
-
-    //@JsonProperty("vol_name")
-    //private String volName;
-
-    @JsonProperty("is_decrypted")
-    private String isDecrypted;
-
-    //@JsonProperty("avail_si")
-    //private String availableSi;
-
-    //@JsonProperty("avail")
-    //private String available;
-
-    @JsonProperty("mountpoint")
-    private String mountPoint;
-
-    @JsonAlias("vol_encrypt")
+    @JsonProperty("guid")
+    private String vol_guid;
     @JsonProperty("encrypt")
-    private String volEncrypted;
+    private int vol_encrypt;
+    @JsonProperty("encryptkey")
+    private String vol_encryptkey;
+    private String path; //New in v2.0
+    private String status;
+    @JsonIgnore
+    private JsonNode scan; //New in v2.0
+    @JsonProperty("topology")
+    private Topology topology;
+    private long used;
+    private String used_pct;
 
-    @JsonProperty("children")
-    private List<Map<String, Volume>> children;
+    private boolean healthy; //Not connected to methods. New in v2.0
+    private String status_detail; //Not connected to methods. New in v2.0
+    private String encryptkey_path; //Not connected to methods. New in v2.0
+    private boolean is_decrypted;
+    //private boolean is_upgraded; //Remove in v2.0
+    //private String vol_name; //Removed in v2.0
+    //private String mountpoint; //Removed in v2.0
+    //private String vol_fstype; //Removed in v2.0
 
-    //@JsonProperty("total_si")
-    //private String totalSi;
+    @JsonIgnore
+    //private List<Map<String, Volume>> children;
+    private Children[] children;
 
-    //TODO Add get/set
-    @JsonProperty("path")
-    private String path;
-    /* Other Fields
-     * healthy
-     * status_detail
-     * encryptkey_path
-     * stats
-     * device
-     * disk
-     */
-
-    public Volume() { }
-
-    public List<Map<String, Volume>> getChildren() {
-        return children;
+    public Children[] getChildren() {
+        List<Children> children = new ArrayList<Children>();
+        if(topology != null) {
+            for(VolumeContents cont : topology.getData()) {
+                if(cont != null) {
+                    for(Children c : cont.getChildren()) {
+                        children.add(c);
+                    }
+                }else{
+                    return null;
+                }
+            }
+            return children.toArray(new Children[0]);
+        }
+        return null;
     }
-
-    public void setChildren(List<Map<String, Volume>> children) {
+    /*public void setChildren(Children[] children) {
         this.children = children;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getVolGuid() {
-        return volGuid;
-    }
-
-    public void setVolGuid(String volGuid) {
-        this.volGuid = volGuid;
-    }
-
-    /*public String getUsed() {
-        return used;
-    }
-
-    public void setUsed(String used) {
-        this.used = used;
     }*/
-
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public boolean isIs_decrypted() {
+        return is_decrypted;
+    }
+    public void setIs_decrypted(boolean is_decrypted) {
+        this.is_decrypted = is_decrypted;
+    }
+    /*public boolean isIs_upgraded() {
+        return is_upgraded;
+    }
+    public void setIs_upgraded(boolean is_upgraded) {
+        this.is_upgraded = is_upgraded;
+    }*/
+    /*public String getMountpoint() {
+        return mountpoint;
+    }
+    public void setMountpoint(String mountpoint) {
+        this.mountpoint = mountpoint;
+    }*/
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    /*public String getUsed_pct() {
-        return used_pct;
+    public String getStatus() {
+        return status;
     }
-
-    public void setUsed_pct(String used_pct) {
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    public long getUsed() {
+        if(topology == null) {
+            return -1;
+        }
+        VolumeContents data = topology.getData()[0];
+        if(data == null) {
+            return -2;
+        }
+        return data.getStats().get("allocated").asLong();
+    }
+    /*public void setUsed(long used) {
+        this.used = used;
+    }*/
+    public String getUsed_pct() {
+        if(topology == null) {
+            return "0%";
+        }
+        VolumeContents data = topology.getData()[0];
+        if(data == null) {
+            return "0%";
+        }
+        double allocated = data.getStats().get("allocated").asDouble();
+        double size = data.getStats().get("size").asDouble();
+        return Long.toString(Math.round(allocated / size)) + "%";
+    }
+    /*public void setUsed_pct(String used_pct) {
         this.used_pct = used_pct;
-    }
-
-    public String getUsed_si() {
-        return used_si;
-    }
-
-    public void setUsed_si(String used_si) {
-        this.used_si = used_si;
     }*/
-
-    public String getId() {
-        return id;
+    public int getVol_encrypt() {
+        return vol_encrypt;
     }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setVol_encrypt(int vol_encrypt) {
+        this.vol_encrypt = vol_encrypt;
     }
-
-    public String getVolEncryptedKey() {
-        return volEncryptedKey;
+    public String getVol_encryptkey() {
+        return vol_encryptkey;
     }
-
-    public void setVolEncryptedKey(String volEncryptedKey) {
-        this.volEncryptedKey = volEncryptedKey;
+    public void setVol_encryptkey(String vol_encryptkey) {
+        this.vol_encryptkey = vol_encryptkey;
     }
-
-    /*public String getVolName() {
-        return volName;
+    /*public String getVol_fstype() {
+        return vol_fstype;
     }
-
-    public void setVolName(String volName) {
-        this.volName = volName;
+    public void setVol_fstype(String vol_fstype) {
+        this.vol_fstype = vol_fstype;
     }*/
-
-    public String getIsDecrypted() {
-        return isDecrypted;
+    public String getVol_guid() {
+        return vol_guid;
     }
-
-    public void setIsDecrypted(String isDecrypted) {
-        this.isDecrypted = isDecrypted;
+    public void setVol_guid(String vol_guid) {
+        this.vol_guid = vol_guid;
     }
-
-    /*public String getAvailableSi() {
-        return availableSi;
+    /*public String getVol_name() {
+        return vol_name;
     }
-
-    public void setAvailableSi(String availableSi) {
-        this.availableSi = availableSi;
+    public void setVol_name(String vol_name) {
+        this.vol_name = vol_name;
     }*/
-
-    public String getMountPoint() {
-        return mountPoint;
+    public String getPath() {
+        return path;
     }
-
-    public void setMountPoint(String mountPoint) {
-        this.mountPoint = mountPoint;
+    public void setPath(String path) {
+        this.path = path;
     }
-
-    public String getVolEncrypted() {
-        return volEncrypted;
-    }
-
-    public void setVolEncrypted(String volEncrypted) {
-        this.volEncrypted = volEncrypted;
-    }
-
-    /*public String getTotalSi() {
-        return totalSi;
-    }
-
-    public void setTotalSi(String totalSi) {
-        this.totalSi = totalSi;
-    }
-
-    public String getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(String available) {
-        this.available = available;
-    }*/
-
     @Override
     public String toString() {
-        return "Volume{" +
-                "status='" + status + '\'' +
-                ", volGuid='" + volGuid + '\'' +
-                //", used='" + used + '\'' +
-                ", name='" + name + '\'' +
-                //", used_pct='" + used_pct + '\'' +
-                //", used_si='" + used_si + '\'' +
-                ", id='" + id + '\'' +
-                ", volEncryptedKey='" + volEncryptedKey + '\'' +
-                //", volName='" + volName + '\'' +
-                ", isDecrypted='" + isDecrypted + '\'' +
-                /*", availableSi='" + availableSi + '\'' +
-                ", available='" + available + '\'' +*/
-                ", mountPoint='" + mountPoint + '\'' +
-                ", volEncrypted='" + volEncrypted + '\'' +
-                ", children='" + children + '\'' +
-                //", totalSi='" + totalSi + '\'' +
-                '}';
+        return "Volume [id=" + id
+                + ", name = " + name
+                + ", status = " + status
+                + ", used = " + getUsed()
+                + ", used_pct = " + getUsed_pct()
+                + ", path = " + path 
+                + ", vol_encrypt=" + vol_encrypt
+                + ", vol_encryptkey=" + vol_encryptkey
+                + ", vol_guid=" + vol_guid
+                + ", children=" + Arrays.toString(getChildren())
+                + ", is_decrypted = " + is_decrypted
+                + "]";
     }
 }
