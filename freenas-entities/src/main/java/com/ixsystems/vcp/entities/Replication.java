@@ -1,307 +1,174 @@
-/**
- * Copyright (C) 2018 iXsystems
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * * Neither the name of freenas-java-api-client nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 package com.ixsystems.vcp.entities;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+/**
+ * @author Ryussi Tech
+ */
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonSerialize(include=Inclusion.NON_NULL)
 public class Replication {
-    @JsonProperty("id")
-    private Long id;
-    @JsonProperty("name")
+    private int id;
     private String name; //New in v2.0
-    @JsonProperty("direction")
-    private String direction; //New in v2.0
-    @JsonProperty("transport")
-    private String transport; //New in v2.0
-    //@JsonProperty("ssh_credentials") //Object
-    //@JsonProperty("netcat_active_side") //String
-    //@JsonProperty("netcat_active_side_list_address") //String
-    //@JsonProperty("netcat_active_side_port_min") //String
-    //@JsonProperty("netcat_active_side_port_max") //String
-    //@JsonProperty("netcat_passive_side_connect_address") //String
-    //@JsonProperty("source_datasets") //List<String>
-    //@JsonProperty("target_dataset") //String
-    //@JsonProperty("recrusive") //Boolean
-    //@JsonProperty("exclude") //List<String>
-    //@JsonProperty("properties") //Boolean
-    //@JsonProperty("nameing_chema") //List<String>
-    //@JsonProperty("auto") //Boolean
-    //@JsonProperty("only_matching_schedule") //Boolean
-    //@JsonProperty("readonly") //String (ENUM)
-    //@JsonProperty("allow_from_scratch") //Boolean
-    //@JsonProperty("hold_pending_snapshots") //Boolean
-    //@JsonProperty("retention_policy") //String (ENUM)
-    //@JsonProperty("lifetime_value") //String
-    //@JsonProperty("lifetime_unit") //String
-    @JsonAlias("repl_compression")
+    private String direction; //New in v2.0. Enum value
+    private String transport; //New in v2.0. Enum value
+
+    private JsonNode ssh_credentials;
+    /*@JsonProperty("id")
+    private int credential_id;
+    @JsonProperty("name")
+    private int credential_name;
+    @JsonProperty("name")
+    private int credential_type;
+    @JsonUnwrapped
+    private JsonNode attributes;
+    @JsonProperty("host")
+    private String repl_remote_hostname;
+    @JsonProperty("port")
+    private int repl_remote_http_port;
+    @JsonProperty("username")
+    private String repl_remote_dedicateduser;
+    //private int repl_remote_port; //Not in v2.0
+    @JsonProperty("private_key")
+    private int private_key; //New in v2.0
+    @JsonProperty("remote_host_key")
+    private String repl_remote_hostkey;
+    @JsonProperty("cipher")
+    private String repl_remote_cipher;
+    @JsonProperty("connect_timeout")
+    private int connect_timeout;*/
+
+    private String netcat_active_side;
+    private String netcat_active_side_listen_address;
+    private int netcat_active_side_port_min;
+    private int netcat_active_side_port_max;
+    private String[] source_datasets;
+    private String target_dataset;
+    @JsonProperty("recursive")
+    private boolean repl_userepl;
+    private String[] exclude;
+    private boolean properties;
+    private String[] naming_schema;
+    private boolean auto;
+    private boolean only_matching_schedule;
+    private String readonly; //Enum value
+    private boolean allow_from_scratch;
+    private boolean hold_pending_snapshots;
+    private String retention_policy; //Enum value
+    private int lifetime_value;
+    private String lifetime_unit;
     @JsonProperty("compression")
-    private String replCompression;
-    @JsonAlias("repl_limit")
+    private String repl_compression; //Enum value
     @JsonProperty("speed_limit")
-    private Long replLimit;
-    //@JsonProperty("large_block") //Boolean
-    //@JsonProperty("embed") //Boolean
-    //@JsonProperty("compressed") //Boolean
-    //@JsonProperty("retries") //Integer
-    //@JsonProperty("logging_level") //String
-    @JsonAlias("repl_enabled")
+    private int repl_limit;
+    private boolean large_block;
+    private boolean embed;
+    private boolean compressed;
+    private int retries;
     @JsonProperty("enabled")
-    private Boolean replEnabled;
-    //@JsonProperty("state") //Object
-    //@JsonProperty("periodic_snapshot_tasks") //List<Object>
-    //@JsonProperty("also_include_naming_schema") //List<String>
-    //@JsonProperty("schedule") //String
-    //@JsonProperty("restrict_schedule") //String
-    //@JsonProperty("job") //String
+    private boolean repl_enabled;
 
-    /*@JsonProperty("repl_end")
-    private String replEnd;
-    @JsonProperty("repl_remote_dedicateduser")
-    private String replRemoteDedicatedUser;
-    @JsonProperty("repl_userepl")
-    private Boolean replUserPl;
-    @JsonProperty("repl_remote_port")
-    private Integer replRemotePort;
-    @JsonProperty("repl_remote_dedicateduser_enabled")
-    private Boolean isReplRemoteDedicatedUserEnabled;
-    @JsonProperty("repl_begin")
-    private String replBegin;
-    @JsonProperty("repl_filesystem")
-    private String replFilesystem;
-    @JsonProperty("repl_remote_cipher")
-    private String replRemoteCipher;
-    @JsonProperty("repl_remote_hostkey")
-    private String replRemoteHostKey;
-    @JsonProperty("repl_remote_hostname")
-    private String replRemoteHostname;
-    @JsonProperty("repl_lastsnapshot")
-    private String replLastSnapshot;
-    @JsonProperty("repl_status")
-    private String replStatus;
-    @JsonProperty("repl_zfs")
-    private String replZfs;*/
+    private JsonNode state;
+    /*@JsonProperty("last_snapshot")
+    private String repl_lastsnapshot;
+    @JsonProperty("state")
+    private String repl_status;*/
 
+    private JsonNode[] periodic_snapshot_tasks;
+    private String[] also_include_naming_schema;
+    private JsonNode schedule;
+    private JsonNode restrict_schedule;
+    private JsonNode job;
 
-    /*public String getReplEnd() {
-        return replEnd;
+    /*public String getRepl_remote_dedicateduser() {
+        return repl_remote_dedicateduser;
     }
-
-    public void setReplEnd(String replEnd) {
-        this.replEnd = replEnd;
+    public void setRepl_remote_dedicateduser(String repl_remote_dedicateduser) {
+        this.repl_remote_dedicateduser = repl_remote_dedicateduser;
     }
-
-    public String getReplRemoteDedicatedUser() {
-        return replRemoteDedicatedUser;
+    public boolean isRepl_userepl() {
+        return repl_userepl;
     }
-
-    public void setReplRemoteDedicatedUser(String replRemoteDedicatedUser) {
-        this.replRemoteDedicatedUser = replRemoteDedicatedUser;
-    }
-
-    public Boolean getReplUserPl() {
-        return replUserPl;
-    }
-
-    public void setReplUserPl(Boolean replUserPl) {
-        this.replUserPl = replUserPl;
+    public void setRepl_userepl(boolean repl_userepl) {
+        this.repl_userepl = repl_userepl;
     }*/
-
-    public Long getReplLimit() {
-        return replLimit;
+    public int getRepl_limit() {
+        return repl_limit;
     }
-
-    public void setReplLimit(Long replLimit) {
-        this.replLimit = replLimit;
+    public void setRepl_limit(int repl_limit) {
+        this.repl_limit = repl_limit;
     }
-
-    /*public Integer getReplRemotePort() {
-        return replRemotePort;
+    /*public int getRepl_remote_http_port() {
+        return repl_remote_http_port;
     }
-
-    public void setReplRemotePort(Integer replRemotePort) {
-        this.replRemotePort = replRemotePort;
+    public void setRepl_remote_http_port(int repl_remote_port) {
+        this.repl_remote_http_port = repl_remote_port;
     }
-
-    public Boolean getReplRemoteDedicatedUserEnabled() {
-        return isReplRemoteDedicatedUserEnabled;
+    public String getRepl_remote_cipher() {
+        return repl_remote_cipher;
     }
-
-    public void setReplRemoteDedicatedUserEnabled(Boolean replRemoteDedicatedUserEnabled) {
-        isReplRemoteDedicatedUserEnabled = replRemoteDedicatedUserEnabled;
+    public void setRepl_remote_cipher(String repl_remote_cipher) {
+        this.repl_remote_cipher = repl_remote_cipher;
     }
-
-    public String getReplBegin() {
-        return replBegin;
+    public String getRepl_remote_hostkey() {
+        return repl_remote_hostkey;
     }
-
-    public void setReplBegin(String replBegin) {
-        this.replBegin = replBegin;
-    }
-
-    public String getReplFilesystem() {
-        return replFilesystem;
-    }
-
-    public void setReplFilesystem(String replFilesystem) {
-        this.replFilesystem = replFilesystem;
-    }
-
-    public String getReplRemoteCipher() {
-        return replRemoteCipher;
-    }
-
-    public void setReplRemoteCipher(String replRemoteCipher) {
-        this.replRemoteCipher = replRemoteCipher;
-    }
-
-    public String getReplRemoteHostKey() {
-        return replRemoteHostKey;
-    }
-
-    public void setReplRemoteHostKey(String replRemoteHostKey) {
-        this.replRemoteHostKey = replRemoteHostKey;
+    public void setRepl_remote_hostkey(String repl_remote_hostkey) {
+        this.repl_remote_hostkey = repl_remote_hostkey;
     }*/
-
-    public Boolean getReplEnabled() {
-        return replEnabled;
+    public boolean isRepl_enabled() {
+        return repl_enabled;
     }
-
-    public void setReplEnabled(Boolean replEnabled) {
-        this.replEnabled = replEnabled;
+    public void setRepl_enabled(boolean repl_enabled) {
+        this.repl_enabled = repl_enabled;
     }
-
-    public String getReplCompression() {
-        return replCompression;
+    public String getRepl_compression() {
+        return repl_compression;
     }
-
-    public void setReplCompression(String replCompression) {
-        this.replCompression = replCompression;
+    public void setRepl_compression(String repl_compression) {
+        this.repl_compression = repl_compression;
     }
-
-    /*public String getReplRemoteHostname() {
-        return replRemoteHostname;
+    /*public String getRepl_remote_hostname() {
+        return repl_remote_hostname;
     }
-
-    public void setReplRemoteHostname(String replRemoteHostname) {
-        this.replRemoteHostname = replRemoteHostname;
+    public void setRepl_remote_hostname(String repl_remote_hostname) {
+        this.repl_remote_hostname = repl_remote_hostname;
     }
-
-    public String getReplLastSnapshot() {
-        return replLastSnapshot;
+    public String getRepl_lastsnapshot() {
+        return repl_lastsnapshot;
     }
-
-    public void setReplLastSnapshot(String replLastSnapshot) {
-        this.replLastSnapshot = replLastSnapshot;
+    public void setRepl_lastsnapshot(String repl_lastsnapshot) {
+        this.repl_lastsnapshot = repl_lastsnapshot;
     }
-
-    public String getReplStatus() {
-        return replStatus;
+    public String getRepl_status() {
+        return repl_status;
     }
-
-    public void setReplStatus(String replStatus) {
-        this.replStatus = replStatus;
+    public void setRepl_status(String repl_status) {
+        this.repl_status = repl_status;
     }*/
-
-    public Long getId() {
+    public int getId() {
         return id;
     }
-
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
-
-    /*public String getReplZfs() {
-        return replZfs;
+    public String getName() {
+        return name;
     }
-
-    public void setReplZfs(String replZfs) {
-        this.replZfs = replZfs;
-    }*/
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Replication that = (Replication) o;
-
-        //if (replEnd != null ? !replEnd.equals(that.replEnd) : that.replEnd != null) return false;
-        /*if (replRemoteDedicatedUser != null ? !replRemoteDedicatedUser.equals(that.replRemoteDedicatedUser) : that.replRemoteDedicatedUser != null)
-            return false;*/
-        //if (replUserPl != null ? !replUserPl.equals(that.replUserPl) : that.replUserPl != null) return false;
-        if (replLimit != null ? !replLimit.equals(that.replLimit) : that.replLimit != null) return false;
-        /*if (replRemotePort != null ? !replRemotePort.equals(that.replRemotePort) : that.replRemotePort != null)
-            return false;
-        if (isReplRemoteDedicatedUserEnabled != null ? !isReplRemoteDedicatedUserEnabled.equals(that.isReplRemoteDedicatedUserEnabled) : that.isReplRemoteDedicatedUserEnabled != null)
-            return false;
-        if (replBegin != null ? !replBegin.equals(that.replBegin) : that.replBegin != null) return false;
-        if (replFilesystem != null ? !replFilesystem.equals(that.replFilesystem) : that.replFilesystem != null)
-            return false;
-        if (replRemoteCipher != null ? !replRemoteCipher.equals(that.replRemoteCipher) : that.replRemoteCipher != null)
-            return false;
-        if (replRemoteHostKey != null ? !replRemoteHostKey.equals(that.replRemoteHostKey) : that.replRemoteHostKey != null)
-            return false;*/
-
-        if (replEnabled != null ? !replEnabled.equals(that.replEnabled) : that.replEnabled != null) return false;
-        if (replCompression != null ? !replCompression.equals(that.replCompression) : that.replCompression != null)
-            return false;
-        /*if (replRemoteHostname != null ? !replRemoteHostname.equals(that.replRemoteHostname) : that.replRemoteHostname != null)
-            return false;
-        if (replLastSnapshot != null ? !replLastSnapshot.equals(that.replLastSnapshot) : that.replLastSnapshot != null)
-            return false;
-        if (replStatus != null ? !replStatus.equals(that.replStatus) : that.replStatus != null) return false;
-        if (replZfs != null ? replZfs.equals(that.replZfs) : that.replZfs == null) return false;*/
-        return (id != null ? !id.equals(that.id) : that.id != null);
+    public void setName(String name) {
+        this.name = name;
     }
-
-    @Override
-    public int hashCode() {
-        int result = replLimit != null ? replLimit.hashCode() : 0;
-        /*result = 31 * result + (replRemoteDedicatedUser != null ? replRemoteDedicatedUser.hashCode() : 0);
-        result = 31 * result + (replUserPl != null ? replUserPl.hashCode() : 0);
-        result = 31 * result + (replEnd != null ? replEnd.hashCode() : 0);
-        result = 31 * result + (replRemotePort != null ? replRemotePort.hashCode() : 0);
-        result = 31 * result + (isReplRemoteDedicatedUserEnabled != null ? isReplRemoteDedicatedUserEnabled.hashCode() : 0);
-        result = 31 * result + (replBegin != null ? replBegin.hashCode() : 0);
-        result = 31 * result + (replFilesystem != null ? replFilesystem.hashCode() : 0);
-        result = 31 * result + (replRemoteCipher != null ? replRemoteCipher.hashCode() : 0);
-        result = 31 * result + (replRemoteHostKey != null ? replRemoteHostKey.hashCode() : 0);*/
-        result = 31 * result + (replEnabled != null ? replEnabled.hashCode() : 0);
-        result = 31 * result + (replCompression != null ? replCompression.hashCode() : 0);
-        //result = 31 * result + (replRemoteHostname != null ? replRemoteHostname.hashCode() : 0);
-        //result = 31 * result + (replLastSnapshot != null ? replLastSnapshot.hashCode() : 0);
-        //result = 31 * result + (replStatus != null ? replStatus.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        //result = 31 * result + (replZfs != null ? replZfs.hashCode() : 0);
-        return result;
+    public String getTarget_dataset() {
+        return target_dataset;
+    }
+    public void setTarget_dataset(String target_dataset) {
+        this.target_dataset = target_dataset;
     }
 }

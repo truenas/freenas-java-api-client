@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ixsystems.vcp.entities.AlertMessage;
 import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
+import com.ixsystems.vcp.entities.Replication;
 import com.ixsystems.vcp.entities.Children;
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
 import com.ixsystems.vcp.entities.share.NFSShare;
@@ -52,6 +53,7 @@ import org.freenas.client.v2.network.GlobalConfigurationConnector;
 import org.freenas.client.v2.network.rest.impl.GlobalConfigurationRestConnector;
 import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
 import org.freenas.client.v2.storage.rest.impl.VolumeRestConnector;
+import org.freenas.client.v2.storage.rest.impl.ReplicationRestConnector;
 import org.freenas.client.v2.storage.rest.impl.SharingNFSRestConnector;
 import org.freenas.client.websockets.ReceivedMessage;
 import org.freenas.client.websockets.WSClient;
@@ -105,6 +107,8 @@ public class Main {
 
         Option volume = new Option( "volume", "create volume" );
         volume.setArgs(2);
+        Option replication = new Option("replication", "create replication");
+        replication.setArgs(2);
         Option config = new Option( "config", "config list" );
         config.setArgs(1);
 
@@ -125,6 +129,7 @@ public class Main {
         // add t option
         options.addOption(help);
         options.addOption(volume);
+        options.addOption(replication);
         options.addOption(usernameOpt);
         options.addOption(passwordOpt);
         options.addOption(vnameOpt);
@@ -179,6 +184,9 @@ public class Main {
         }
         if(cmd.hasOption("volume")) {
             app.handleVolumes(cmd);
+        }
+        if(cmd.hasOption("replication")) {
+            app.handleReplications(cmd);
         }
         if(cmd.hasOption("config")) {
             app.globalConfigurations(cmd);
@@ -357,7 +365,31 @@ public class Main {
     }
 
     /**
-     * Handle Volumes
+     * Handle Replications
+     *
+     * @param cmd Command Line options
+     */
+    private void handleReplications(CommandLine cmd){
+        System.out.println("[FreeNAS] Replications");
+
+        String[] opts = cmd.getOptionValues("replication");
+        int indexOpt = 0;
+        if (opts[indexOpt].equals("add")){
+            System.out.println("FreeNAS - adding new replication task named "+opts[indexOpt+1]);
+            //addDataset(opts[indexOpt+1]);
+        } else if (opts[indexOpt].equals("delete")){
+            System.out.println("FreeNAS - delete new replication task named "+opts[indexOpt+1]);
+            //deleteDataset(opts[indexOpt+1]);
+        } else if (opts[indexOpt].equals("list")){
+            System.out.println("FreeNAS - listing current replication tasks");
+            listReplications();
+        } else{
+            System.out.println("No options available for replication.");
+        }
+    }
+
+    /**
+     * Handle NFS Shares
      *
      * @param cmd Command Line options
      */
@@ -436,6 +468,13 @@ public class Main {
 
         return gs;
     }
+    public ReplicationRestConnector getReplicationConnector(){
+        AuthenticationConnector auth = getAuth();
+        EndpointConnector ep = getEndPointConnector();
+        ReplicationRestConnector gs = new ReplicationRestConnector(ep, auth);
+
+        return gs;
+    }
     private boolean addDataset(String name){
         boolean result = false;
         DatasetRestConnector gs = getConnector();
@@ -459,6 +498,40 @@ public class Main {
         }
         return result;
 
+    }
+
+    private boolean listReplications(){
+        boolean result = false;
+        ReplicationRestConnector gs = getReplicationConnector();
+        Map<String, String> args = new HashMap<String, String>();
+
+        List<Replication> replications = null;
+        try {
+            replications = gs.list();
+            result = true;
+        } catch (Exception e) {
+            LOGGER.error("Error while listing replications", e);
+        }
+        if (result){
+            System.out.println("The following replications:");
+            for (Replication r : replications){
+                if (r.getId() !=0 )
+                    System.out.println(">> Replication id: " + r.getId());
+                if (r.getName() != null)
+                    System.out.println(">> Replication name: " + r.getName() + " in " + r.getTarget_dataset());
+                /*System.out.println(">> Used size " + v.getUsed() + " or " + v.getUsed_pct());
+                if (v.getChildren() != null && v.getChildren().length != 0) {
+                    System.out.println(">> Children");
+                    for(Children c : v.getChildren()) {
+                        System.out.println(c);
+                    }
+                }else{
+                    System.out.println(">> Childless");
+                }*/
+                System.out.println(">> ===========");
+            }
+        }
+        return result;
     }
 
     private boolean listPools(){

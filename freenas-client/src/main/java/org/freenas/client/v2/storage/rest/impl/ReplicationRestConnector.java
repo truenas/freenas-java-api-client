@@ -30,72 +30,121 @@
  */
 package org.freenas.client.v2.storage.rest.impl;
 
-import com.ixsystems.vcp.entities.Dataset;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.ixsystems.vcp.entities.Replication;
 import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
+import kong.unirest.UnirestParsingException;
+import kong.unirest.ObjectMapper;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
+import org.apache.http.HttpStatus;
 import org.freenas.client.v2.connectors.Authentication;
 import org.freenas.client.v2.connectors.Endpoint;
+import org.freenas.client.v2.storage.ReplicationConnector;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class ReplicationRestConnector {
-    // ""
-    private String ENDPOINT_DATASET_CREATE = "/api/v2.0/replication/create_datasets";
-
-    // /api/v1.0/storage/volume/
-    private String ENDPOINT_DATASET_LIST = "/api/v2.0/replication/list_datasets";
+public class ReplicationRestConnector implements ReplicationConnector {
+    private String ENDPOINT_REPLICATION_CREATE = "/api/v2.0/replication";
+    private String ENDPOINT_REPLICATION_LIST = "/api/v2.0/replication";
+    private String ENDPOINT_REPLICATION_DELETE = "/api/v2.0/id/{id}";
+    private String ENDPOINT_REPLICATION_GET = "/api/v2.0/id/{id}";
+    private String ENDPOINT_REPLICATION_UPDATE = "/api/v2.0/id/{id}";
 
     private Endpoint endpoint;
     private Authentication auth;
     private String rootUrl = "";
-
     private JSONObject myObj;
 
     public ReplicationRestConnector(Endpoint endpoint, Authentication auth) {
         this.endpoint = endpoint;
         this.auth = auth;
+        this.rootUrl = endpoint.getRootEndPoint();
+        ObjectMapper om = new ObjectMapper() {
+            private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper =
+                    new com.fasterxml.jackson.databind.ObjectMapper();
+
+            public <T> T readValue(String value, Class<T> valueType) {
+                try {
+                    return jacksonObjectMapper.readValue(value, valueType);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            public String writeValue(Object value) {
+                try {
+                    return jacksonObjectMapper.writeValueAsString(value);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        };
+        Unirest.config().setObjectMapper(om);
     }
 
-    public Dataset create() {
+    public Replication create() {
         try {
-            HttpResponse<JsonNode> jsonResponse = Unirest.post(ENDPOINT_DATASET_CREATE)
+            HttpResponse<Replication> jsonResponse = Unirest.post(ENDPOINT_REPLICATION_CREATE)
                     .header("accept", "application/json")
                     .queryString("apiKey", "123")
                     .field("parameter", "value")
                     .field("foo", "bar")
-                    .asJson();
+                    .asObject(Replication.class);
+
+            if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
+                Replication body = jsonResponse.getBody();
+                System.out.println(body);
+            }
         } catch (UnirestException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
-    public Dataset create(String volumeName, Map<String, String> args) {
+    public Replication update(int id, Replication newTask) {
         return null;
     }
 
-    public Dataset update(Dataset id) {
+    public Replication delete(int id) {
         return null;
     }
 
-    public Dataset delete(Long id) {
+    public Replication get(int id) {
         return null;
     }
 
-    public Dataset get(Long id) {
-        return null;
-    }
+    public List<Replication> list() {
+        // This will be the result
+        List<Replication> tasks = new ArrayList<Replication>();
+        try {
+            HttpResponse<Replication[]> jsonResponse = Unirest.get(rootUrl + ENDPOINT_REPLICATION_LIST)
+                    .basicAuth(auth.getUsername(), auth.getPassword())
+                    .header("accept", "application/json")
+                    .asObject(Replication[].class);
+            if(jsonResponse.getParsingError().isPresent()) {
+                UnirestParsingException jsonError = jsonResponse.getParsingError().get();
+                String originalBody = jsonError.getOriginalBody();
+                System.out.println(jsonError);
+                System.out.println(originalBody);
+            }
 
-    public List<Dataset> list(Long id) {
-        return null;
-    }
-
-    public List<Dataset> list() {
-        return null;
+            if (jsonResponse.getStatus() == HttpStatus.SC_OK) {
+                Replication[] body = jsonResponse.getBody();
+                System.out.println(body);
+                if(body != null) {
+                    for (Replication b : body){
+                        System.out.println(b);
+                        tasks.add(b);
+                    }
+                }
+            }
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+        return tasks;
     }
 }

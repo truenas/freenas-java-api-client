@@ -31,12 +31,13 @@
 package org.freenas.client.v2.storage;
 
 import com.ixsystems.vcp.entities.Replication;
+
 import java.util.List;
 
 public interface ReplicationConnector {
     public Replication create();
-    public Replication update(Replication id);
-    public Replication delete(Long id);
-    public Replication get(Long id);
+    public Replication update(int id, Replication newTask);
+    public Replication delete(int id);
+    public Replication get(int id);
     public List<Replication> list();
 }
