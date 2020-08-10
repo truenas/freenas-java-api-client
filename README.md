@@ -108,20 +108,27 @@ Delete the NFS Share:
 freenas-cli -user USERNAME -pass PASSWORD -url http://NAS_IP -share delete /mnt/primary03
 ```
 
+List replication tasks:
+
+
+```
+freenas-cli -user USERNAME -pass PASSWORD -url http://NAS_IP -replication list all
+```
 
 
 How to configure conf/freenas.yml? 
 
-Using the YML configuration file is preferred as you will nto need to pass the
-credentials and endpoint on every run.
+Using the YML configuration file is preferred as you will not need to pass the
+credentials and endpoint on every run. Copy freenas.yml.template to freenas.yml
+and change the fields below to match the NAS in use.
 
 ```
-
 freenas:
   username: <username>
   password: <pass>
-  url:  http://freenas-address-url
-
+  url:  https://freenas-address-url
+  websocketsUri: wss://freenas-address-url/websocket
+  websockets: true
 ```
 
 
@@ -134,4 +141,6 @@ The project is organized into three modules:
 - freenas-java: the interface/API and the RESTful/WS connectors;
 - freenas-cli: a command line interface to interact with FreeNAS.
 
-
+To build, run "mvn clean install" or run "./build.sh" in the root directory,
+which builds and then runs freenas-cli, assuming the conf file has been
+configured correctly.
