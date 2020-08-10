@@ -41,16 +41,11 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class YmlConfs {
+
     private static final Logger LOGGER = LogManager.getLogger(YmlConfs.class);
     Map<String, Object> properties = null;
 
-    public void setProperties(Map<String, Object> properties) {
-        this.properties = properties;
-    }
-
-    public YmlConfs() {
-
-    }
+    public YmlConfs() { }
 
     public void load() throws FileNotFoundException {
         File f = new File("conf/freenas.yml");
@@ -61,15 +56,18 @@ public class YmlConfs {
 
         InputStream inputStream = new FileInputStream(f);
         Map<String, Object> obj = yaml.load(inputStream);
-        LOGGER.info("There is one object.. ");
+        LOGGER.info("Conf file " + f.getAboslutePath() + " loaded successfully...");
         this.properties = obj;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 
     public String getUsername(){
         Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
         return prop.get("username");
     }
-
     public String getPassword(){
         Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
         return prop.get("password");
@@ -78,7 +76,6 @@ public class YmlConfs {
         Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
         return prop.get("url");
     }
-
     public Boolean getWebSockets(){
         Map<String, Boolean> prop = (Map<String, Boolean>) this.properties.get("freenas");
         return prop.get("websockets");
@@ -87,10 +84,7 @@ public class YmlConfs {
         Map<String, String> prop = (Map<String, String>) this.properties.get("freenas");
         return prop.get("websocketsUri");
     }
-
     public Map<String, Object> getProperties() {
         return properties;
     }
-
-
 }

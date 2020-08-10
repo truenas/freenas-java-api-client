@@ -10,6 +10,7 @@ freenas-cli/.settings/org.eclipse.core.resources.prefs
 freenas-cli/.settings/org.eclipse.jdt.apt.core.prefs
 freenas-cli/.settings/org.eclipse.jdt.core.prefs
 freenas-cli/.settings/org.eclipse.m2e.core.prefs
+freenas-cli/conf/freenas.yml
 freenas-client/.classpath
 freenas-client/.settings/org.eclipse.core.resources.prefs
 freenas-client/.settings/org.eclipse.jdt.apt.core.prefs
