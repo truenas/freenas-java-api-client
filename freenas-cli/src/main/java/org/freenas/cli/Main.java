@@ -136,7 +136,7 @@ public class Main {
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
-        Main app = new Main();
+
         try {
             cmd = parser.parse( options, args);
 
@@ -149,58 +149,65 @@ public class Main {
         try {
             yml.load();
             // Set settings
-            app.username = yml.getUsername();
-            app.password = yml.getPassword();
-            app.url = yml.getUrl();
-            app.websockets = yml.getWebSockets();
-            app.websocketsUri = yml.getWebSocketsUri();
-
+            this.username = yml.getUsername();
+            this.password = yml.getPassword();
+            this.url = yml.getUrl();
+            this.websockets = yml.getWebSockets();
+            this.websocketsUri = yml.getWebSocketsUri();
         } catch (FileNotFoundException e) {
-            LOGGER.info("No freenas yml configuration available.");
+            LOGGER.info("No yml configuration available.");
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         if(cmd.hasOption("user")) { // User
-            app.username = cmd.getOptionValue("user");
+            this.username = cmd.getOptionValue("user");
         }
         if(cmd.hasOption("pass")) { // Pass
-            app.password = cmd.getOptionValue("pass");
+            this.password = cmd.getOptionValue("pass");
         }
         if(cmd.hasOption("url")) { // Pass
-            app.url = cmd.getOptionValue("url");
+            this.url = cmd.getOptionValue("url");
         }
         if(cmd.hasOption("vname")) { // Pass
-            app.volumeName = cmd.getOptionValue("vname");
+            this.volumeName = cmd.getOptionValue("vname");
         }
         if(cmd.hasOption("volume")) {
-            app.handleVolumes(cmd);
+            if(!handleVolumes(cmd)) {
+                System.out.println("Failed to handle volumes");
+            }
         }
         if(cmd.hasOption("replication")) {
-            app.handleReplications(cmd);
+            if(!handleReplications(cmd)) {
+                System.out.println("Failed to handle replication tasks");
+            }
         }
         if(cmd.hasOption("config")) {
-            app.globalConfigurations(cmd);
+            if(!globalConfigurations(cmd)) {
+                System.out.println("Failed to handle global configuration");
+            }
         }
         if(cmd.hasOption("share")) {
             // Need to handle here the shares type
-            app.handleShares(cmd);
+            if(!handleShares(cmd)) {
+                System.out.println("Failed to handle shares");
+            }
         }
         if(cmd.hasOption("alerts")) {
-            // Need to handle here the shares type
-            app.handleAlerts(cmd);
+            if(!handleAlerts(cmd)) {
+                System.out.println("Failed to handle alerts");
+            }
         }
         if(cmd.hasOption("iterative")) {
-            // Need to handle here the shares type
-            //app.handleIterativeMode(cmd);
+            if(!handleIterativeMode(cmd)) {
+                System.out.println("Failed to handle websocket connection");
+            }
         }
         if(cmd.hasOption("help")) {
-
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( "freenas-client", options );
+            formatter.printHelp( freenas-client", options);
         }
-        //System.out.println(app);
     }
 
     private void handleIterativeMode(CommandLine cmd) {
