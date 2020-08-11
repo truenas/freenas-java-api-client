@@ -30,17 +30,31 @@
  */
 package org.freenas.client.v2.storage;
 
+import com.ixsystems.vcp.entities.Extent;
 import com.ixsystems.vcp.entities.AssociatedTarget;
-
+import com.ixsystems.vcp.entities.Target;
 import java.util.List;
+import java.util.Map;
 
 /**
- * The Dataset resource represents ZFS datasets.
+ * Manage the shares for datasets
  */
-public interface AssociatedTargetConnector {
-    public AssociatedTarget create();
-    public AssociatedTarget update(AssociatedTarget id);
-    public AssociatedTarget delete(Long id);
-    public AssociatedTarget get(Long id);
-    public List<AssociatedTarget> list(Long id);
+public interface SharingISCSIConnector {
+    public Extent createExtent(String name, Map<String, String> args);
+    public Extent updateExtent(int id);
+    public Extent deleteExtent(String name);
+    public Extent getExtent(int id);
+    public List<Extent> listExtents();
+
+    public AssociatedTarget createAssociatedTarget(String name, Map<String, String> args);
+    public AssociatedTarget updateAssociatedTarget(int id);
+    public AssociatedTarget deleteAssociatedTarget(String name);
+    public AssociatedTarget getAssociatedTarget(int id);
+    public List<AssociatedTarget> listAssociatedTargets();
+
+    public Target createTarget(String name, Map<String, String> args);
+    public Target updateTarget(int id);
+    public Target deleteTarget(String name);
+    public Target getTarget(int id);
+    public List<Target> listTargets();
 }

@@ -32,7 +32,7 @@ package org.freenas.client.utils;
 
 
 import kong.unirest.Unirest;
-import org.freenas.client.v1.utils.UnirestUtils;
+import org.freenas.client.v2.utils.UnirestUtils;
 
 import java.io.InputStreamReader;
 import java.io.Reader;

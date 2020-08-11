@@ -1,4 +1,4 @@
-package com.ixsystems.truenas.vcp.to;
+package com.ixsystems.vcp.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
