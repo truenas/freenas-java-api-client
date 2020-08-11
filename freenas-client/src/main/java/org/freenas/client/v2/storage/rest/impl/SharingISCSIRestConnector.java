@@ -57,7 +57,7 @@ public class SharingISCSIRestConnector implements SharingISCSIConnector {
     private String ENDPOINT_SHARING_CREATE = "/api/v2.0/sharing/nfs";
     private String ENDPOINT_SHARING_DELETE = "/api/v2.0/sharing/nfs/id/{id}";
 
-    private static final Logger LOGGER = LogManager.getLogger(SharingNFSRestConnector.class);
+    private static final Logger LOGGER = LogManager.getLogger(SharingISCSIRestConnector.class);
 
     private Endpoint endpoint;
     private Authentication auth;

@@ -33,7 +33,7 @@ package com.ixsystems.truenas;
 import com.ixsystems.vcp.entities.Extent;
 import org.freenas.client.v2.connectors.rest.imp.AuthenticationConnector;
 import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.v2.storage.rest.impl.ISCSIRestConnector;
+import org.freenas.client.v2.storage.rest.impl.SharingISCSIRestConnector;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -44,9 +44,8 @@ public class TestExtent {
     public void tryFetch() {
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
         EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
-        VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
-        ISCSIRestConnector gs = new ISCSIRestConnector(ep, auth);
-        List<Extent> list = gs.list();
+        SharingISCSIRestConnector gs = new SharingISCSIRestConnector(ep, auth);
+        List<Extent> list = gs.listExtents();
         for (Extent extent : list){
             System.out.println(extent);
         }

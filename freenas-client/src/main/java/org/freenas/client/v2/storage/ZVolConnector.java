@@ -41,6 +41,5 @@ public interface ZVolConnector {
     public ZVol update(ZVol id);
     public ZVol delete(Long id);
     public ZVol get(Long id);
-    //public List<ZVol> list(Long id);
     public List<ZVol> list();
 }

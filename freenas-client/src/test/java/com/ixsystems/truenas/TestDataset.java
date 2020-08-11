@@ -102,13 +102,16 @@ public class TestDataset {
     public void testList() {
         DatasetRestConnector gs = getConnector();
 
-        List<Volume> volumeList = gs.list(0L);
-        /*Map<String, String> vol = new HashMap<String, String>();
+        //List<Volume> volumeList = gs.list(0L);
+        List<Volume> volumeList = gs.list();
+        //Map<String, String> vol = new HashMap<String, String>();
+        Map<String, Long> vol = new HashMap<String, Long>();
         for (Volume v : volumeList){
             System.out.println("Volume " + v);
-            vol.put(v.getName(), v.getUsed().toLowerCase());
+            //vol.put(v.getName(), v.getUsed().toLowerCase());
+            vol.put(v.getName(), Long.valueOf(v.getUsed()));
         }
         System.out.println(vol);
-        System.out.println(vol.size());*/
+        System.out.println(vol.size());
     }
 }

@@ -32,6 +32,7 @@ package com.ixsystems.truenas;
 
 import com.ixsystems.vcp.entities.Volume;
 import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
+import com.ixsystems.vcp.entities.exceptions.DatasetAlreadyExists;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ public class TestShare {
 
     private List<String> getAvailableStores(){
         DatasetRestConnector ds = AuxiliarAuth.getConnector();
-        List<Volume> datasets = ds.list(1L);
+        //List<Volume> datasets = ds.list(1L);
+        List<Volume> datasets = ds.list();
         List<String> datastores = new ArrayList<String>();
         for (Volume v : datasets){
             datastores.add(v.getName());
@@ -51,7 +53,8 @@ public class TestShare {
 
     private Volume getAvailableStoresByName(String name){
         DatasetRestConnector ds = AuxiliarAuth.getConnector();
-        List<Volume> datasets = ds.list(1L);
+        //List<Volume> datasets = ds.list(1L);
+        List<Volume> datasets = ds.list();
         List<String> datastores = new ArrayList<String>();
         Volume result = null;
         for (Volume v : datasets){
@@ -73,7 +76,10 @@ public class TestShare {
         System.out.println(ds.get(1L));
         Volume v = getAvailableStoresByName(getAvailableStore());
         System.out.println("Trying to share NFS with " + v.getName() + " and " + v.getPath() );
-        ds.shareNFS(v.getName(), v.getPath());
-
+        try {
+            ds.shareNFS(v.getName(), v.getPath());
+        } catch (DatasetAlreadyExists e) {
+            System.out.println("Dataset already exists!");
+        }
     }
 }
