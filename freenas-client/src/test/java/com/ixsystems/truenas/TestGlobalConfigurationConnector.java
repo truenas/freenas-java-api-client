@@ -32,18 +32,16 @@ package com.ixsystems.truenas;
 
 
 import com.ixsystems.vcp.entities.network.GlobalConfigurations;
-import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.v1.network.GlobalConfigurationConnector;
-import org.freenas.client.v1.network.rest.impl.GlobalConfigurationRestConnector;
+import org.freenas.client.v2.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v2.network.GlobalConfigurationConnector;
+import org.freenas.client.v2.network.rest.impl.GlobalConfigurationRestConnector;
 import org.junit.jupiter.api.Test;
 
 public class TestGlobalConfigurationConnector {
 
-
     @Test
     public void tryFetch() {
-
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
         EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
         GlobalConfigurationConnector gs = new GlobalConfigurationRestConnector(ep, auth);
@@ -53,11 +51,5 @@ public class TestGlobalConfigurationConnector {
         System.out.println("The FreeNAS domain is: " + gc.getGcDomain());
         System.out.println("The FreeNAS hostname is: " + gc.getGcHostnameB());
         System.out.println("The FreeNAS Ipv4Gateway is: " + gc.getGcIpv4Gateway());
-
-
     }
-
-
-
-
 }

@@ -38,7 +38,6 @@ import org.junit.platform.runner.JUnitPlatform;
 //Converting from JUnit4 to JUnit5
 //import org.junit.runners.Suite;
 
-
 /*@RunWith(Suite.class)
 @Suite.SuiteClasses({
         TestGlobalConfigurationConnector.class,
@@ -56,6 +55,5 @@ import org.junit.platform.runner.JUnitPlatform;
 @SelectPackages("com.ixsystems.truenas")
 
 public class TestSuiteDataset {
-
 
 }

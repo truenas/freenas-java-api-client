@@ -30,10 +30,10 @@
  */
 package com.ixsystems.truenas;
 
-import com.ixsystems.vcp.entities.Volume;
-import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.v1.storage.rest.impl.VolumeRestConnector;
+import com.ixsystems.vcp.entities.AssociatedTarget;
+import org.freenas.client.v2.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v2.storage.rest.impl.ISCSIRestConnector;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -45,10 +45,10 @@ public class TestAssociatedTargets {
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
 
         EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
-        VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
-        List<Volume> volumeList = gs.list();
-        for (Volume volume : volumeList){
-            System.out.println(volume);
+        ISCSIRestConnector gs = new ISCSIRestConnector(ep, auth);
+        List<AssociatedTarget> targetList = gs.list();
+        for (AssociatedTarget target : targetList){
+            System.out.println(target);
         }
     }
 }

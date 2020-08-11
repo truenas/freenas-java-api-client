@@ -53,7 +53,6 @@ public class TestVolume {
 
     @Test
     public void createVolume() {
-
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
         EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
         VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
@@ -72,8 +71,4 @@ public class TestVolume {
     public void update() {
 
     }
-
 }
-
-
-

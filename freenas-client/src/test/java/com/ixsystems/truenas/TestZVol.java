@@ -30,10 +30,10 @@
  */
 package com.ixsystems.truenas;
 
-import com.ixsystems.vcp.entities.Volume;
-import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.v1.storage.rest.impl.VolumeRestConnector;
+import com.ixsystems.vcp.entities.ZVol;
+import org.freenas.client.v2.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v2.storage.rest.impl.ZVolRestConnector;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -44,14 +44,10 @@ public class TestZVol {
     public void tryFetch() {
         AuthenticationConnector auth = AuxiliarAuth.getAuth();
         EndpointConnector ep = new EndpointConnector(AuxiliarAuth.HOST, AuxiliarAuth.PROTOCOL);
-        VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
-        List<Volume> volumeList = gs.list();
-        for (Volume volume : volumeList){
-            System.out.println(volume);
+        ZVolRestConnector gs = new ZVolRestConnector(ep, auth);
+        List<ZVol> list = gs.list();
+        for (ZVol zvol : list){
+            System.out.println(zvol);
         }
     }
-
 }
-
-
-

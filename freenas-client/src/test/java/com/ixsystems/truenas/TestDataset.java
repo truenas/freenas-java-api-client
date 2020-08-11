@@ -34,9 +34,9 @@ import com.ixsystems.vcp.entities.Dataset;
 import com.ixsystems.vcp.entities.Volume;
 import com.ixsystems.vcp.entities.exceptions.DatasetAlreadyExists;
 import org.freenas.client.utils.SSLManager;
-import org.freenas.client.v1.connectors.rest.imp.AuthenticationConnector;
-import org.freenas.client.v1.connectors.rest.imp.EndpointConnector;
-import org.freenas.client.v1.storage.rest.impl.DatasetRestConnector;
+import org.freenas.client.v2.connectors.rest.imp.AuthenticationConnector;
+import org.freenas.client.v2.connectors.rest.imp.EndpointConnector;
+import org.freenas.client.v2.storage.rest.impl.DatasetRestConnector;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyManagementException;
@@ -58,8 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;*/
 
 public class TestDataset {
 
-    public DatasetRestConnector getConnector(){
-
+    public DatasetRestConnector getConnector() {
         DatasetRestConnector gs = AuxiliarAuth.getConnector();
         return gs;
     }
@@ -74,13 +73,11 @@ public class TestDataset {
 
         String volumeName = "ds";
 
-
         Dataset ds  = gs.create(volumeName, args);
         //assertNotNull("Dataset is not returned", ds);
         assertNotNull(ds, "Dataset is not returned");
 
         //List<Dataset> volumeList = gs.list();
-
     }
 
     @Test
@@ -89,7 +86,6 @@ public class TestDataset {
         String volumeName = "ds";
 
         Map<String, String> args = new HashMap<String, String>();
-
 
         for (int i = 0; i<10; i++) {
             args.put("name", "datasetNameTest"+i);
@@ -100,10 +96,7 @@ public class TestDataset {
             }
             //assertNotNull("Dataset is not returned", ds);
         }
-
-
     }
-
 
     @Test
     public void testList() {
@@ -117,7 +110,5 @@ public class TestDataset {
         }
         System.out.println(vol);
         System.out.println(vol.size());*/
-
     }
 }
-
