@@ -78,6 +78,7 @@ public class Main {
     private Boolean websockets;
     private String websocketsUri;
     private String volumeName;
+    private Options options = null;
 
     public Main() {
         // Load Configurations
@@ -98,25 +99,8 @@ public class Main {
             e.printStackTrace();
         }
 
-        try {
-            cmd = parser.parse(options, args);
-        } catch (ParseException e) {
-            LOGGER.error("An error occured when parsing arguments.", e);
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Main App Here - Start workflow.
-     *
-     * @param args
-     */
-    public static void main(String [] args) {
-        Configurator.initialize(new DefaultConfiguration());
-        Configurator.setRootLevel(Level.INFO);
-
         // create Options object
-        Options options = new Options();
+        options = new Options();
 
         Option help = new Option( "help", "help how to use the freenas-cli" );
         Option usernameOpt = new Option( "user", "set the username" );
@@ -158,12 +142,27 @@ public class Main {
         options.addOption(iterative);
 
         options.addOption(urlOpt);
+    }
 
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = null;
-        Main app = new Main();
-
+    /**
+     * Main App Here - Start workflow.
+     *
+     * @param args
+     */
+    public static void main(String [] args) {
+        Configurator.initialize(new DefaultConfiguration());
+        Configurator.setRootLevel(Level.INFO);
         
+        CommandLineParser parser = new DefaultParser();
+        Main app = new Main();
+        CommandLine cmd = null;
+
+        try {
+            cmd = parser.parse(app.options, args);
+        } catch (ParseException e) {
+            LOGGER.error("An error occured when parsing arguments.", e);
+            e.printStackTrace();
+        }
 
         if(cmd.hasOption("user")) { // User
             app.username = cmd.getOptionValue("user");
@@ -210,7 +209,7 @@ public class Main {
         }
         if(cmd.hasOption("help")) {
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("freenas-client", options);
+            formatter.printHelp("freenas-client", app.options);
         }
     }
 
@@ -427,6 +426,7 @@ public class Main {
         } else {
             System.out.println("No options available for volume.");
         }
+        return result;
     }
 
     private boolean deleteShare(String opt) {

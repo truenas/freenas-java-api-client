@@ -56,7 +56,7 @@ public class YmlConfs {
 
         InputStream inputStream = new FileInputStream(f);
         Map<String, Object> obj = yaml.load(inputStream);
-        LOGGER.info("Conf file " + f.getAboslutePath() + " loaded successfully...");
+        LOGGER.info("Conf file " + f.getAbsolutePath() + " loaded successfully...");
         this.properties = obj;
     }
 
