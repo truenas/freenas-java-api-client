@@ -30,153 +30,156 @@
  */
 package com.ixsystems.vcp.entities;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonSerialize(include=Inclusion.NON_NULL)
 public class AlertMessage {
-    @JsonProperty("uuid")
     private String uuid;
-    @JsonProperty("source")
     private String source;
-    @JsonProperty("klass")
     private String klass;
-    @JsonProperty("args")
     private Object args;
-    @JsonProperty("node")
     private String node;
-    @JsonProperty("key")
     private String key;
-    @JsonProperty("dismissed")
+    private JsonNode datetime;
+    private JsonNode last_occurrence;
     private boolean dismissed;
-    @JsonProperty("mail")
     private String mail;
-    @JsonProperty("id")
+    private String text;
     private String id;
-    @JsonProperty("level")
     private String level;
-    @JsonProperty("formatted")
     private String formatted;
-    @JsonProperty("text")
-    private String text; //Changed from message
-    @JsonProperty("datetime")
-    private Object datetime; //Changed from timestamp
-    @JsonIgnore
-    @JsonProperty("one_shot")
-    private Boolean one_shot;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public boolean isDismissed() {
-        return dismissed;
-    }
-
-    public void setDismissed(boolean dismissed) {
-        this.dismissed = dismissed;
-    }
-
-    public String getNode() {
-        return node;
-    }
-
-    public void setNode(String node) {
-        this.node = node;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String souce) {
-        this.source = source;
-    }
-
-    public String getFormatted() {
-        return formatted;
-    }
-
-    public void setFormatted(String formatted) {
-        this.formatted = formatted;
-    }
-
-    public String getKlass() {
-        return klass;
-    }
-
-    public void setKlass(String klass) {
-        this.klass = klass;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
+    private boolean one_shot;
 
     public String getUuid() {
         return uuid;
     }
-
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
-
+    public String getSource() {
+        return source;
+    }
+    public void setSource(String souce) {
+        this.source = source;
+    }
+    public String getKlass() {
+        return klass;
+    }
+    public void setKlass(String klass) {
+        this.klass = klass;
+    }
     public Object getArgs() {
+        //TODO: Fix when args become String[]
         return args;
     }
-
     public void setArgs(Object args) {
-        this.args = args;
+        //TODO: Fix when args become String[]
+        //this.args = args;
     }
-
+    public String getNode() {
+        return node;
+    }
+    public void setNode(String node) {
+        this.node = node;
+    }
+    public String getKey() {
+        return key;
+    }
+    public void setKey(String key) {
+        this.key = key;
+    }
+    //datetime and last_occurrence are not automatically seralized through
+    //Jackson due to how they're wrapped in an object
+    @JsonIgnore
+    public long getDatetime() { 
+        if(datetime != null) {
+            return datetime.get("$date").asLong();
+        }
+        return -1;
+    }
+    @JsonIgnore
+    public void setDatetime(long date) {
+        //TODO: Wrap in object
+        //this.datetime = date;
+    }
+    @JsonIgnore
+    public long getLast_occurrence() { 
+        if(last_occurrence != null) {
+            return last_occurrence.get("$date").asLong();
+        }
+        return -1;
+    }
+    @JsonIgnore
+    public void setLast_occurrence(long date) {
+        //TODO: Wrap in object
+        //this.last_occurrence = date;
+    }
+    public boolean isDismissed() {
+        return dismissed;
+    }
+    public void setDismissed(boolean dismissed) {
+        this.dismissed = dismissed;
+    }
+    public String getMail() {
+        return mail;
+    }
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+    public String getText() {
+        return text;
+    }
+    public void setText(String text) {
+        this.text = text;
+    }
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getLevel() {
+        return level;
+    }
+    public void setLevel(String level) {
+        this.level = level;
+    }
+    public String getFormatted() {
+        return formatted;
+    }
+    public void setFormatted(String formatted) {
+        this.formatted = formatted;
+    }
+    public boolean getOne_shot() {
+        return one_shot;
+    }
+    public void setOne_shot(boolean one_shot) {
+        this.one_shot = one_shot;
+    }
     @Override
     public String toString() {
-        return "AlertMessage{" +
-                "id='" + id + '\'' +
-                ", level='" + level + '\'' +
-                ", text='" + text + '\'' +
-                ", klass=" + klass +
-                ", uuid=" + uuid +
-                ", mail=" + mail +
-                ", key=" + key +
-                ", timestamp=" + datetime +
-                ", dismissed=" + dismissed +
-                ", node=" + node +
-                ", source=" + source +
-                ", args=" + args +
-                ", formatted=" + formatted +
+        return "AlertMessage{ " +
+                "uuid= " + uuid +
+                ", source= " + source +
+                ", klass= " + klass +
+                //", args= " + args +
+                ", node= " + node +
+                ", key= " + key +
+                ", datetime= " + getDatetime() +
+                ", last_occurrence" + getLast_occurrence() +
+                ", dismissed= " + dismissed +
+                ", mail= " + mail +
+                ", text= " + text +
+                ", id= " + id +
+                ", level= " + level +
+                ", formatted= " + formatted +
+                ", one_shot= " + one_shot +
                 '}';
     }
 }

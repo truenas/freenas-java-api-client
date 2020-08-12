@@ -79,14 +79,39 @@ public class Main {
     private String websocketsUri;
     private String volumeName;
 
-    public Main(){ }
+    public Main() {
+        // Load Configurations
+        YmlConfs yml = new YmlConfs();
+        try {
+            yml.load();
+            // Set settings
+            username = yml.getUsername();
+            password = yml.getPassword();
+            url = yml.getUrl();
+            websockets = yml.getWebSockets();
+            websocketsUri = yml.getWebSocketsUri();
+        } catch (FileNotFoundException e) {
+            LOGGER.info("No yml configuration available.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("An error occured when loading yml configuration file.", e);
+            e.printStackTrace();
+        }
+
+        try {
+            cmd = parser.parse(options, args);
+        } catch (ParseException e) {
+            LOGGER.error("An error occured when parsing arguments.", e);
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Main App Here - Start workflow.
      *
      * @param args
      */
-    public static void main(String [] args){
+    public static void main(String [] args) {
         Configurator.initialize(new DefaultConfiguration());
         Configurator.setRootLevel(Level.INFO);
 
@@ -136,81 +161,62 @@ public class Main {
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = null;
+        Main app = new Main();
 
-        try {
-            cmd = parser.parse( options, args);
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // Load Configurations
-        YmlConfs yml = new YmlConfs();
-        try {
-            yml.load();
-            // Set settings
-            this.username = yml.getUsername();
-            this.password = yml.getPassword();
-            this.url = yml.getUrl();
-            this.websockets = yml.getWebSockets();
-            this.websocketsUri = yml.getWebSocketsUri();
-        } catch (FileNotFoundException e) {
-            LOGGER.info("No yml configuration available.");
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
 
         if(cmd.hasOption("user")) { // User
-            this.username = cmd.getOptionValue("user");
+            app.username = cmd.getOptionValue("user");
         }
         if(cmd.hasOption("pass")) { // Pass
-            this.password = cmd.getOptionValue("pass");
+            app.password = cmd.getOptionValue("pass");
         }
         if(cmd.hasOption("url")) { // Pass
-            this.url = cmd.getOptionValue("url");
+            app.url = cmd.getOptionValue("url");
         }
         if(cmd.hasOption("vname")) { // Pass
-            this.volumeName = cmd.getOptionValue("vname");
+            app.volumeName = cmd.getOptionValue("vname");
         }
         if(cmd.hasOption("volume")) {
-            if(!handleVolumes(cmd)) {
+            if(!app.handleVolumes(cmd)) {
                 System.out.println("Failed to handle volumes");
             }
         }
         if(cmd.hasOption("replication")) {
-            if(!handleReplications(cmd)) {
+            if(!app.handleReplications(cmd)) {
                 System.out.println("Failed to handle replication tasks");
             }
         }
         if(cmd.hasOption("config")) {
-            if(!globalConfigurations(cmd)) {
+            if(!app.globalConfigurations(cmd)) {
                 System.out.println("Failed to handle global configuration");
             }
         }
         if(cmd.hasOption("share")) {
             // Need to handle here the shares type
-            if(!handleShares(cmd)) {
+            if(!app.handleShares(cmd)) {
                 System.out.println("Failed to handle shares");
             }
         }
         if(cmd.hasOption("alerts")) {
-            if(!handleAlerts(cmd)) {
+            if(!app.handleAlerts(cmd)) {
                 System.out.println("Failed to handle alerts");
             }
         }
         if(cmd.hasOption("iterative")) {
-            if(!handleIterativeMode(cmd)) {
+            if(!app.handleIterativeMode(cmd)) {
                 System.out.println("Failed to handle websocket connection");
             }
         }
         if(cmd.hasOption("help")) {
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( freenas-client", options);
+            formatter.printHelp("freenas-client", options);
         }
     }
 
-    private void handleIterativeMode(CommandLine cmd) {
+    private boolean handleIterativeMode(CommandLine cmd) {
+        //boolean result = false;
+        boolean stop = false;
 
         if (!this.websockets) {
             System.out.println("FreNAS - Not possible enter in iterative mode without enable WebSockets Options. " +
@@ -224,8 +230,9 @@ public class Main {
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         String input = "";
+
         try {
-            while (!input.equalsIgnoreCase("stop")) {
+            while (!stop) {
                 showMenu();
                 input = in.readLine();
                 if(input.equals("nfs share")) {
@@ -244,7 +251,7 @@ public class Main {
                             JSONObject jsonObject = new JSONObject(message);
                             JSONArray arr = jsonObject.getJSONArray("result");
                             System.out.println("[FreeNAS] - Available NFS Shares:");
-                            for (int i = 0 ; i<arr.length(); i++){
+                            for (int i = 0 ; i<arr.length(); i++) {
                                 try {
                                     NFSShare nfsShare = objectMapper.readValue(arr.getJSONObject(i).toString(), NFSShare.class);
                                     System.out.println("ID="+nfsShare.getId() +", " + nfsShare.getPaths());
@@ -259,18 +266,22 @@ public class Main {
                     wsClient.registerCallable(idMsg, callable);
                     wsClient.listNfsShare(idMsg);
                 } else if(input.equals("stop")) {
-                    //TODO: Properly stop connection%
-                    System.exit(0);
+                    //TODO: Properly stop connection
+                    stop = true;
                 } else if(input.equals("help")) {
                     showMenu();
+                } else {
+                    System.out.println("Invalid command " + input);
                 }
             }
         } catch (Exception e) {
             LOGGER.error("FreeNAS - Iterative mode, error " + e.getMessage());
         }
+
+        return true;
     }
 
-    public static void showMenu() {
+    public void showMenu() {
         System.out.println("nfs share: List the NFS Share");
         System.out.println("help");
         System.out.println("Enter the command or \"stop\" to exit");
@@ -281,49 +292,59 @@ public class Main {
      *
      * @param cmd
      */
-    private void handleAlerts(CommandLine cmd) {
+    private boolean handleAlerts(CommandLine cmd) {
+        boolean result = false;
+        int indexOpt = 0;
+        String[] opts = cmd.getArgs();
+        String optLst = opts[indexOpt];
+
         System.out.println("[FreeNAS] Alerts");
 
-        String [] opts = cmd.getArgs();
-        String optLst = opts[indexOpt];
-        int indexOpt = 0;
-
         if (optLst.equals("list")) {
-            listAlerts(optLst);
+            result = listAlerts(optLst);
         } else if (optLst.equals("dismiss")) {
             System.out.println("FreeNAS - dismiss a specific alert "+opts[indexOpt+1]);
-            dismissAlert(opts[indexOpt+1]);
+            result = dismissAlert(opts[indexOpt+1]);
         } else {
             System.out.println("No options available for alerts.");
         }
+
+        return result;
     }
 
     /**
      * Dismiss the alerts
      * @param optLst
      */
-    private void dismissAlert(String optLst) {
+    private boolean dismissAlert(String optLst) {
+        //boolean result = false;
         AlertSystem alertSystem = new AlertSystemImp(getEndPointConnector(),getAuth());
         alertSystem.dismiss(optLst);
+        return true;
     }
 
     /**
      * List all alerts from FreeNAS system
      * @param optLst
      */
-    private void listAlerts(String optLst) {
+    private boolean listAlerts(String optLst) {
+        boolean result = false;
         AlertSystem alertSystem = new AlertSystemImp(getEndPointConnector(),getAuth());
         List<AlertMessage> alerts = alertSystem.list();
-        if (alerts.size()==0) {
+
+        if (alerts.size() == 0) {
             System.out.println("No alerts available at moment.");
-            return;
+        }else{
+            System.out.printf("############################\n");
+            for (AlertMessage m : alerts) {
+                System.out.println(m.getId());
+                System.out.println(m.getFormatted());
+                result = true;
+            }
+            System.out.printf("############################\n");
         }
-        System.out.printf("############################\n");
-        for (AlertMessage m : alerts) {
-            System.out.println(m.getId());
-            System.out.println(m.getFormatted());
-        }
-        System.out.printf("############################\n");
+
+        return result;
     }
 
     /**
@@ -331,23 +352,27 @@ public class Main {
      *
      * @param cmd Command Line options
      */
-    private void handleVolumes(CommandLine cmd) {
+    private boolean handleVolumes(CommandLine cmd) {
+        boolean result = false;
+        String[] opts = cmd.getOptionValues("volume");
+        int indexOpt = 0;
+
         System.out.println("[FreeNAS] Volumes");
 
-        String [] opts = cmd.getOptionValues("volume");
-        int indexOpt = 0;
         if (opts[indexOpt].equals("add")) {
             System.out.println("FreeNAS - adding new dataset named "+opts[indexOpt+1]);
-            addDataset(opts[indexOpt+1]);
+            result = addDataset(opts[indexOpt+1]);
         } else if (opts[indexOpt].equals("delete")) {
             System.out.println("FreeNAS - delete new dataset named "+opts[indexOpt+1]);
-            deleteDataset(opts[indexOpt+1]);
+            result = deleteDataset(opts[indexOpt+1]);
         } else if (opts[indexOpt].equals("list")) {
             System.out.println("FreeNAS - listing current pools");
-            listPools();
+            result = listPools();
         } else {
             System.out.println("No options available for volume.");
         }
+
+        return result;
     }
 
     /**
@@ -355,23 +380,27 @@ public class Main {
      *
      * @param cmd Command Line options
      */
-    private void handleReplications(CommandLine cmd) {
-        System.out.println("[FreeNAS] Replications");
-
+    private boolean handleReplications(CommandLine cmd) {
         String[] opts = cmd.getOptionValues("replication");
         int indexOpt = 0;
+        boolean result = false;
+
+        System.out.println("[FreeNAS] Replications");
+
         if (opts[indexOpt].equals("add")) {
-            System.out.println("FreeNAS - adding new replication task named "+opts[indexOpt+1]);
-            //addDataset(opts[indexOpt+1]);
+            System.out.println("FreeNAS - adding new replication task named " + opts[indexOpt+1]);
+            //result = addDataset(opts[indexOpt+1]);
         } else if (opts[indexOpt].equals("delete")) {
-            System.out.println("FreeNAS - delete new replication task named "+opts[indexOpt+1]);
-            //deleteDataset(opts[indexOpt+1]);
+            System.out.println("FreeNAS - delete new replication task named " + opts[indexOpt+1]);
+            //result = deleteDataset(opts[indexOpt+1]);
         } else if (opts[indexOpt].equals("list")) {
             System.out.println("FreeNAS - listing current replication tasks");
-            listReplications();
+            result = listReplications();
         } else {
             System.out.println("No options available for replication.");
         }
+
+        return result;
     }
 
     /**
@@ -379,29 +408,31 @@ public class Main {
      *
      * @param cmd Command Line options
      */
-    private void handleShares(CommandLine cmd) {
+    private boolean handleShares(CommandLine cmd) {
+        String [] opts = cmd.getArgs();
+        int indexOpt = 0;
+        boolean result = false;
 
         System.out.println("[FreeNAS] Shares");
 
-        String [] opts = cmd.getArgs();
-        int indexOpt = 0 ;
         if (opts[indexOpt].equals("add")) {
-            System.out.println("FreeNAS - creating a new share "+opts[indexOpt+1]);
-            createShare(opts[indexOpt+1], opts[indexOpt+2], opts[indexOpt+3], opts[indexOpt+4]);
-            System.out.println("FreeNAS - created a new share.");
+            System.out.println("FreeNAS - creating a new share " + opts[indexOpt+1]);
+            result = createShare(opts[indexOpt+1], opts[indexOpt+2], opts[indexOpt+3], opts[indexOpt+4]);
         } else if (opts[indexOpt].equals("delete")) {
             System.out.println("FreeNAS - remove an existing share "+opts[indexOpt+1]);
-            deleteShare(opts[indexOpt+1]);
+            result = deleteShare(opts[indexOpt+1]);
         } else if (opts[indexOpt].equals("list")) {
             System.out.println("FreeNAS - listing current shares");
-            listCurrentShares();
+            result = listCurrentShares();
         } else {
             System.out.println("No options available for volume.");
         }
     }
 
-    private void deleteShare(String opt) {
+    private boolean deleteShare(String opt) {
+        boolean result = false;
 
+        return result;
     }
 
     /**
@@ -409,10 +440,10 @@ public class Main {
      * @param opt will be the path to share
      * @param type will be type to share, like for instance, nfs, cifs, iscsi
      */
-    private void createShare(String type, String path, String comment, String security) {
+    private boolean createShare(String type, String path, String comment, String security) {
+        boolean result = false;
 
-        if (type.equals("nfs")){
-
+        if (type.equals("nfs")) {
             SharingNFSRestConnector connector = new SharingNFSRestConnector(getEndPointConnector(), getAuth());
             Map<String, Object> args = new HashMap<String, Object>();
             args.put("nfs_comment", comment);
@@ -420,68 +451,66 @@ public class Main {
             paths.add(path);
             args.put("nfs_paths",paths);
             args.put("nfs_security", security);
-
             connector.create(path, args);
+            result = true;
+        } else { 
+            System.out.println("Currently only NFS shares are supported.");
         }
+        return result;
     }
 
-    public AuthenticationConnector getAuth(){
+    public AuthenticationConnector getAuth() {
         AuthenticationConnector auth = new AuthenticationConnector(username, password);
         return auth;
     }
 
-    public EndpointConnector getEndPointConnector(){
+    public EndpointConnector getEndPointConnector() {
         EndpointConnector ep = new EndpointConnector(this.url, "http");
         return ep;
     }
 
-    public DatasetRestConnector getConnector(){
+    public DatasetRestConnector getConnector() {
         AuthenticationConnector auth = getAuth();
         EndpointConnector ep = getEndPointConnector();
         DatasetRestConnector gs = new DatasetRestConnector(ep, auth);
 
         return gs;
     }
-    public VolumeRestConnector getVolumeConnector(){
+    public VolumeRestConnector getVolumeConnector() {
         AuthenticationConnector auth = getAuth();
         EndpointConnector ep = getEndPointConnector();
         VolumeRestConnector gs = new VolumeRestConnector(ep, auth);
 
         return gs;
     }
-    public ReplicationRestConnector getReplicationConnector(){
+    public ReplicationRestConnector getReplicationConnector() {
         AuthenticationConnector auth = getAuth();
         EndpointConnector ep = getEndPointConnector();
         ReplicationRestConnector gs = new ReplicationRestConnector(ep, auth);
 
         return gs;
     }
-    private boolean addDataset(String name){
+    private boolean addDataset(String name) {
         boolean result = false;
         DatasetRestConnector gs = getConnector();
         Map<String, String> args = new HashMap<String, String>();
+        Dataset ds = null;
 
         args.put("name", name);
 
-        String volumeName = this.volumeName;
-        Dataset ds = null ;
         try {
             ds = gs.create(volumeName, args);
-            result = true;
-        }
-        catch (Exception e){
-            LOGGER.error("Error while creating dataset", e);
-        }
-        if (result) {
             System.out.println("Dataset has been created: " + ds.getName());
             System.out.println("Dataset is mounted at: " + ds.getMountPoint());
             System.out.println("Dataset " + ds.getName() + " has available " + ds.getAvailable() / 1024 / 1024 / 1024 + "GB.");
+            result = true;
+        } catch (Exception e) {
+            LOGGER.error("Error while creating dataset", e);
         }
         return result;
-
     }
 
-    private boolean listReplications(){
+    private boolean listReplications() {
         boolean result = false;
         ReplicationRestConnector gs = getReplicationConnector();
         Map<String, String> args = new HashMap<String, String>();
@@ -489,13 +518,8 @@ public class Main {
         List<Replication> replications = null;
         try {
             replications = gs.list();
-            result = true;
-        } catch (Exception e) {
-            LOGGER.error("Error while listing replications", e);
-        }
-        if (result){
             System.out.println("The following replications:");
-            for (Replication r : replications){
+            for (Replication r : replications) {
                 if (r.getId() !=0 )
                     System.out.println(">> Replication id: " + r.getId());
                 if (r.getName() != null)
@@ -511,6 +535,9 @@ public class Main {
                 }*/
                 System.out.println(">> ===========");
             }
+            result = true;
+        } catch (Exception e) {
+            LOGGER.error("Error while listing replications", e);
         }
         return result;
     }
@@ -527,9 +554,9 @@ public class Main {
         } catch (Exception e) {
             LOGGER.error("Error while listing pools", e);
         }
-        if (result){
+        if (result) {
             System.out.println("The following pools:");
-            for (Volume v: pools){
+            for (Volume v: pools) {
                 if (v.getId() !=0 )
                     System.out.println(">> Pool id: " + v.getId());
                 if (v.getName() != null)
@@ -585,7 +612,7 @@ public class Main {
         try {
             shares = connector.list();
             System.out.println("The following datasets:");
-            for (NFSShare v: shares){
+            for (NFSShare v: shares) {
                 System.out.println(">> Share path: "+v.getPaths());
                 System.out.println(">> ===========");
             }
@@ -614,7 +641,7 @@ public class Main {
         return result;
     }
 
-    private boolean globalConfigurations(CommandLine cmd){
+    private boolean globalConfigurations(CommandLine cmd) {
         boolean result = false;
         int indexOpt = 0;
         String [] opts = cmd.getOptionValues("config");
